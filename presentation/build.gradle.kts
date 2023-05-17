@@ -19,7 +19,8 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile(ProjectProperties.Files.DEFAULT_PROGUARD), ProjectProperties.Files.PROGUARD
+                getDefaultProguardFile(ProjectProperties.Files.DEFAULT_PROGUARD),
+                ProjectProperties.Files.PROGUARD
             )
         }
     }
