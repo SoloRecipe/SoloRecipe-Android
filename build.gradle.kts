@@ -1,5 +1,7 @@
 plugins {
-    id("com.android.application") version "8.0.0" apply false
-    id("com.android.library") version "8.0.0" apply false
-    id("org.jetbrains.kotlin.android") version "1.8.0" apply false
+    id(ProjectProperties.Gradle.APPLICATION) version Versions.GRADLE_ANDROID apply false
+    id(ProjectProperties.Gradle.LIBRARY) version Versions.GRADLE_ANDROID apply false
+    id(ProjectProperties.Gradle.KOTLIN) version Versions.GRADLE_KOTLIN apply false
+    id(ProjectProperties.Gradle.KTLINT) version Versions.GRADLE_KTLINT
+    id(ProjectProperties.Gradle.HILT) version Versions.HILT apply false
 }

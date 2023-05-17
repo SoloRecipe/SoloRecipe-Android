@@ -1,43 +1,53 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    id(ProjectProperties.Gradle.APPLICATION)
+    id(ProjectProperties.Gradle.KOTLIN)
+    id(ProjectProperties.Gradle.HILT)
+    kotlin(ProjectProperties.Gradle.KAPT)
 }
 
 android {
-    namespace = "com.project.recipeapp"
-    compileSdk = 33
+    namespace = ProjectProperties.NameSpace.APP
+    compileSdk = ProjectProperties.Versions.COMPILE_SDK
 
     defaultConfig {
-        applicationId = "com.project.recipeapp"
-        minSdk = 24
-        targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
+        applicationId = ProjectProperties.Id.APPLICATION_ID
+        minSdk = ProjectProperties.Versions.MIN_SDK
+        targetSdk = ProjectProperties.Versions.TARGET_SDK
+        versionCode = ProjectProperties.Versions.VERSION_CODE
+        versionName = ProjectProperties.Versions.VERSION_NAME
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = ProjectProperties.Test.TEST_RUNNER
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile(ProjectProperties.Files.DEFAULT_PROGUARD), ProjectProperties.Files.PROGUARD
+            )
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = ProjectProperties.Versions.JAVA_VERSION
+        targetCompatibility = ProjectProperties.Versions.JAVA_VERSION
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = ProjectProperties.Versions.JVM_TARGET
     }
 }
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.10.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.9.0")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation(Dependencies.AndroidX.CORE_KTX)
+    implementation(Dependencies.AndroidX.APP_COMPAT)
+    implementation(Dependencies.Google.MATERIAL)
+    implementation(Dependencies.Google.HILT_ANDROID)
+    kapt(Dependencies.Google.HILT_COMPILER)
+    implementation(Dependencies.AndroidX.COMPOSE_RUNTIME)
+    implementation(Dependencies.AndroidX.COMPOSE_MATERIAL3)
+    implementation(Dependencies.AndroidX.ACTIVITY_COMPOSE)
+    implementation(Dependencies.UnitTest.JUNIT)
+    implementation(Dependencies.AndroidTest.ANDROID_JUNIT)
+    implementation(Dependencies.AndroidTest.ESPRESSO_CORE)
+    implementation(Dependencies.AndroidX.NAVIGATION_COMPOSE)
 }
