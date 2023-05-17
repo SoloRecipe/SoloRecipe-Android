@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 rootProject.name = "RecipeApp"
 include(":app")
 include(":domain")
+include(":data")
