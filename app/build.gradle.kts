@@ -39,7 +39,7 @@ android {
 dependencies {
 
     implementation(Dependencies.AndroidX.CORE_KTX)
-    implementation(Dependencies.AndroidX.APP_COMPAT)
+    implementation(Dependencies.AndroidX.APPCOMPAT)
     implementation(Dependencies.Google.MATERIAL)
     implementation(Dependencies.Google.HILT_ANDROID)
     kapt(Dependencies.Google.HILT_COMPILER)
