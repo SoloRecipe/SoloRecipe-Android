@@ -38,7 +38,7 @@ object ProjectProperties {
         const val PRESENTATION = "com.project.presentation"
         const val DOMAIN = "com.project.domain"
         const val DATA = "com.project.data"
-        const val APP = "com.project.recipeapp"
+        const val APP = "com.project.solorecipe"
     }
 
     object Action {
