@@ -19,6 +19,7 @@ object Versions {
     const val MATERIAL = "1.9.0"
     const val HILT = "2.44"
     const val OKHTTP = "4.11.0"
+    const val LANDSCAPIST_GLIDE = "2.2.0"
 
     const val RETROFIT = "2.9.0"
 
