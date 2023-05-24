@@ -47,6 +47,7 @@ dependencies {
     implementation(Dependencies.AndroidX.COMPOSE_MATERIAL3)
     implementation(Dependencies.AndroidX.COMPOSE_TOOLING)
     implementation(Dependencies.AndroidX.COMPOSE_UI)
+    implementation(Dependencies.Libraries.LANDSCAPIST_GLIDE)
     implementation(Dependencies.UnitTest.JUNIT)
     implementation(Dependencies.AndroidTest.ANDROID_JUNIT)
     implementation(Dependencies.AndroidTest.ESPRESSO_CORE)
