@@ -26,7 +26,7 @@ fun SoloRecipeListItem(
             failure = { failureImage() },
         )
         Spacer(modifier = Modifier.width(space))
-        Column(modifier = modifier) {
+        Column(modifier = modifier.weight(1f)) {
             title?.let { title ->
                 title()
                 Spacer(modifier = Modifier.height(4.dp))
