@@ -31,10 +31,17 @@ android {
     kotlinOptions {
         jvmTarget = ProjectProperties.Versions.JVM_TARGET
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.1"
+    }
 }
 
 dependencies {
 
+    implementation(project(":design_system"))
     implementation(project(":domain"))
 
     implementation(Dependencies.AndroidX.CORE_KTX)
