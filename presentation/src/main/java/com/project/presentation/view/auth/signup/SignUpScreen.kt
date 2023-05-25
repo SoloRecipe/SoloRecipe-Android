@@ -2,6 +2,7 @@ package com.project.presentation.view.auth.signup
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.design_system.component.SoloRecipeButton
 import com.project.design_system.component.SoloRecipeTextField
@@ -65,12 +67,20 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
             trailingIcon = {
                 if (isPasswordShowed) {
                     IcEyeOpen(
-                        modifier = modifier.clickable { isPasswordShowed = !isPasswordShowed },
+                        modifier = modifier.clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            onClick = { isPasswordShowed = !isPasswordShowed }
+                        ),
                         contentDescription = "open"
                     )
                 } else {
                     IcEyeClose(
-                        modifier = modifier.clickable { isPasswordShowed = !isPasswordShowed },
+                        modifier = modifier.clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            onClick = { isPasswordShowed = !isPasswordShowed }
+                        ),
                         contentDescription = "open"
                     )
                 }
@@ -160,4 +170,10 @@ fun SignUpHeader(
             text = "회원가입"
         )
     }
+}
+
+@Preview
+@Composable
+fun PreviewSignUpScreen() {
+    SignUpScreen()
 }
