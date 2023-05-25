@@ -28,8 +28,7 @@ import com.project.design_system.theme.SoloRecipeColor
 @Composable
 fun ProfileScreen(modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier
-            .fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         Spacer(modifier = modifier.height(13.dp))
         ProfileHeader { }
