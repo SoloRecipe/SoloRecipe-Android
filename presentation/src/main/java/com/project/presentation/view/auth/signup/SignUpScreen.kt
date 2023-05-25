@@ -19,6 +19,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.project.design_system.component.SoloRecipeButton
 import com.project.design_system.component.SoloRecipeTextField
@@ -26,6 +28,8 @@ import com.project.design_system.theme.Body3
 import com.project.design_system.theme.Body4
 import com.project.design_system.theme.H0
 import com.project.design_system.theme.IcBack
+import com.project.design_system.theme.IcEyeClose
+import com.project.design_system.theme.IcEyeOpen
 import com.project.design_system.theme.SoloRecipeTheme
 import com.project.design_system.theme.Subtitle1
 
@@ -36,6 +40,7 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
     var confirmPassword by remember { mutableStateOf("") }
     var nickname by remember { mutableStateOf("") }
     var isAgreed by remember { mutableStateOf(false) }
+    var isPasswordShowed by remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier
@@ -56,6 +61,21 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
             label = "비밀번호",
             value = password,
             hint = "비밀번호를 입력해 주세요.",
+            visualTransformation = if (isPasswordShowed) VisualTransformation.None else PasswordVisualTransformation(),
+            trailingIcon = {
+                if (isPasswordShowed) {
+                    IcEyeOpen(
+                        modifier = modifier.clickable { isPasswordShowed = !isPasswordShowed },
+                        contentDescription = "open"
+                    )
+                } else {
+                    IcEyeClose(
+                        modifier = modifier.clickable { isPasswordShowed = !isPasswordShowed },
+                        contentDescription = "open"
+                    )
+                }
+
+            },
             onValueChanged = { password = it }
         )
         Spacer(modifier = modifier.height(32.dp))
@@ -108,6 +128,8 @@ fun SignUpField(
     label: String,
     value: String,
     hint: String,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    trailingIcon: @Composable (() -> Unit)? = null,
     onValueChanged: (String) -> Unit
 ) {
     Subtitle1(text = label)
@@ -115,6 +137,8 @@ fun SignUpField(
     SoloRecipeTextField(
         value = value,
         hint = hint,
+        visualTransformation = visualTransformation,
+        trailingIcon = trailingIcon,
         onValueChanged = onValueChanged
     )
 }
