@@ -93,6 +93,7 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
             label = "비밀번호 확인",
             value = confirmPassword,
             hint = "비밀번호를 재 입력해 주세요.",
+            visualTransformation = PasswordVisualTransformation(),
             onValueChanged = { confirmPassword = it }
         )
         Spacer(modifier = modifier.height(32.dp))
