@@ -19,15 +19,13 @@ import com.project.design_system.theme.SoloRecipeColor
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
 
-private val stepItemHeight = 70.dp
-
 @Composable
 fun SoloRecipeStepItem(
     modifier: Modifier = Modifier,
     imageUrl: String,
     content: @Composable () -> Unit
 ) {
-    Row(modifier = modifier.height(stepItemHeight)) {
+    Row(modifier = modifier.height(70.dp)) {
         GlideImage(
             imageModel = { imageUrl },
             modifier = Modifier
