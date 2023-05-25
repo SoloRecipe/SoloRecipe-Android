@@ -120,7 +120,8 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
         Spacer(modifier = modifier.height(10.dp))
         Body4(
             modifier = modifier.padding(start = 40.dp),
-            text = "자세히보기"
+            text = "자세히보기",
+            onClick = { }
         )
         Spacer(modifier = modifier.height(50.dp))
         SoloRecipeButton(
