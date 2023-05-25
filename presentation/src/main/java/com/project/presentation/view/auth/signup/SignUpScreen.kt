@@ -48,7 +48,7 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
             .padding(horizontal = 26.dp)
     ) {
         Spacer(modifier = modifier.height(33.dp))
-        SignUpHeader()
+        SignUpHeader { }
         Spacer(modifier = modifier.height(52.dp))
         SignUpField(
             label = "아이디",
@@ -144,11 +144,16 @@ fun SignUpField(
 }
 
 @Composable
-fun SignUpHeader(modifier: Modifier = Modifier) {
+fun SignUpHeader(
+    modifier: Modifier = Modifier,
+    onBackPressed: () -> Unit
+) {
     Box(modifier = modifier.fillMaxWidth()) {
         IcBack(
-            modifier = modifier.align(Alignment.CenterStart),
-            contentDescription = "back"
+            modifier = modifier
+                .align(Alignment.CenterStart)
+                .clickable { onBackPressed() },
+            contentDescription = "back",
         )
         H0(
             modifier = modifier.align(Alignment.Center),
