@@ -1,5 +1,6 @@
 package com.project.presentation.view.profile
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -18,21 +19,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.project.design_system.component.SoloRecipeAppBar
 import com.project.design_system.component.SoloRecipeButton
 import com.project.design_system.component.SoloRecipeItem
 import com.project.design_system.theme.Body2
-import com.project.design_system.theme.IcBack
 import com.project.design_system.theme.IcProfile
 import com.project.design_system.theme.SoloRecipeColor
 
 @Composable
 fun ProfileScreen(modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
+            .fillMaxSize()
+            .background(SoloRecipeColor.White)
     ) {
-        Spacer(modifier = modifier.height(13.dp))
-        ProfileHeader { }
-        Spacer(modifier = modifier.height(13.dp))
+        ProfileHeader()
         Divider(
             modifier = modifier.fillMaxWidth(),
             color = SoloRecipeColor.Secondary10,
@@ -67,16 +68,9 @@ fun ProfileScreen(modifier: Modifier = Modifier) {
 @Composable
 fun ProfileHeader(
     modifier: Modifier = Modifier,
-    onBackPressed: () -> Unit
 ) {
     Box(modifier = modifier.fillMaxWidth()) {
-        IcBack(
-            modifier = modifier
-                .padding(start = 18.dp)
-                .align(Alignment.CenterStart)
-                .clickable { onBackPressed() },
-            contentDescription = "back",
-        )
+        SoloRecipeAppBar { }
     }
 }
 
