@@ -32,7 +32,7 @@ fun SoloRecipeItem(
             imageModel = { imageUrl },
             imageOptions = ImageOptions(contentScale = ContentScale.Crop)
         )
-        Spacer(modifier = modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(4.dp))
         Body4(text = recipeName)
     }
 }
