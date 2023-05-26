@@ -13,6 +13,8 @@ object SoloRecipeColor {
     val Secondary10 = Color(0xFFD9D9D9)
     val Secondary20 = Color(0xFFBBBBCC)
     val Secondary30 = Color(0xFFFF5D5D)
+
+   val Background = Color(0xFFFAFAFA)
 }
 
 internal val LocalColor = staticCompositionLocalOf { SoloRecipeColor }
