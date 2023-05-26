@@ -3,8 +3,10 @@ package com.project.presentation.view.profile
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,7 +17,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,11 +40,7 @@ fun ProfileScreen(modifier: Modifier = Modifier) {
             color = SoloRecipeColor.Secondary10,
             thickness = 1.dp
         )
-        Spacer(modifier = modifier.height(30.dp))
-        UserImage { }
-        Spacer(modifier = modifier.height(17.dp))
-        NickName()
-        Spacer(modifier = modifier.height(30.dp))
+        UserInfo {}
         Divider(
             modifier = modifier.fillMaxWidth(),
             color = SoloRecipeColor.Secondary20,
@@ -75,14 +72,19 @@ fun ProfileHeader(
 }
 
 @Composable
-fun UserImage(
+fun UserInfo(
     modifier: Modifier = Modifier,
+    nickName: String = "닉네임",
     changeImage: () -> Unit
 ) {
-    Box(modifier = modifier.fillMaxWidth()) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(top = 30.dp, bottom = 17.dp),
+        horizontalArrangement = Arrangement.Center
+    ) {
         IcProfile(
             modifier = modifier
-                .align(Alignment.Center)
                 .size(85.dp)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
@@ -92,16 +94,13 @@ fun UserImage(
             contentDescription = "user image"
         )
     }
-}
-
-@Composable
-fun NickName(
-    modifier: Modifier = Modifier,
-    nickName: String = "닉네임"
-) {
-    Box(modifier = modifier.fillMaxWidth()) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(bottom = 30.dp),
+        horizontalArrangement = Arrangement.Center
+    ) {
         Body2(
-            modifier = modifier.align(Alignment.Center),
             text = nickName
         )
     }
