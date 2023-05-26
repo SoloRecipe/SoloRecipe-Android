@@ -94,7 +94,7 @@ fun UserImage(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null,
                     onClick = { changeImage() }
-                ) ,
+                ),
             contentDescription = "user image"
         )
     }
@@ -155,19 +155,14 @@ fun LikeRecipe(modifier: Modifier = Modifier) {
 
 @Composable
 fun LogoutButton(modifier: Modifier = Modifier) {
-    Box(
+    SoloRecipeButton(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 26.dp)
-    ) {
-        SoloRecipeButton(
-            modifier = modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            text = "로그아웃",
-            containerColor = SoloRecipeColor.Secondary30
-        ) {}
-    }
+            .height(50.dp),
+        text = "로그아웃",
+        containerColor = SoloRecipeColor.Secondary30
+    ) {}
 }
 
 @Preview
