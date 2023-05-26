@@ -50,9 +50,9 @@ fun ProfileScreen(modifier: Modifier = Modifier) {
             thickness = 1.dp
         )
         Spacer(modifier = modifier.height(35.dp))
-        WriteRecipe()
+        MyRecipeList()
         Spacer(modifier = modifier.height(18.dp))
-        LikeRecipe()
+        LikedRecipeList()
         Spacer(modifier = modifier.height(38.dp))
         Divider(
             modifier = modifier.fillMaxWidth(),
@@ -108,7 +108,7 @@ fun NickName(
 }
 
 @Composable
-fun WriteRecipe(modifier: Modifier = Modifier) {
+fun MyRecipeList(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -128,7 +128,7 @@ fun WriteRecipe(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun LikeRecipe(modifier: Modifier = Modifier) {
+fun LikedRecipeList(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxWidth()
