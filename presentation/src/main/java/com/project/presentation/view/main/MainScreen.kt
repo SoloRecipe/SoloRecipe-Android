@@ -113,30 +113,11 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 pageCount = 2,
                 pageSpacing = 26.dp
             ) { page ->
-                RecipeList {
-                    if (page == RECOMMEND) {
-                        Column {
-                            SoloRecipeItem(
-                                modifier = modifier
-                                    .fillMaxWidth()
-                                    .height(250.dp)
-                                    .clickable(
-                                        interactionSource = remember { MutableInteractionSource() },
-                                        indication = null,
-                                        onClick = { }
-                                    ),
-                                imageUrl = "",
-                                recipeName = "첫번째 아이템!"
-                            )
-                            Spacer(modifier = modifier.height(20.dp))
-                        }
-                    }
-                }
+                if (page == RECOMMEND) RecipeList(spanItem = { TopItem() }) else RecipeList()
             }
         }
     }
 }
-
 
 @Composable
 fun TabBar(
@@ -208,5 +189,24 @@ fun RecipeList(
                 recipeName = "돈가스"
             )
         }
+    }
+}
+
+@Composable
+fun TopItem(modifier: Modifier = Modifier) {
+    Column {
+        SoloRecipeItem(
+            modifier = modifier
+                .fillMaxWidth()
+                .height(250.dp)
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                    onClick = { }
+                ),
+            imageUrl = "",
+            recipeName = "첫번째 아이템!"
+        )
+        Spacer(modifier = modifier.height(20.dp))
     }
 }
