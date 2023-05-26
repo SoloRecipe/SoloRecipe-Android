@@ -23,6 +23,7 @@ import com.project.design_system.component.SoloRecipeAppBar
 import com.project.design_system.component.SoloRecipeButton
 import com.project.design_system.component.SoloRecipeItem
 import com.project.design_system.theme.Body2
+import com.project.design_system.theme.Body4
 import com.project.design_system.theme.IcProfile
 import com.project.design_system.theme.SoloRecipeColor
 
@@ -109,7 +110,7 @@ fun MyRecipeList(modifier: Modifier = Modifier) {
             items(5) {
                 SoloRecipeItem(
                     imageUrl = "https://src.hidoc.co.kr/image/lib/2020/11/9/1604911318873_0",
-                    recipeName = "피자"
+                    content = { Body4(text = "피자") }
                 )
             }
         }
@@ -129,7 +130,7 @@ fun LikedRecipeList(modifier: Modifier = Modifier) {
             items(5) {
                 SoloRecipeItem(
                     imageUrl = "https://pixabay.com/ko/photos/%ed%8c%ac%ec%bc%80%ec%9d%b4%ed%81%ac-%eb%a9%94%ec%9d%b4%ed%94%8c-%ec%8b%9c%eb%9f%bd-%eb%9d%bc%ec%a6%88%eb%b2%a0%eb%a6%ac-2291908/",
-                    recipeName = "피자"
+                    content = { Body4(text = "피자")}
                 )
             }
         }
