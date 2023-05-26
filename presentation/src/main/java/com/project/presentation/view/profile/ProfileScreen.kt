@@ -18,7 +18,6 @@ import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.design_system.component.SoloRecipeAppBar
 import com.project.design_system.component.SoloRecipeButton
@@ -34,7 +33,7 @@ fun ProfileScreen(modifier: Modifier = Modifier) {
             .fillMaxSize()
             .background(SoloRecipeColor.White)
     ) {
-        ProfileHeader()
+        SoloRecipeAppBar { }
         Divider(
             modifier = modifier.fillMaxWidth(),
             color = SoloRecipeColor.Secondary10,
@@ -59,15 +58,6 @@ fun ProfileScreen(modifier: Modifier = Modifier) {
         Spacer(modifier = modifier.height(40.dp))
         LogoutButton()
         Spacer(modifier = modifier.weight(1f))
-    }
-}
-
-@Composable
-fun ProfileHeader(
-    modifier: Modifier = Modifier,
-) {
-    Box(modifier = modifier.fillMaxWidth()) {
-        SoloRecipeAppBar { }
     }
 }
 
