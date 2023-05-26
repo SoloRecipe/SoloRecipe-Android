@@ -60,7 +60,7 @@ fun ProfileScreen(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = modifier.height(40.dp))
         LogoutButton()
-        Spacer(modifier = modifier.weight(1F))
+        Spacer(modifier = modifier.weight(1f))
     }
 }
 
