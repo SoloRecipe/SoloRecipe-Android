@@ -157,9 +157,3 @@ fun LogoutButton(modifier: Modifier = Modifier) {
         containerColor = SoloRecipeColor.Secondary30
     ) {}
 }
-
-@Preview
-@Composable
-fun previewProfileScreen() {
-    ProfileScreen()
-}
