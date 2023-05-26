@@ -74,13 +74,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
             SoloRecipeAppBar(
                 startIcon = {
                     Image(
-                        modifier = modifier
-                            .size(30.dp)
-                            .clickable(
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = null,
-                                onClick = {}
-                            ),
+                        modifier = modifier.size(30.dp),
                         imageVector = ImageVector.vectorResource(id = R.drawable.ic_logo),
                         contentDescription = "logo"
                     )
