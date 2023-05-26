@@ -141,8 +141,7 @@ fun LogoutButton(modifier: Modifier = Modifier) {
     SoloRecipeButton(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 26.dp)
-            .height(50.dp),
+            .padding(horizontal = 26.dp),
         text = "로그아웃",
         containerColor = SoloRecipeColor.Secondary30
     ) {}
