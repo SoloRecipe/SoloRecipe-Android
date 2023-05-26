@@ -35,6 +35,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.project.design_system.component.SoloRecipeAppBar
 import com.project.design_system.component.SoloRecipeItem
+import com.project.design_system.theme.Body2
 import com.project.design_system.theme.Body4
 import com.project.design_system.theme.IcPencil
 import com.project.design_system.theme.IcProfile
@@ -206,7 +207,7 @@ fun TopItem(modifier: Modifier = Modifier) {
                     onClick = { }
                 ),
             imageUrl = "",
-            content = { Body4(text = "첫번째 아이템!") }
+            content = { Body2(text = "첫번째 아이템!") }
         )
         Spacer(modifier = modifier.height(20.dp))
     }
