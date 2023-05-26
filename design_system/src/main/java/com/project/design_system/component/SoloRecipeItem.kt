@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import com.project.design_system.theme.Body4
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
 
@@ -19,7 +18,7 @@ import com.skydoves.landscapist.glide.GlideImage
 fun SoloRecipeItem(
     modifier: Modifier = Modifier,
     imageUrl: String,
-    recipeName: String,
+    content: @Composable () -> Unit
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         GlideImage(
@@ -33,6 +32,6 @@ fun SoloRecipeItem(
             imageOptions = ImageOptions(contentScale = ContentScale.Crop)
         )
         Spacer(modifier = Modifier.height(4.dp))
-        Body4(text = recipeName)
+        content()
     }
 }
