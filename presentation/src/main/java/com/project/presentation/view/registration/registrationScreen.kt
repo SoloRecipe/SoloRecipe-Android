@@ -91,6 +91,20 @@ fun thumbnail(
 }
 
 @Composable
+fun SoloRecipeRegiItem(modifier: Modifier = Modifier) {
+    LazyColumn(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 26.dp)
+    ) {
+        items(2) {
+            SoloRecipeTestStepItem()
+            Spacer(modifier = modifier.height(16.dp))
+        }
+    }
+}
+
+@Composable
 fun SoloRecipeTestStepItem(
     modifier: Modifier = Modifier,
 ) {
