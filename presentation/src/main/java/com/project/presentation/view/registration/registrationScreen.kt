@@ -58,7 +58,7 @@ fun registrationScreen(modifier: Modifier = Modifier) {
         Spacer(modifier = modifier.height(9.dp))
         thumbnailTitle()
         Spacer(modifier = modifier.height(30.dp))
-//        SoloRecipeRegiItem()
+        SoloRecipeRegiItem()
         Spacer(modifier = modifier.height(10.dp))
 //        RecipeAddButton()
         Spacer(modifier = modifier.weight(1f))
@@ -87,6 +87,53 @@ fun thumbnail(
                 .align(Center),
             contentDescription = "camera"
         )
+    }
+}
+
+@Composable
+fun SoloRecipeTestStepItem(
+    modifier: Modifier = Modifier,
+) {
+    var content by remember { mutableStateOf("") }
+
+    Row(modifier = modifier.height(70.dp)) {
+        Box(
+            modifier = modifier
+                .width(80.dp)
+                .fillMaxHeight()
+                .background(
+                    color =  SoloRecipeColor.Secondary10,
+                    shape = RoundedCornerShape(8.dp)
+                )
+        ) {
+            IcCamera(
+                modifier = modifier
+                    .size(20.dp, 16.dp)
+                    .align(Center),
+                contentDescription = "camera"
+            )
+        }
+        Spacer(modifier = Modifier.width(10.dp))
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .border(
+                    border = BorderStroke(
+                        width = 1.dp,
+                        color = SoloRecipeColor.Secondary10
+                    ),
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(10.dp)
+        ) {
+            testTextField(
+                value = content,
+                hint = "레시피를 입력해주세요",
+                textStyle = SoloRecipeTypography.body4,
+                onValueChanged = { content = it }
+            )
+        }
     }
 }
 
