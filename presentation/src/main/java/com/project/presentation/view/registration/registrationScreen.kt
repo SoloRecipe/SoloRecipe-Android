@@ -241,6 +241,17 @@ fun RecipeAddButton(modifier: Modifier = Modifier) {
     }
 }
 
+@Composable
+fun RecipeRegisterButton(modifier: Modifier = Modifier) {
+    SoloRecipeButton(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 26.dp),
+        text = "등록하기",
+        containerColor = SoloRecipeColor.Primary10
+    ) {}
+}
+
 @Preview
 @Composable
 fun preview() {
