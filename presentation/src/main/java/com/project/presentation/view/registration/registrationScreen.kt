@@ -60,9 +60,9 @@ fun registrationScreen(modifier: Modifier = Modifier) {
         Spacer(modifier = modifier.height(30.dp))
         SoloRecipeRegiItem()
         Spacer(modifier = modifier.height(10.dp))
-//        RecipeAddButton()
+        RecipeAddButton()
         Spacer(modifier = modifier.weight(1f))
-//        RecipeRegisterButton()
+        RecipeRegisterButton()
         Spacer(modifier = modifier.height(30.dp))
     }
 }
@@ -218,7 +218,28 @@ fun testTextField(
     )
 }
 
-
+@Composable
+fun RecipeAddButton(modifier: Modifier = Modifier) {
+    Button(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 26.dp)
+            .border(
+                width = 1.dp,
+                color = SoloRecipeColor.Primary10,
+                shape = RoundedCornerShape(8.dp)
+            ),
+        contentPadding = PaddingValues(vertical = 9.dp),
+        colors = ButtonDefaults.buttonColors(SoloRecipeColor.White),
+        onClick = { }
+    ) {
+        Body3(
+            text = "추가하기",
+            textColor = SoloRecipeColor.Primary10,
+            textAlign = TextAlign.Center
+        )
+    }
+}
 
 @Preview
 @Composable
