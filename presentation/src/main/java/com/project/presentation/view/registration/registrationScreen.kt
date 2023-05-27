@@ -56,7 +56,7 @@ fun registrationScreen(modifier: Modifier = Modifier) {
         Spacer(modifier = modifier.height(16.dp))
         thumbnail()
         Spacer(modifier = modifier.height(9.dp))
-//        thumbnailTitle()
+        thumbnailTitle()
         Spacer(modifier = modifier.height(30.dp))
 //        SoloRecipeRegiItem()
         Spacer(modifier = modifier.height(10.dp))
@@ -86,6 +86,24 @@ fun thumbnail(
                 .size(40.dp, 32.dp)
                 .align(Center),
             contentDescription = "camera"
+        )
+    }
+}
+
+@Composable
+fun thumbnailTitle(modifier: Modifier = Modifier) {
+    var title by remember { mutableStateOf("") }
+
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 26.dp)
+    ) {
+        testTextField(
+            value = title,
+            hint = "제목을 입력해주세요",
+            textStyle = SoloRecipeTypography.body2,
+            onValueChanged = { title = it }
         )
     }
 }
