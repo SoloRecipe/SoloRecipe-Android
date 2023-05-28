@@ -32,7 +32,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.design_system.component.SoloRecipeAppBar
 import com.project.design_system.component.SoloRecipeButton
@@ -221,10 +220,4 @@ fun RecipeRegisterButton(modifier: Modifier = Modifier) {
         text = "등록하기",
         containerColor = SoloRecipeColor.Primary10
     ) {}
-}
-
-@Preview
-@Composable
-fun preview() {
-    RegistrationScreen()
 }
