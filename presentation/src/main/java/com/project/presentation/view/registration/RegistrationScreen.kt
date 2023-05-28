@@ -15,9 +15,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.Composable
@@ -32,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.design_system.component.SoloRecipeAppBar
 import com.project.design_system.component.SoloRecipeButton
@@ -49,26 +51,28 @@ fun RegistrationScreen(modifier: Modifier = Modifier) {
             .background(SoloRecipeColor.White)
     ) {
         SoloRecipeAppBar { }
-        Spacer(modifier = modifier.height(16.dp))
-        Thumbnail()
-        Spacer(modifier = modifier.height(9.dp))
-        ThumbnailTitle()
-        Spacer(modifier = modifier.height(30.dp))
-        LazyColumn(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(horizontal = 26.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            items(2) {
-                StepItem()
+        Column(modifier = modifier.verticalScroll(rememberScrollState())) {
+            Spacer(modifier = modifier.height(16.dp))
+            Thumbnail()
+            Spacer(modifier = modifier.height(9.dp))
+            ThumbnailTitle()
+            Spacer(modifier = modifier.height(30.dp))
+            Column(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 26.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                repeat(3) {
+                    StepItem()
+                }
             }
+            Spacer(modifier = modifier.height(25.dp))
+            RecipeAddButton()
+            Spacer(modifier = modifier.height(50.dp))
+            RecipeRegisterButton()
+            Spacer(modifier = modifier.height(30.dp))
         }
-        Spacer(modifier = modifier.height(25.dp))
-        RecipeAddButton()
-        Spacer(modifier = modifier.weight(1f))
-        RecipeRegisterButton()
-        Spacer(modifier = modifier.height(30.dp))
     }
 }
 
@@ -220,4 +224,10 @@ fun RecipeRegisterButton(modifier: Modifier = Modifier) {
         text = "등록하기",
         containerColor = SoloRecipeColor.Primary10
     ) {}
+}
+
+@Preview
+@Composable
+fun preview() {
+    RegistrationScreen()
 }
