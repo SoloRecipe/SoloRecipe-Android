@@ -173,28 +173,20 @@ fun ThumbnailTitle(modifier: Modifier = Modifier) {
 fun TestTextField(
     modifier: Modifier = Modifier,
     value: String,
-    enabled: Boolean = true,
     hint: String,
     textColor: Color = SoloRecipeColor.Black,
     singleLine: Boolean = true,
     maxLines: Int = 1,
     textStyle: TextStyle,
-    visualTransformation: VisualTransformation = VisualTransformation.None,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    keyboardActions: KeyboardActions = KeyboardActions(),
     onValueChanged: (String) -> Unit
 ) {
     val mergedTextStyle = textStyle.merge(TextStyle(color = textColor))
 
     BasicTextField(
         value = value,
-        enabled = enabled,
         singleLine = singleLine,
         maxLines = maxLines,
         textStyle = mergedTextStyle,
-        visualTransformation = visualTransformation,
-        keyboardOptions = keyboardOptions,
-        keyboardActions = keyboardActions,
         cursorBrush = SolidColor(SoloRecipeColor.Primary10),
         onValueChange = onValueChanged,
         decorationBox = { innerTextField ->
