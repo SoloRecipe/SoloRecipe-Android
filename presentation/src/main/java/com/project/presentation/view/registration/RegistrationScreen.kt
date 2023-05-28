@@ -44,7 +44,10 @@ import com.project.design_system.theme.SoloRecipeColor
 import com.project.design_system.theme.SoloRecipeTypography
 
 @Composable
-fun RegistrationScreen(modifier: Modifier = Modifier) {
+fun RegistrationScreen(
+    items:  Int,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -63,7 +66,7 @@ fun RegistrationScreen(modifier: Modifier = Modifier) {
                     .padding(horizontal = 26.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                repeat(3) {
+                repeat(items) {
                     StepItem()
                 }
             }
@@ -229,5 +232,5 @@ fun RecipeRegisterButton(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 fun preview() {
-    RegistrationScreen()
+    RegistrationScreen(items = 3)
 }
