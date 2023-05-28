@@ -175,8 +175,6 @@ fun TestTextField(
     value: String,
     hint: String,
     textColor: Color = SoloRecipeColor.Black,
-    singleLine: Boolean = true,
-    maxLines: Int = 1,
     textStyle: TextStyle,
     onValueChanged: (String) -> Unit
 ) {
@@ -184,8 +182,6 @@ fun TestTextField(
 
     BasicTextField(
         value = value,
-        singleLine = singleLine,
-        maxLines = maxLines,
         textStyle = mergedTextStyle,
         cursorBrush = SolidColor(SoloRecipeColor.Primary10),
         onValueChange = onValueChanged,
@@ -199,7 +195,6 @@ fun TestTextField(
                         Body2(
                             text = hint,
                             textColor = SoloRecipeColor.Secondary10,
-                            maxLines = maxLines
                         )
                     }
                     innerTextField()
