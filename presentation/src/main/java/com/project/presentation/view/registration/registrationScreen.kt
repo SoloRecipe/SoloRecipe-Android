@@ -56,7 +56,7 @@ fun registrationScreen(modifier: Modifier = Modifier) {
         Spacer(modifier = modifier.height(16.dp))
         thumbnail()
         Spacer(modifier = modifier.height(9.dp))
-        thumbnailTitle()
+        ThumbnailTitle()
         Spacer(modifier = modifier.height(30.dp))
         SoloRecipeRegiItem()
         Spacer(modifier = modifier.height(10.dp))
@@ -141,7 +141,7 @@ fun SoloRecipeTestStepItem(
                 )
                 .padding(10.dp)
         ) {
-            testTextField(
+            TestTextField(
                 value = content,
                 hint = "레시피를 입력해주세요",
                 textStyle = SoloRecipeTypography.body4,
@@ -152,7 +152,7 @@ fun SoloRecipeTestStepItem(
 }
 
 @Composable
-fun thumbnailTitle(modifier: Modifier = Modifier) {
+fun ThumbnailTitle(modifier: Modifier = Modifier) {
     var title by remember { mutableStateOf("") }
 
     Row(
@@ -160,7 +160,7 @@ fun thumbnailTitle(modifier: Modifier = Modifier) {
             .fillMaxWidth()
             .padding(horizontal = 26.dp)
     ) {
-        testTextField(
+        TestTextField(
             value = title,
             hint = "제목을 입력해주세요",
             textStyle = SoloRecipeTypography.body2,
@@ -170,7 +170,7 @@ fun thumbnailTitle(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun testTextField(
+fun TestTextField(
     modifier: Modifier = Modifier,
     value: String,
     enabled: Boolean = true,
