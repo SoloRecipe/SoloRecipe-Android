@@ -3,6 +3,7 @@ package com.project.presentation.view.registration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -57,14 +58,14 @@ fun RegistrationScreen(modifier: Modifier = Modifier) {
         LazyColumn(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(horizontal = 26.dp)
+                .padding(horizontal = 26.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(2) {
                 StepItem()
-                Spacer(modifier = modifier.height(16.dp))
             }
         }
-        Spacer(modifier = modifier.height(10.dp))
+        Spacer(modifier = modifier.height(25.dp))
         RecipeAddButton()
         Spacer(modifier = modifier.weight(1f))
         RecipeRegisterButton()
