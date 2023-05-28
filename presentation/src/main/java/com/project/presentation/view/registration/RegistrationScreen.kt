@@ -224,9 +224,3 @@ fun RecipeRegisterButton(modifier: Modifier = Modifier) {
         containerColor = SoloRecipeColor.Primary10
     ) {}
 }
-
-@Preview
-@Composable
-fun preview() {
-    RegistrationScreen()
-}
