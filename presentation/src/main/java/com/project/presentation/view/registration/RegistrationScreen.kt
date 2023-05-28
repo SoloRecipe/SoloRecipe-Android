@@ -56,7 +56,6 @@ fun RegistrationScreen(modifier: Modifier = Modifier) {
         Spacer(modifier = modifier.height(9.dp))
         ThumbnailTitle()
         Spacer(modifier = modifier.height(30.dp))
-        SoloRecipeRegiItem()
         Spacer(modifier = modifier.height(10.dp))
         RecipeAddButton()
         Spacer(modifier = modifier.weight(1f))
@@ -85,20 +84,6 @@ fun Thumbnail(
                 .align(Center),
             contentDescription = "camera"
         )
-    }
-}
-
-@Composable
-fun SoloRecipeRegiItem(modifier: Modifier = Modifier) {
-    LazyColumn(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 26.dp)
-    ) {
-        items(2) {
-            TestStepItem()
-            Spacer(modifier = modifier.height(16.dp))
-        }
     }
 }
 
