@@ -54,7 +54,7 @@ fun registrationScreen(modifier: Modifier = Modifier) {
     ) {
         SoloRecipeAppBar { }
         Spacer(modifier = modifier.height(16.dp))
-        thumbnail()
+        Thumbnail()
         Spacer(modifier = modifier.height(9.dp))
         ThumbnailTitle()
         Spacer(modifier = modifier.height(30.dp))
@@ -68,7 +68,7 @@ fun registrationScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun thumbnail(
+fun Thumbnail(
     modifier: Modifier = Modifier,
 ) {
     Box(
