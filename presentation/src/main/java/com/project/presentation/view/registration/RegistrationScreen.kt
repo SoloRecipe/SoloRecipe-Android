@@ -56,6 +56,16 @@ fun RegistrationScreen(modifier: Modifier = Modifier) {
         Spacer(modifier = modifier.height(9.dp))
         ThumbnailTitle()
         Spacer(modifier = modifier.height(30.dp))
+        LazyColumn(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = 26.dp)
+        ) {
+            items(2) {
+                TestStepItem()
+                Spacer(modifier = modifier.height(16.dp))
+            }
+        }
         Spacer(modifier = modifier.height(10.dp))
         RecipeAddButton()
         Spacer(modifier = modifier.weight(1f))
