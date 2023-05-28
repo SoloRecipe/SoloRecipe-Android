@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -203,18 +204,14 @@ fun TestTextField(
 
 @Composable
 fun RecipeAddButton(modifier: Modifier = Modifier) {
-    Button(
+    OutlinedButton(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 26.dp)
-            .border(
-                width = 1.dp,
-                color = SoloRecipeColor.Primary10,
-                shape = RoundedCornerShape(8.dp)
-            ),
-        contentPadding = PaddingValues(vertical = 9.dp),
+            .padding(horizontal = 26.dp),
         colors = ButtonDefaults.buttonColors(SoloRecipeColor.White),
-        onClick = { }
+        shape = RoundedCornerShape(8.dp),
+        border= BorderStroke(1.dp, SoloRecipeColor.Primary10),
+        onClick = {  }
     ) {
         Body3(
             text = "추가하기",
