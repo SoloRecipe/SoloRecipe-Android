@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -74,7 +75,7 @@ fun Thumbnail(
             .height(250.dp)
             .padding(horizontal = 26.dp)
             .background(
-                color =  SoloRecipeColor.Secondary10,
+                color = SoloRecipeColor.Secondary10,
                 shape = RoundedCornerShape(8.dp)
             )
     ) {
@@ -113,7 +114,7 @@ fun TestStepItem(
                 .width(80.dp)
                 .fillMaxHeight()
                 .background(
-                    color =  SoloRecipeColor.Secondary10,
+                    color = SoloRecipeColor.Secondary10,
                     shape = RoundedCornerShape(8.dp)
                 )
         ) {
@@ -196,7 +197,6 @@ fun TestTextField(
                     }
                     innerTextField()
                 }
-                Spacer(modifier = modifier.weight(1f))
             }
         }
     )
