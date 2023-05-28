@@ -146,18 +146,15 @@ fun StepItem(
 fun ThumbnailTitle(modifier: Modifier = Modifier) {
     var title by remember { mutableStateOf("") }
 
-    Row(
+    TextField(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 26.dp)
-    ) {
-        TextField(
-            value = title,
-            hint = "제목을 입력해주세요",
-            textStyle = SoloRecipeTypography.body2,
-            onValueChanged = { title = it }
-        )
-    }
+            .padding(horizontal = 26.dp),
+        value = title,
+        hint = "제목을 입력해주세요",
+        textStyle = SoloRecipeTypography.body2,
+        onValueChanged = { title = it }
+    )
 }
 
 @Composable
@@ -203,8 +200,8 @@ fun RecipeAddButton(modifier: Modifier = Modifier) {
             .padding(horizontal = 26.dp),
         colors = ButtonDefaults.buttonColors(SoloRecipeColor.White),
         shape = RoundedCornerShape(8.dp),
-        border= BorderStroke(1.dp, SoloRecipeColor.Primary10),
-        onClick = {  }
+        border = BorderStroke(1.dp, SoloRecipeColor.Primary10),
+        onClick = { }
     ) {
         Body3(
             text = "추가하기",
