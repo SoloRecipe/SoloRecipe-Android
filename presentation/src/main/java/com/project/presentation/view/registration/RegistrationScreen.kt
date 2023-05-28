@@ -60,7 +60,7 @@ fun RegistrationScreen(modifier: Modifier = Modifier) {
                 .padding(horizontal = 26.dp)
         ) {
             items(2) {
-                TestStepItem()
+                StepItem()
                 Spacer(modifier = modifier.height(16.dp))
             }
         }
@@ -96,7 +96,7 @@ fun Thumbnail(
 }
 
 @Composable
-fun TestStepItem(
+fun StepItem(
     modifier: Modifier = Modifier,
 ) {
     var content by remember { mutableStateOf("") }
@@ -132,7 +132,7 @@ fun TestStepItem(
                 )
                 .padding(10.dp)
         ) {
-            TestTextField(
+            TextField(
                 value = content,
                 hint = "레시피를 입력해주세요",
                 textStyle = SoloRecipeTypography.body4,
@@ -151,7 +151,7 @@ fun ThumbnailTitle(modifier: Modifier = Modifier) {
             .fillMaxWidth()
             .padding(horizontal = 26.dp)
     ) {
-        TestTextField(
+        TextField(
             value = title,
             hint = "제목을 입력해주세요",
             textStyle = SoloRecipeTypography.body2,
@@ -161,7 +161,7 @@ fun ThumbnailTitle(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun TestTextField(
+fun TextField(
     modifier: Modifier = Modifier,
     value: String,
     hint: String,
@@ -223,4 +223,10 @@ fun RecipeRegisterButton(modifier: Modifier = Modifier) {
         text = "등록하기",
         containerColor = SoloRecipeColor.Primary10
     ) {}
+}
+
+@Preview
+@Composable
+fun preview() {
+    RegistrationScreen()
 }
