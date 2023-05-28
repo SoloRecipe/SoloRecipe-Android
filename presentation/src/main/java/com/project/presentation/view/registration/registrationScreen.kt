@@ -98,14 +98,14 @@ fun SoloRecipeRegiItem(modifier: Modifier = Modifier) {
             .padding(horizontal = 26.dp)
     ) {
         items(2) {
-            SoloRecipeTestStepItem()
+            TestStepItem()
             Spacer(modifier = modifier.height(16.dp))
         }
     }
 }
 
 @Composable
-fun SoloRecipeTestStepItem(
+fun TestStepItem(
     modifier: Modifier = Modifier,
 ) {
     var content by remember { mutableStateOf("") }
