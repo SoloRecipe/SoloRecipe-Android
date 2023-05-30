@@ -15,8 +15,10 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -39,14 +41,15 @@ fun SoloRecipeRegiItem(
                 .width(80.dp)
                 .fillMaxHeight()
                 .background(
-                    color = SoloRecipeColor.Secondary10,
+                    color = if (image == null) SoloRecipeColor.Secondary10 else Color.Transparent,
                     shape = RoundedCornerShape(8.dp)
                 )
         ) {
             Image(
+                modifier = modifier.align(Alignment.Center),
                 painter = image ?: painterResource(id = R.drawable.ic_camera),
                 contentDescription = "image",
-                modifier = modifier.align(Alignment.Center)
+                contentScale = if (image == null) ContentScale.None else ContentScale.Crop
             )
         }
         Spacer(modifier = Modifier.width(10.dp))
