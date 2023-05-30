@@ -7,5 +7,5 @@ import javax.inject.Inject
 class SignInUseCase @Inject constructor(
     private val repository: AuthRepository
 ) {
-    suspend operator fun invoke(signInRequestModel: SignInRequestModel) = repository.signIn(signInRequestModel)
+    suspend operator fun invoke(signInRequestModel: SignInRequestModel) = kotlin.runCatching { repository.signIn(signInRequestModel) }
 }

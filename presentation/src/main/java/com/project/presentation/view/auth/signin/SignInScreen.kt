@@ -21,16 +21,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.project.design_system.component.SoloRecipeButton
 import com.project.design_system.component.SoloRecipeTextField
 import com.project.design_system.theme.Body3
 import com.project.design_system.theme.H0
 import com.project.design_system.theme.SoloRecipeTheme
 import com.project.design_system.theme.Subtitle1
+import com.project.domain.model.auth.request.SignInRequestModel
 import com.project.presentation.R
+import com.project.presentation.viewmodel.auth.SignInViewModel
 
 @Composable
-fun SignInScreen(modifier: Modifier = Modifier) {
+fun SignInScreen(
+    modifier: Modifier = Modifier,
+    signInViewModel: SignInViewModel = hiltViewModel()
+) {
     var id by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -72,7 +78,12 @@ fun SignInScreen(modifier: Modifier = Modifier) {
             text = "로그인",
             containerColor = SoloRecipeTheme.color.Primary10
         ) {
-
+            signInViewModel.signIn(
+                SignInRequestModel(
+                    email = id,
+                    password = password
+                )
+            )
         }
         Spacer(modifier = modifier.height(32.dp))
         Row(

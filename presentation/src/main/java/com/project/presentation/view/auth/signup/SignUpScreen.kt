@@ -36,7 +36,7 @@ import com.project.design_system.theme.Subtitle1
 
 @Composable
 fun SignUpScreen(modifier: Modifier = Modifier) {
-    var id by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
     var nickname by remember { mutableStateOf("") }
@@ -52,10 +52,10 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
         SignUpHeader { }
         Spacer(modifier = modifier.height(52.dp))
         SignUpField(
-            label = "아이디",
-            value = id,
-            hint = "아이디를 입력해 주세요.",
-            onValueChanged = { id = it }
+            label = "이메일",
+            value = email,
+            hint = "이메일을 입력해 주세요.",
+            onValueChanged = { email = it }
         )
         Spacer(modifier = modifier.height(32.dp))
         SignUpField(
