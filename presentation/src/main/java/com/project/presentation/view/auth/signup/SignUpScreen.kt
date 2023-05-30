@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.project.design_system.component.SoloRecipeButton
 import com.project.design_system.component.SoloRecipeTextField
 import com.project.design_system.theme.Body3
@@ -33,9 +34,14 @@ import com.project.design_system.theme.IcEyeClose
 import com.project.design_system.theme.IcEyeOpen
 import com.project.design_system.theme.SoloRecipeTheme
 import com.project.design_system.theme.Subtitle1
+import com.project.domain.model.auth.request.SignUpRequestModel
+import com.project.presentation.viewmodel.auth.SignUpViewModel
 
 @Composable
-fun SignUpScreen(modifier: Modifier = Modifier) {
+fun SignUpScreen(
+    modifier: Modifier = Modifier,
+    signUpViewModel: SignUpViewModel = hiltViewModel()
+) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
@@ -128,7 +134,13 @@ fun SignUpScreen(modifier: Modifier = Modifier) {
             text = "가입하기",
             containerColor = SoloRecipeTheme.color.Primary10
         ) {
-
+            signUpViewModel.signUp(
+                SignUpRequestModel(
+                    email = email,
+                    password = password,
+                    nickname = nickname
+                )
+            )
         }
     }
 }
