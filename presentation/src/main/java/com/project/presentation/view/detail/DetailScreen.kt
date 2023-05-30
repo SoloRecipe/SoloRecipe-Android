@@ -42,8 +42,6 @@ import com.project.presentation.R
 
 @Composable
 fun DetailScreen(modifier: Modifier = Modifier) {
-    val scrollState = rememberScrollState()
-
     Column(modifier = modifier.fillMaxSize()) {
         SoloRecipeAppBar { }
         Column(
@@ -51,7 +49,7 @@ fun DetailScreen(modifier: Modifier = Modifier) {
                 .fillMaxSize()
                 .background(SoloRecipeTheme.color.Background)
                 .padding(horizontal = 26.dp)
-                .verticalScroll(scrollState),
+                .verticalScroll(rememberScrollState()),
         ) {
             Spacer(modifier = modifier.height(16.dp))
             DetailTitle { }
