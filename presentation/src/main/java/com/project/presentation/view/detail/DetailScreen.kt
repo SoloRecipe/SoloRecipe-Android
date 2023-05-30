@@ -41,7 +41,11 @@ import com.project.design_system.theme.SoloRecipeTheme
 import com.project.presentation.R
 
 @Composable
-fun DetailScreen(modifier: Modifier = Modifier) {
+fun DetailScreen(
+    modifier: Modifier = Modifier,
+    stepItemCount: Int,
+    commentListCount: Int
+) {
     Column(modifier = modifier.fillMaxSize()) {
         SoloRecipeAppBar { }
         Column(
@@ -55,7 +59,7 @@ fun DetailScreen(modifier: Modifier = Modifier) {
             DetailTitle { }
             Spacer(modifier = modifier.height(26.dp))
             Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                repeat(6) {
+                repeat(stepItemCount) {
                     SoloRecipeStepItem(
                         modifier = modifier.fillMaxWidth(),
                         imageUrl = "https://example.com",
@@ -74,7 +78,7 @@ fun DetailScreen(modifier: Modifier = Modifier) {
                 modifier = modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                repeat(5) {
+                repeat(commentListCount) {
                     CommentList()
                 }
             }
