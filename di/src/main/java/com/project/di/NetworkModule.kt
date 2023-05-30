@@ -8,6 +8,5 @@ import javax.inject.Singleton
 object NetworkModule {
     @Provides
     @Singleton
-    fun provideAuthService(retrofit: Retrofit): AuthApi =
-        retrofit.create(AuthApi::class.java)
+    fun provideAuthService(retrofit: Retrofit): AuthApi = retrofit.create(AuthApi::class.java)
 }
