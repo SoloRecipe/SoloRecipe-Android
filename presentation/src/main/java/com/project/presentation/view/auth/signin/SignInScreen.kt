@@ -35,7 +35,7 @@ import com.project.presentation.viewmodel.auth.SignInViewModel
 @Composable
 fun SignInScreen(
     modifier: Modifier = Modifier,
-    viewModel: SignInViewModel = hiltViewModel()
+    signInViewModel: SignInViewModel = hiltViewModel()
 ) {
     var id by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -78,7 +78,7 @@ fun SignInScreen(
             text = "로그인",
             containerColor = SoloRecipeTheme.color.Primary10
         ) {
-            viewModel.signIn(
+            signInViewModel.signIn(
                 SignInRequestModel(
                     email = id,
                     password = password
