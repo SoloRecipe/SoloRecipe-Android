@@ -15,6 +15,7 @@ object Dependencies {
         const val DATASTORE = "androidx.datastore:datastore-preferences:${Versions.DATASTORE}"
         const val PAGING = "androidx.paging:paging-runtime:${Versions.PAGING}"
         const val PAGING_COMPOSE = "androidx.paging:paging-compose:${Versions.PAGING_COMPOSE}"
+        const val PAGING_COMMON = "androidx.paging:paging-common:${Versions.PAGING}"
     }
 
     object Google {
