@@ -2,6 +2,8 @@ package com.project.di
 
 import com.project.data.remote.datasource.auth.AuthDataSource
 import com.project.data.remote.datasource.auth.AuthDataSourceImpl
+import com.project.data.remote.datasource.recipe.RecipeDataSource
+import com.project.data.remote.datasource.recipe.RecipeDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,4 +16,9 @@ interface RemoteDataSourceModule {
     fun bindsAuthDataSource(
         authDataSourceImpl: AuthDataSourceImpl
     ): AuthDataSource
+
+    @Binds
+    fun bindsRecipeDataSource(
+        recipeDataSourceImpl: RecipeDataSourceImpl
+    ): RecipeDataSource
 }
