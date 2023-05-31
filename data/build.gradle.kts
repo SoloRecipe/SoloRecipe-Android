@@ -39,6 +39,8 @@ dependencies {
 
     implementation(Dependencies.AndroidX.CORE_KTX)
     implementation(Dependencies.AndroidX.APPCOMPAT)
+    implementation(Dependencies.AndroidX.PAGING)
+    implementation(Dependencies.AndroidX.PAGING_COMPOSE)
     implementation(Dependencies.Google.MATERIAL)
     implementation(Dependencies.Google.HILT_ANDROID)
     kapt(Dependencies.Google.HILT_COMPILER)

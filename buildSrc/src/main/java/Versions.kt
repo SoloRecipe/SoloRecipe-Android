@@ -15,6 +15,8 @@ object Versions {
     const val LIFECYCLE = "2.6.1"
     const val HILT_NAVIGATION_COMPOSE = "1.0.0"
     const val DATASTORE = "1.0.0"
+    const val PAGING = "3.1.1"
+    const val PAGING_COMPOSE = "1.0.0-alpha20"
 
     const val MATERIAL = "1.9.0"
     const val HILT = "2.44"
