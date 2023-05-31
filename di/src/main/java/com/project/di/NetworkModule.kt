@@ -1,6 +1,7 @@
 package com.project.di
 
 import com.project.data.remote.network.AuthApi
+import com.project.data.remote.network.RecipeApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,4 +15,8 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideAuthService(retrofit: Retrofit): AuthApi = retrofit.create(AuthApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideRecipeService(retrofit: Retrofit): RecipeApi = retrofit.create(RecipeApi::class.java)
 }
