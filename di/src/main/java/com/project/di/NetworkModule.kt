@@ -1,6 +1,7 @@
 package com.project.di
 
 import com.project.data.remote.network.AuthApi
+import com.project.data.remote.network.ProfileApi
 import com.project.data.remote.network.RecipeApi
 import dagger.Module
 import dagger.Provides
@@ -19,4 +20,8 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideRecipeService(retrofit: Retrofit): RecipeApi = retrofit.create(RecipeApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideProfileService(retrofit: Retrofit): ProfileApi = retrofit.create(ProfileApi::class.java)
 }
