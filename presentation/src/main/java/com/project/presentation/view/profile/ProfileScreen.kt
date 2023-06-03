@@ -16,9 +16,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.project.design_system.component.SoloRecipeAppBar
 import com.project.design_system.component.SoloRecipeButton
 import com.project.design_system.component.SoloRecipeItem
@@ -26,9 +31,24 @@ import com.project.design_system.theme.Body2
 import com.project.design_system.theme.Body4
 import com.project.design_system.theme.IcProfile
 import com.project.design_system.theme.SoloRecipeColor
+import com.project.domain.model.profile.request.ProfileRequestModel
+import com.project.presentation.viewmodel.profile.DeleteUserInfoViewModel
+import com.project.presentation.viewmodel.profile.GetUserInfoViewModel
+import com.project.presentation.viewmodel.profile.RenameUserNameViewModel
 
 @Composable
-fun ProfileScreen(modifier: Modifier = Modifier) {
+fun ProfileScreen(
+    modifier: Modifier = Modifier,
+    renameUserNameViewModel: RenameUserNameViewModel = hiltViewModel(),
+    deleteUserInfoViewModel: DeleteUserInfoViewModel = hiltViewModel(),
+    getUserInfoViewModel: GetUserInfoViewModel = hiltViewModel()
+) {
+    var nickname by remember { mutableStateOf("닉네임") }
+
+    LaunchedEffect(Unit) {
+        getUserInfoViewModel.getUserInfo()
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -40,7 +60,10 @@ fun ProfileScreen(modifier: Modifier = Modifier) {
             color = SoloRecipeColor.Secondary10,
             thickness = 1.dp
         )
-        UserInfo {}
+        UserInfo(
+            nickname = nickname,
+            changeNickname = renameUserNameViewModel::renameUserName
+        ) {}
         Divider(
             modifier = modifier.fillMaxWidth(),
             color = SoloRecipeColor.Secondary20,
@@ -57,7 +80,7 @@ fun ProfileScreen(modifier: Modifier = Modifier) {
             thickness = 1.dp
         )
         Spacer(modifier = modifier.height(40.dp))
-        LogoutButton()
+        LogoutButton(logout = deleteUserInfoViewModel::deleteUserInfo)
         Spacer(modifier = modifier.weight(1f))
     }
 }
@@ -65,7 +88,8 @@ fun ProfileScreen(modifier: Modifier = Modifier) {
 @Composable
 fun UserInfo(
     modifier: Modifier = Modifier,
-    nickName: String = "닉네임",
+    nickname: String,
+    changeNickname: (ProfileRequestModel) -> Unit,
     changeImage: () -> Unit
 ) {
     Row(
@@ -88,11 +112,16 @@ fun UserInfo(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(bottom = 30.dp),
+            .padding(bottom = 30.dp)
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = { changeNickname(ProfileRequestModel(name = nickname)) }
+            ),
         horizontalArrangement = Arrangement.Center
     ) {
         Body2(
-            text = nickName
+            text = nickname
         )
     }
 }
@@ -138,12 +167,15 @@ fun LikedRecipeList(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun LogoutButton(modifier: Modifier = Modifier) {
+fun LogoutButton(
+    modifier: Modifier = Modifier,
+    logout: () -> Unit
+) {
     SoloRecipeButton(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 26.dp),
         text = "로그아웃",
         containerColor = SoloRecipeColor.Secondary30
-    ) {}
+    ) { logout }
 }
