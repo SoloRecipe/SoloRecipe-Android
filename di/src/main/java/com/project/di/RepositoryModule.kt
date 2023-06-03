@@ -1,7 +1,9 @@
 package com.project.di
 
 import com.project.data.repository.AuthRepositoryImpl
+import com.project.data.repository.ProfileRepositoryImpl
 import com.project.domain.repository.AuthRepository
+import com.project.domain.repository.ProfileRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -15,4 +17,9 @@ interface RepositoryModule {
     fun bindsAuthRepository(
         authRepositoryImpl: AuthRepositoryImpl
     ): AuthRepository
+
+    @Binds
+    fun bindsProfileRepository(
+        profileRepositoryImpl: ProfileRepositoryImpl
+    ): ProfileRepository
 }
