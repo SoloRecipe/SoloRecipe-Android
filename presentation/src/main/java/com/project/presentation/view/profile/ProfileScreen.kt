@@ -32,21 +32,17 @@ import com.project.design_system.theme.Body4
 import com.project.design_system.theme.IcProfile
 import com.project.design_system.theme.SoloRecipeColor
 import com.project.domain.model.profile.request.ProfileRequestModel
-import com.project.presentation.viewmodel.profile.DeleteUserInfoViewModel
-import com.project.presentation.viewmodel.profile.GetUserInfoViewModel
-import com.project.presentation.viewmodel.profile.RenameUserNameViewModel
+import com.project.presentation.viewmodel.profile.ProfileViewModel
 
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
-    renameUserNameViewModel: RenameUserNameViewModel = hiltViewModel(),
-    deleteUserInfoViewModel: DeleteUserInfoViewModel = hiltViewModel(),
-    getUserInfoViewModel: GetUserInfoViewModel = hiltViewModel()
+    profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
     var nickname by remember { mutableStateOf("닉네임") }
 
     LaunchedEffect(Unit) {
-        getUserInfoViewModel.getUserInfo()
+        profileViewModel.getUserInfo()
     }
 
     Column(
@@ -62,7 +58,7 @@ fun ProfileScreen(
         )
         UserInfo(
             nickname = nickname,
-            changeNickname = renameUserNameViewModel::renameUserName
+            changeNickname = profileViewModel::renameUserName
         ) {}
         Divider(
             modifier = modifier.fillMaxWidth(),
@@ -80,7 +76,7 @@ fun ProfileScreen(
             thickness = 1.dp
         )
         Spacer(modifier = modifier.height(40.dp))
-        LogoutButton(logout = deleteUserInfoViewModel::deleteUserInfo)
+        LogoutButton(logout = profileViewModel::deleteUserInfo)
         Spacer(modifier = modifier.weight(1f))
     }
 }
@@ -177,5 +173,5 @@ fun LogoutButton(
             .padding(horizontal = 26.dp),
         text = "로그아웃",
         containerColor = SoloRecipeColor.Secondary30
-    ) { logout }
+    ) { logout() }
 }
