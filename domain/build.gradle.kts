@@ -37,4 +37,5 @@ dependencies {
     implementation(Dependencies.UnitTest.JUNIT)
     implementation(Dependencies.AndroidTest.ANDROID_JUNIT)
     implementation(Dependencies.AndroidTest.ESPRESSO_CORE)
+    implementation(Dependencies.AndroidX.PAGING_COMMON)
 }
