@@ -19,7 +19,7 @@ class RecipeViewModel @Inject constructor(
     private val getRecommendRecipesUseCase: GetRecommendRecipesUseCase,
     private val searchRecipeUseCase: SearchRecipeUseCase
 ) : ViewModel() {
-    fun getRecipes(type: Int): Flow<PagingData<RecipeResponseModel>> {
+    fun getRecipes(type: Int? = null): Flow<PagingData<RecipeResponseModel>> {
         val recipes = if (type == RECOMMEND) {
             getRecommendRecipesUseCase().cachedIn(viewModelScope)
         } else {
