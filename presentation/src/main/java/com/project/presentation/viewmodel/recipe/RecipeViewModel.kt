@@ -9,6 +9,7 @@ import com.project.domain.model.auth.response.RecipeResponseModel
 import com.project.domain.usecase.GetAllRecipesUseCase
 import com.project.domain.usecase.GetRecommendRecipesUseCase
 import com.project.domain.usecase.SearchRecipeUseCase
+import com.project.presentation.view.main.ALL
 import com.project.presentation.view.main.RECOMMEND
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -19,7 +20,7 @@ class RecipeViewModel @Inject constructor(
     private val getRecommendRecipesUseCase: GetRecommendRecipesUseCase,
     private val searchRecipeUseCase: SearchRecipeUseCase
 ) : ViewModel() {
-    fun getRecipes(type: Int? = null): Flow<PagingData<RecipeResponseModel>> {
+    fun getRecipes(type: Int = ALL): Flow<PagingData<RecipeResponseModel>> {
         val recipes = if (type == RECOMMEND) {
             getRecommendRecipesUseCase().cachedIn(viewModelScope)
         } else {
