@@ -6,9 +6,11 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import com.project.data.remote.datasource.recipe.RecipeDataSource
 import com.project.data.remote.datasource.recipe.RecipePagingSource
+import com.project.data.remote.model.request.asRecipesRequest
 import com.project.data.remote.model.response.asRecipeResponseModel
 import com.project.data.remote.network.RecipeApi
 import com.project.domain.model.auth.response.RecipeResponseModel
+import com.project.domain.model.recipe.RecipesRequestModel
 import com.project.domain.repository.RecipeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -45,4 +47,8 @@ class RecipeRepositoryImpl @Inject constructor(
 
     override suspend fun searchRecipe(name: String): RecipeResponseModel =
         recipeDataSource.searchRecipe(name = name).asRecipeResponseModel()
+
+    override suspend fun createRecipe(body: RecipesRequestModel) {
+        recipeDataSource.createRecipe(body.asRecipesRequest())
+    }
 }
