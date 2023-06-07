@@ -1,5 +1,6 @@
 package com.project.data.remote.datasource.recipe
 
+import com.project.data.remote.model.request.RecipesRequest
 import com.project.data.remote.model.response.RecipeResponse
 import com.project.data.remote.network.RecipeApi
 import com.project.data.remote.util.safeApiCall
@@ -10,5 +11,9 @@ class RecipeDataSourceImpl @Inject constructor(
 ): RecipeDataSource {
     override suspend fun searchRecipe(name: String): RecipeResponse = safeApiCall {
         recipeApi.searchRecipe(name)
+    }
+
+    override suspend fun createRecipe(body: RecipesRequest) = safeApiCall {
+        recipeApi.createRecipe(body)
     }
 }
