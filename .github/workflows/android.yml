@@ -34,8 +34,7 @@ jobs:
       run: chmod +x gradlew
 
     - name: Access BASE_URL
-      run: |
-        echo base_url=\"$BASE_URL\" > local.properties
+      run: echo base_url=\"$BASE_URL\" > local.properties
       env:
         BASE_URL: ${{ secrets.BASE_URL }}
 
