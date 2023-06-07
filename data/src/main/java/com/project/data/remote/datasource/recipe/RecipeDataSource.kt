@@ -7,4 +7,6 @@ interface RecipeDataSource {
     suspend fun searchRecipe(name: String): RecipeResponse
 
     suspend fun createRecipe(body: RecipesRequest)
+
+    suspend fun getRecipeDetail(index: Long)
 }
