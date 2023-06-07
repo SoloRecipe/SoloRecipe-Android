@@ -36,7 +36,6 @@ jobs:
     - name: Access BASE_URL
       run: |
         echo base_url=\"$BASE_URL\" > local.properties
-      shell: bash
       env:
         BASE_URL: ${{ secrets.BASE_URL }}
 
