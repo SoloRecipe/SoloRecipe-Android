@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.project.design_system.component.SoloRecipeAppBar
 import com.project.design_system.component.SoloRecipeButton
 import com.project.design_system.theme.Body2
@@ -41,12 +42,18 @@ import com.project.design_system.theme.Body3
 import com.project.design_system.theme.IcCamera
 import com.project.design_system.theme.SoloRecipeColor
 import com.project.design_system.theme.SoloRecipeTypography
+import com.project.domain.model.recipe.RecipeRequestModel
+import com.project.domain.model.recipe.RecipesRequestModel
+import com.project.presentation.viewmodel.registration.RegistrationViewModel
 
 @Composable
 fun RegistrationScreen(
-    items:  Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    items: Int,
+    registrationViewModel: RegistrationViewModel = hiltViewModel()
 ) {
+    val list: List<RecipeRequestModel> = listOf()
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -70,7 +77,12 @@ fun RegistrationScreen(
                 }
             }
             Spacer(modifier = modifier.height(25.dp))
-            RecipeAddButton()
+            RecipeAddButton(
+                name = "",
+                thumbnail = "",
+                recipeProcess = list,
+                onClick = registrationViewModel::createRecipe
+            )
             Spacer(modifier = modifier.height(50.dp))
             RecipeRegisterButton()
             Spacer(modifier = modifier.height(30.dp))
@@ -199,7 +211,13 @@ fun TextField(
 }
 
 @Composable
-fun RecipeAddButton(modifier: Modifier = Modifier) {
+fun RecipeAddButton(
+    modifier: Modifier = Modifier,
+    name: String,
+    thumbnail: String,
+    recipeProcess: List<RecipeRequestModel>,
+    onClick: (RecipesRequestModel) -> Unit
+) {
     OutlinedButton(
         modifier = modifier
             .fillMaxWidth()
@@ -207,7 +225,15 @@ fun RecipeAddButton(modifier: Modifier = Modifier) {
         colors = ButtonDefaults.buttonColors(SoloRecipeColor.White),
         shape = RoundedCornerShape(8.dp),
         border = BorderStroke(1.dp, SoloRecipeColor.Primary10),
-        onClick = { }
+        onClick = {
+            onClick(
+                RecipesRequestModel(
+                    name = name,
+                    thumbnail = thumbnail,
+                    recipeProcess = recipeProcess
+                )
+            )
+        }
     ) {
         Body3(
             text = "추가하기",
