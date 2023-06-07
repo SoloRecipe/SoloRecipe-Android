@@ -49,7 +49,7 @@ import com.project.presentation.viewmodel.registration.RegistrationViewModel
 @Composable
 fun RegistrationScreen(
     modifier: Modifier = Modifier,
-    items:  Int,
+    items: Int,
     registrationViewModel: RegistrationViewModel = hiltViewModel()
 ) {
     val list: List<RecipeRequestModel> = listOf()
@@ -79,9 +79,9 @@ fun RegistrationScreen(
             Spacer(modifier = modifier.height(25.dp))
             RecipeAddButton(
                 name = "",
-                thumbnail =  "",
+                thumbnail = "",
                 recipeProcess = list,
-                onClick =  registrationViewModel::createRecipe
+                onClick = registrationViewModel::createRecipe
             )
             Spacer(modifier = modifier.height(50.dp))
             RecipeRegisterButton()
@@ -225,7 +225,15 @@ fun RecipeAddButton(
         colors = ButtonDefaults.buttonColors(SoloRecipeColor.White),
         shape = RoundedCornerShape(8.dp),
         border = BorderStroke(1.dp, SoloRecipeColor.Primary10),
-        onClick = { onClick(RecipesRequestModel(name, thumbnail, recipeProcess)) }
+        onClick = {
+            onClick(
+                RecipesRequestModel(
+                    name = name,
+                    thumbnail = thumbnail,
+                    recipeProcess = recipeProcess
+                )
+            )
+        }
     ) {
         Body3(
             text = "추가하기",
