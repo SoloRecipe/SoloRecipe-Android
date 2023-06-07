@@ -48,6 +48,8 @@ dependencies {
     implementation(Dependencies.AndroidX.APPCOMPAT)
     implementation(Dependencies.Google.MATERIAL)
     implementation(Dependencies.Google.HILT_ANDROID)
+    implementation(Dependencies.AndroidX.PAGING)
+    implementation(Dependencies.AndroidX.PAGING_COMPOSE)
     kapt(Dependencies.Google.HILT_COMPILER)
     implementation(Dependencies.AndroidX.COMPOSE_RUNTIME)
     implementation(Dependencies.AndroidX.COMPOSE_MATERIAL3)
