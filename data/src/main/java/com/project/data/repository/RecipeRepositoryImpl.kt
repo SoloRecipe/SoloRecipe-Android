@@ -48,7 +48,6 @@ class RecipeRepositoryImpl @Inject constructor(
     override suspend fun searchRecipe(name: String): RecipeResponseModel =
         recipeDataSource.searchRecipe(name = name).asRecipeResponseModel()
 
-    override suspend fun createRecipe(body: RecipesRequestModel) {
+    override suspend fun createRecipe(body: RecipesRequestModel) =
         recipeDataSource.createRecipe(body.asRecipesRequest())
-    }
 }
