@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.project.design_system.component.SoloRecipeAppBar
 import com.project.design_system.component.SoloRecipeItem
@@ -54,7 +55,7 @@ const val ALL = 1
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
-    recipeViewModel: RecipeViewModel
+    recipeViewModel: RecipeViewModel = hiltViewModel()
 ) {
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState()
