@@ -33,6 +33,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.project.design_system.component.SoloRecipeAppBar
 import com.project.design_system.component.SoloRecipeItem
 import com.project.design_system.theme.Body2
@@ -43,16 +45,21 @@ import com.project.design_system.theme.IcSearch
 import com.project.design_system.theme.SoloRecipeTheme
 import com.project.design_system.theme.Subtitle2
 import com.project.presentation.R
+import com.project.presentation.viewmodel.recipe.RecipeViewModel
 import kotlinx.coroutines.launch
 
-private const val RECOMMEND = 0
-private const val ALL = 1
+const val RECOMMEND = 0
+const val ALL = 1
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MainScreen(modifier: Modifier = Modifier) {
+fun MainScreen(
+    modifier: Modifier = Modifier,
+    recipeViewModel: RecipeViewModel = hiltViewModel()
+) {
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState()
+    val recipes = recipeViewModel.getRecipes().collectAsLazyPagingItems()
 
     Scaffold(
         floatingActionButton = {
