@@ -38,4 +38,5 @@ dependencies {
     implementation(Dependencies.AndroidTest.ANDROID_JUNIT)
     implementation(Dependencies.AndroidTest.ESPRESSO_CORE)
     implementation(Dependencies.AndroidX.PAGING_COMMON)
+    implementation(Dependencies.Libraries.RETROFIT)
 }
