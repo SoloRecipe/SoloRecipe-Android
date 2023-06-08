@@ -9,6 +9,7 @@ import com.project.presentation.view.auth.signup.navigation.signUpScreen
 import com.project.presentation.view.detail.navigation.detailScreen
 import com.project.presentation.view.detail.navigation.navigateToDetail
 import com.project.presentation.view.main.navigation.mainScreen
+import com.project.presentation.view.main.navigation.navigateToMain
 import com.project.presentation.view.profile.navigation.navigateToProfile
 import com.project.presentation.view.profile.navigation.profileScreen
 import com.project.presentation.view.registration.navigation.navigateToRegistration
@@ -20,9 +21,14 @@ fun SoloRecipeNavHost(
     startDestination: String
 ) {
     NavHost(navController = navController, startDestination = startDestination) {
-        signInScreen(navigateToSignUp = {
-            navController.navigateToSignUp()
-        })
+        signInScreen(
+            navigateToSignUp = {
+                navController.navigateToSignUp()
+            },
+            navigateToMain = {
+                navController.navigateToMain()
+            }
+        )
         signUpScreen()
         detailScreen()
         mainScreen(
