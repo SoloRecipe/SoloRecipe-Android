@@ -11,10 +11,12 @@ import com.project.domain.usecase.recipe.GetRecommendRecipesUseCase
 import com.project.domain.usecase.recipe.SearchRecipeUseCase
 import com.project.presentation.view.main.ALL
 import com.project.presentation.view.main.RECOMMEND
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class MainViewModel @Inject constructor(
     private val getAllRecipesUseCase: GetAllRecipesUseCase,
     private val getRecommendRecipesUseCase: GetRecommendRecipesUseCase,
