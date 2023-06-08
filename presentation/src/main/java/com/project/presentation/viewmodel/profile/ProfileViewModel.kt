@@ -3,9 +3,11 @@ package com.project.presentation.viewmodel.profile
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.project.domain.model.profile.request.ProfileImageRequestModel
 import com.project.domain.model.profile.request.ProfileRequestModel
 import com.project.domain.usecase.profile.DeleteUserInfoUseCase
 import com.project.domain.usecase.profile.GetUserInfoUseCase
+import com.project.domain.usecase.profile.ModifyProfileImageUseCase
 import com.project.domain.usecase.profile.RenameUserNameUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -15,7 +17,8 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val renameUserNameUseCase: RenameUserNameUseCase,
-    private val deleteUserInfoUseCase: DeleteUserInfoUseCase
+    private val deleteUserInfoUseCase: DeleteUserInfoUseCase,
+    private val modifyProfileImageUseCase: ModifyProfileImageUseCase
 ): ViewModel() {
     fun getUserInfo() {
         viewModelScope.launch {
@@ -49,6 +52,18 @@ class ProfileViewModel @Inject constructor(
                 }
                 .onFailure {
                     Log.d("deleteUserInfo", it.message.toString())
+                }
+        }
+    }
+
+    fun modifyProfileImage(profileImageRequestModel: ProfileImageRequestModel) {
+        viewModelScope.launch {
+            modifyProfileImageUseCase(profileImageRequestModel)
+                .onSuccess {
+                    Log.d("modifyProfileImage", it.toString())
+                }
+                .onFailure {
+                    Log.d("modifyProfileImage", it.message.toString())
                 }
         }
     }
