@@ -13,4 +13,6 @@ interface RecipeRepository {
     suspend fun searchRecipe(name: String): RecipeResponseModel
 
     suspend fun createRecipe(body: RecipesRequestModel)
+
+    suspend fun getRecipeDetail(index: Long)
 }
