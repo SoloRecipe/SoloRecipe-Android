@@ -22,7 +22,6 @@ import javax.inject.Inject
 class RequestInterceptor @Inject constructor(
     private val localDataSource: LocalDataSource
 ) : Interceptor {
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val path = request.url().encodedPath()
@@ -75,8 +74,7 @@ class RequestInterceptor @Inject constructor(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun convertDateFormat(input: String): LocalDateTime {
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH-mm-ss")
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd 'T' HH:mm:ss")
     return LocalDateTime.parse(input, formatter)
 }
