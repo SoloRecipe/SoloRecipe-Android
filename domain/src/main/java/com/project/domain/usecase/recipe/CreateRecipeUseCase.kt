@@ -1,6 +1,6 @@
 package com.project.domain.usecase.recipe
 
-import com.project.domain.model.recipe.RecipesRequestModel
+import com.project.domain.model.recipe.request.RecipesRequestModel
 import com.project.domain.repository.RecipeRepository
 import javax.inject.Inject
 

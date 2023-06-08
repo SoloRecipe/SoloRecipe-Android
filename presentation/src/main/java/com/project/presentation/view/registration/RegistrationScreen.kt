@@ -42,8 +42,8 @@ import com.project.design_system.theme.Body3
 import com.project.design_system.theme.IcCamera
 import com.project.design_system.theme.SoloRecipeColor
 import com.project.design_system.theme.SoloRecipeTypography
-import com.project.domain.model.recipe.RecipeRequestModel
-import com.project.domain.model.recipe.RecipesRequestModel
+import com.project.domain.model.recipe.request.RecipeRequestModel
+import com.project.domain.model.recipe.request.RecipesRequestModel
 import com.project.presentation.viewmodel.registration.RegistrationViewModel
 
 @Composable

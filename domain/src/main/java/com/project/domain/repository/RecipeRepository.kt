@@ -2,7 +2,8 @@ package com.project.domain.repository
 
 import androidx.paging.PagingData
 import com.project.domain.model.auth.response.RecipeResponseModel
-import com.project.domain.model.recipe.RecipesRequestModel
+import com.project.domain.model.recipe.request.RecipesRequestModel
+import com.project.domain.model.recipe.response.RecipeDetailResponseModel
 import kotlinx.coroutines.flow.Flow
 
 interface RecipeRepository {
@@ -14,5 +15,5 @@ interface RecipeRepository {
 
     suspend fun createRecipe(body: RecipesRequestModel)
 
-    suspend fun getRecipeDetail(index: Long)
+    suspend fun getRecipeDetail(index: Long): RecipeDetailResponseModel
 }

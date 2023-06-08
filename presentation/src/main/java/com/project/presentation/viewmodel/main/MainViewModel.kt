@@ -7,7 +7,6 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.project.domain.model.auth.response.RecipeResponseModel
 import com.project.domain.usecase.recipe.GetAllRecipesUseCase
-import com.project.domain.usecase.recipe.GetRecipeDetailUseCase
 import com.project.domain.usecase.recipe.GetRecommendRecipesUseCase
 import com.project.domain.usecase.recipe.SearchRecipeUseCase
 import com.project.presentation.view.main.ALL
@@ -20,7 +19,6 @@ class MainViewModel @Inject constructor(
     private val getAllRecipesUseCase: GetAllRecipesUseCase,
     private val getRecommendRecipesUseCase: GetRecommendRecipesUseCase,
     private val searchRecipeUseCase: SearchRecipeUseCase,
-    private val getRecipeDetailUseCase: GetRecipeDetailUseCase
 ) : ViewModel() {
     fun getRecipes(type: Int = ALL): Flow<PagingData<RecipeResponseModel>> {
         val recipes = if (type == RECOMMEND) {

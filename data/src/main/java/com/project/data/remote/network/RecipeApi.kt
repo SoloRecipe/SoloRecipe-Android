@@ -1,6 +1,7 @@
 package com.project.data.remote.network
 
 import com.project.data.remote.model.request.RecipesRequest
+import com.project.data.remote.model.response.RecipeDetailResponse
 import com.project.data.remote.model.response.RecipeResponse
 import com.project.data.remote.model.response.RecipesResponse
 import retrofit2.http.Body
@@ -35,5 +36,5 @@ interface RecipeApi {
     @GET("recipe/detail")
     suspend fun getRecipeDetail(
         @Path("idx") index: Long
-    )
+    ): RecipeDetailResponse
 }
