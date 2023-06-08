@@ -1,7 +1,6 @@
 package com.project.presentation.view.auth.signin
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -36,7 +35,7 @@ import com.project.presentation.viewmodel.auth.SignInViewModel
 fun SignInScreen(
     modifier: Modifier = Modifier,
     signInViewModel: SignInViewModel = hiltViewModel(),
-    navigateToSignUp: () -> Unit
+    navigateToSignUp: () -> Unit,
 ) {
     var id by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -85,7 +84,6 @@ fun SignInScreen(
                     password = password
                 )
             )
-            navigateToSignUp()
         }
         Spacer(modifier = modifier.height(32.dp))
         Row(
@@ -95,9 +93,9 @@ fun SignInScreen(
             Body3(text = "계정이 없으신가요?")
             Spacer(modifier = modifier.width(7.dp))
             Body3(
-                modifier = modifier.clickable { },
                 text = "회원가입",
                 textColor = SoloRecipeTheme.color.Primary10,
+                onClick = { navigateToSignUp() }
             )
         }
         Spacer(modifier = modifier.height(53.dp))
