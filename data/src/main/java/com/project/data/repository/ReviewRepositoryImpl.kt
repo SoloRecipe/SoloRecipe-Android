@@ -9,7 +9,8 @@ import javax.inject.Inject
 class ReviewRepositoryImpl @Inject constructor(
     private val reviewDataSource: ReviewDataSource
 ): ReviewRepository {
-    override suspend fun writeReview(recipeIndex: Long) = reviewDataSource.writeReview(recipeIndex)
+    override suspend fun writeReview(recipeIndex: Long, body: ReviewRequestModel) =
+        reviewDataSource.writeReview(recipeIndex, body.asReviewRequest())
 
     override suspend fun modifyReview(recipeIndex: Long, body: ReviewRequestModel) =
         reviewDataSource.modifyReview(recipeIndex, body.asReviewRequest())

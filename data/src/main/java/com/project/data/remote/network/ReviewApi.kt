@@ -10,7 +10,8 @@ import retrofit2.http.Path
 interface ReviewApi {
     @POST("review")
     suspend fun writeReview(
-        @Path("recipe-idx") recipeIndex: Long
+        @Path("recipe-idx") recipeIndex: Long,
+        @Body body: ReviewRequest
     )
 
     @PATCH("review")

@@ -1,6 +1,6 @@
 package com.project.data.remote.model.request
 
-import com.project.domain.model.recipe.RecipesRequestModel
+import com.project.domain.model.recipe.request.RecipesRequestModel
 
 data class RecipesRequest(
     val name: String,

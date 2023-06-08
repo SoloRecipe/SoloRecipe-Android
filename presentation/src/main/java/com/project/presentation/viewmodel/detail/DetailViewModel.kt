@@ -63,9 +63,9 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    fun writeReview(recipeIndex: Long) {
+    fun writeReview(recipeIndex: Long, body: ReviewRequestModel) {
         viewModelScope.launch {
-            writeReviewUseCase(recipeIndex)
+            writeReviewUseCase(recipeIndex, body)
                 .onSuccess {
                     Log.d("writeReview", it.toString())
                 }.onFailure {

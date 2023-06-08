@@ -1,4 +1,4 @@
-package com.project.domain.model.recipe
+package com.project.domain.model.recipe.request
 
 data class RecipesRequestModel(
     val name: String,

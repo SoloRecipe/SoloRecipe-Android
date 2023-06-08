@@ -41,6 +41,7 @@ import com.project.design_system.theme.Body3
 import com.project.design_system.theme.IcEmptyHeart
 import com.project.design_system.theme.IcFullHeart
 import com.project.design_system.theme.SoloRecipeTheme
+import com.project.domain.model.review.request.ReviewRequestModel
 import com.project.presentation.R
 import com.project.presentation.viewmodel.detail.DetailViewModel
 
@@ -82,7 +83,12 @@ fun DetailScreen(
             Spacer(modifier = modifier.height(40.dp))
             Body3(text = "댓글")
             Spacer(modifier = modifier.height(20.dp))
-            MyComment(index = index) { detailViewModel.writeReview(it) }
+            MyComment(index = index) { index, content ->
+                detailViewModel.writeReview(
+                    recipeIndex = index,
+                    body = ReviewRequestModel(content = content)
+                )
+            }
             Spacer(modifier = modifier.height(30.dp))
             Column(
                 modifier = modifier.fillMaxWidth(),
@@ -148,7 +154,7 @@ fun DetailTitle(
 fun MyComment(
     modifier: Modifier = Modifier,
     index: Long,
-    writeReview: (recipeIndex: Long) -> Unit
+    writeReview: (recipeIndex: Long, body: String) -> Unit
 ) {
     var comment by remember { mutableStateOf("") }
 
@@ -169,7 +175,7 @@ fun MyComment(
             hint = "댓글 추가 하기",
             onValueChanged = { comment = it },
             keyboardActions = KeyboardActions(onDone = {
-                writeReview(index)
+                writeReview(index, comment)
             })
         )
     }
