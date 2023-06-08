@@ -10,4 +10,11 @@ interface RecipeDataSource {
     suspend fun createRecipe(body: RecipesRequest)
 
     suspend fun getRecipeDetail(index: Long): RecipeDetailResponse
+
+    suspend fun modifyRecipe(
+        index: Long,
+        body: RecipesRequest
+    )
+
+    suspend fun deleteRecipe(index: Long)
 }

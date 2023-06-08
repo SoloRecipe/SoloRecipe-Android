@@ -20,4 +20,12 @@ class RecipeDataSourceImpl @Inject constructor(
     override suspend fun getRecipeDetail(index: Long) = safeApiCall {
         recipeApi.getRecipeDetail(index)
     }
+
+    override suspend fun modifyRecipe(index: Long, body: RecipesRequest) = safeApiCall {
+        recipeApi.modifyRecipe(index, body)
+    }
+
+    override suspend fun deleteRecipe(index: Long) = safeApiCall {
+        recipeApi.deleteRecipe(index)
+    }
 }
