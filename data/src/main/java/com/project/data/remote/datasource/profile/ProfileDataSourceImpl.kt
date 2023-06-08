@@ -1,5 +1,6 @@
 package com.project.data.remote.datasource.profile
 
+import com.project.data.remote.model.request.ProfileImageRequest
 import com.project.data.remote.model.request.ProfileRequest
 import com.project.data.remote.model.response.ProfilesResponse
 import com.project.data.remote.network.api.ProfileApi
@@ -14,4 +15,6 @@ class ProfileDataSourceImpl @Inject constructor(
     override suspend fun renameUserName(body: ProfileRequest) = safeApiCall { profileApi.renameUserName(body) }
 
     override suspend fun deleteUserInfo() = safeApiCall { profileApi.deleteUserInfo() }
+
+    override suspend fun modifyProfileImage(body: ProfileImageRequest) = safeApiCall { profileApi.modifyProfileImage(body) }
 }
