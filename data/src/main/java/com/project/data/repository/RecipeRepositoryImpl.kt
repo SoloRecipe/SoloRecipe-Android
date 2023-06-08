@@ -53,4 +53,9 @@ class RecipeRepositoryImpl @Inject constructor(
         recipeDataSource.createRecipe(body.asRecipesRequest())
 
     override suspend fun getRecipeDetail(index: Long) = recipeDataSource.getRecipeDetail(index).asRecipeDetailResponseModel()
+    override suspend fun modifyRecipe(index: Long, body: RecipesRequestModel) =
+        recipeDataSource.modifyRecipe(index, body.asRecipesRequest())
+
+    override suspend fun deleteRecipe(index: Long) =
+        recipeDataSource.deleteRecipe(index)
 }

@@ -16,4 +16,11 @@ interface RecipeRepository {
     suspend fun createRecipe(body: RecipesRequestModel)
 
     suspend fun getRecipeDetail(index: Long): RecipeDetailResponseModel
+
+    suspend fun modifyRecipe(
+        index: Long,
+        body: RecipesRequestModel
+    )
+
+    suspend fun deleteRecipe(index: Long)
 }
