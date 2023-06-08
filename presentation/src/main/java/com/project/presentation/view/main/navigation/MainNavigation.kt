@@ -11,8 +11,16 @@ fun NavController.navigateToMain() {
     this.navigate(mainRoute)
 }
 
-fun NavGraphBuilder.mainScreen() {
+fun NavGraphBuilder.mainScreen(
+    navigateToProfile: () -> Unit,
+    navigateToDetail: (Long) -> Unit,
+    navigateToRegistration: () -> Unit
+) {
     composable(mainRoute) {
-        MainScreen()
+        MainScreen(
+            navigateToProfile = navigateToProfile,
+            navigateToDetail = navigateToDetail,
+            navigateToRegistration = navigateToRegistration
+        )
     }
 }

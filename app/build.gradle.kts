@@ -35,9 +35,20 @@ android {
     kotlinOptions {
         jvmTarget = ProjectProperties.Versions.JVM_TARGET
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.1"
+    }
+    lint {
+        lintConfig = file("$rootDir/lint.xml")
+    }
 }
 
 dependencies {
+
+    implementation(project(":presentation"))
 
     implementation(Dependencies.AndroidX.CORE_KTX)
     implementation(Dependencies.AndroidX.APPCOMPAT)

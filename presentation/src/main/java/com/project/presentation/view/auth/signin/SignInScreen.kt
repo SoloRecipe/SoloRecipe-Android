@@ -35,7 +35,8 @@ import com.project.presentation.viewmodel.auth.SignInViewModel
 @Composable
 fun SignInScreen(
     modifier: Modifier = Modifier,
-    signInViewModel: SignInViewModel = hiltViewModel()
+    signInViewModel: SignInViewModel = hiltViewModel(),
+    navigateToSignUp: () -> Unit
 ) {
     var id by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -84,6 +85,7 @@ fun SignInScreen(
                     password = password
                 )
             )
+            navigateToSignUp()
         }
         Spacer(modifier = modifier.height(32.dp))
         Row(
