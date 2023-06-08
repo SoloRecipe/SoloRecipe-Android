@@ -41,6 +41,9 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.1"
     }
+    lint {
+        lintConfig = file("$rootDir/lint.xml")
+    }
 }
 
 dependencies {
