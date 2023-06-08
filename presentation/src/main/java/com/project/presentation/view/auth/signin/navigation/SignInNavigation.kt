@@ -6,8 +6,14 @@ import com.project.presentation.view.auth.signin.SignInScreen
 
 const val signInRoute = "sign_in_route"
 
-fun NavGraphBuilder.signInScreen(navigateToSignUp: () -> Unit) {
+fun NavGraphBuilder.signInScreen(
+    navigateToSignUp: () -> Unit,
+    navigateToMain: () -> Unit
+) {
     composable(signInRoute) {
-        SignInScreen(navigateToSignUp = navigateToSignUp)
+        SignInScreen(
+            navigateToSignUp = navigateToSignUp,
+            navigateToMain = navigateToMain
+        )
     }
 }

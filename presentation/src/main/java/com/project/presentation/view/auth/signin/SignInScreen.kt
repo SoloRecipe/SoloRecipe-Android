@@ -36,6 +36,7 @@ fun SignInScreen(
     modifier: Modifier = Modifier,
     signInViewModel: SignInViewModel = hiltViewModel(),
     navigateToSignUp: () -> Unit,
+    navigateToMain: () -> Unit
 ) {
     var id by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -84,6 +85,7 @@ fun SignInScreen(
                     password = password
                 )
             )
+            navigateToMain()
         }
         Spacer(modifier = modifier.height(32.dp))
         Row(
