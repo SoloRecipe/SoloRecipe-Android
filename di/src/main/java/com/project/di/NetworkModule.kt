@@ -1,5 +1,6 @@
 package com.project.di
 
+import com.project.data.remote.network.RequestInterceptor
 import com.project.data.remote.network.api.AuthApi
 import com.project.data.remote.network.api.LikeApi
 import com.project.data.remote.network.api.ProfileApi
@@ -29,8 +30,14 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(interceptor: HttpLoggingInterceptor): OkHttpClient =
-        OkHttpClient.Builder().addInterceptor(interceptor).build()
+    fun provideOkHttpClient(
+        httpLoggingInterceptor: HttpLoggingInterceptor,
+        requestInterceptor: RequestInterceptor
+    ): OkHttpClient =
+        OkHttpClient.Builder()
+            .addInterceptor(httpLoggingInterceptor)
+            .addInterceptor(requestInterceptor)
+            .build()
 
     @Provides
     @Singleton
