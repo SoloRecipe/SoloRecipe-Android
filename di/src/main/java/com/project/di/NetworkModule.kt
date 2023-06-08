@@ -2,6 +2,7 @@ package com.project.di
 
 import com.project.data.remote.network.RequestInterceptor
 import com.project.data.remote.network.api.AuthApi
+import com.project.data.remote.network.api.ImageApi
 import com.project.data.remote.network.api.LikeApi
 import com.project.data.remote.network.api.ProfileApi
 import com.project.data.remote.network.api.RecipeApi
@@ -63,4 +64,8 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideLikeService(retrofit: Retrofit): LikeApi = retrofit.create(LikeApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideImageService(retrofit: Retrofit): ImageApi = retrofit.create(ImageApi::class.java)
 }
