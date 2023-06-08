@@ -45,7 +45,7 @@ import com.project.design_system.theme.IcSearch
 import com.project.design_system.theme.SoloRecipeTheme
 import com.project.design_system.theme.Subtitle2
 import com.project.presentation.R
-import com.project.presentation.viewmodel.recipe.RecipeViewModel
+import com.project.presentation.viewmodel.main.MainViewModel
 import kotlinx.coroutines.launch
 
 const val RECOMMEND = 0
@@ -55,11 +55,11 @@ const val ALL = 1
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
-    recipeViewModel: RecipeViewModel = hiltViewModel()
+    mainViewModel: MainViewModel = hiltViewModel()
 ) {
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState()
-    val recipes = recipeViewModel.getRecipes().collectAsLazyPagingItems()
+    val recipes = mainViewModel.getRecipes().collectAsLazyPagingItems()
 
     Scaffold(
         floatingActionButton = {

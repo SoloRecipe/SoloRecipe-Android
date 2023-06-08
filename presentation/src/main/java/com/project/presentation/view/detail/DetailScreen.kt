@@ -16,9 +16,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,6 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.project.design_system.component.SoloRecipeAppBar
 import com.project.design_system.component.SoloRecipeCommentItem
 import com.project.design_system.component.SoloRecipeStepItem
@@ -39,13 +42,20 @@ import com.project.design_system.theme.IcEmptyHeart
 import com.project.design_system.theme.IcFullHeart
 import com.project.design_system.theme.SoloRecipeTheme
 import com.project.presentation.R
+import com.project.presentation.viewmodel.detail.DetailViewModel
 
 @Composable
 fun DetailScreen(
     modifier: Modifier = Modifier,
+    index: Long,
+    detailViewModel: DetailViewModel = hiltViewModel(),
     stepItemCount: Int,
     commentListCount: Int
 ) {
+    LaunchedEffect(Unit) {
+        detailViewModel.getRecipeDetail(index)
+    }
+
     Column(modifier = modifier.fillMaxSize()) {
         SoloRecipeAppBar { }
         Column(
@@ -56,7 +66,7 @@ fun DetailScreen(
                 .verticalScroll(rememberScrollState()),
         ) {
             Spacer(modifier = modifier.height(16.dp))
-            DetailTitle { }
+            DetailTitle { detailViewModel.likeRecipe() }
             Spacer(modifier = modifier.height(26.dp))
             Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
                 repeat(stepItemCount) {
@@ -72,7 +82,7 @@ fun DetailScreen(
             Spacer(modifier = modifier.height(40.dp))
             Body3(text = "댓글")
             Spacer(modifier = modifier.height(20.dp))
-            MyComment()
+            MyComment(index = index) { detailViewModel.writeReview(it) }
             Spacer(modifier = modifier.height(30.dp))
             Column(
                 modifier = modifier.fillMaxWidth(),
@@ -135,7 +145,11 @@ fun DetailTitle(
 }
 
 @Composable
-fun MyComment(modifier: Modifier = Modifier) {
+fun MyComment(
+    modifier: Modifier = Modifier,
+    index: Long,
+    writeReview: (recipeIndex: Long) -> Unit
+) {
     var comment by remember { mutableStateOf("") }
 
     Row(
@@ -153,7 +167,10 @@ fun MyComment(modifier: Modifier = Modifier) {
         SoloRecipeTextField(
             value = comment,
             hint = "댓글 추가 하기",
-            onValueChanged = { comment = it }
+            onValueChanged = { comment = it },
+            keyboardActions = KeyboardActions(onDone = {
+                writeReview(index)
+            })
         )
     }
 }

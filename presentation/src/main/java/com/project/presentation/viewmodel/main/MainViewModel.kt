@@ -1,4 +1,4 @@
-package com.project.presentation.viewmodel.recipe
+package com.project.presentation.viewmodel.main
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class RecipeViewModel @Inject constructor(
+class MainViewModel @Inject constructor(
     private val getAllRecipesUseCase: GetAllRecipesUseCase,
     private val getRecommendRecipesUseCase: GetRecommendRecipesUseCase,
     private val searchRecipeUseCase: SearchRecipeUseCase,
@@ -43,14 +43,4 @@ class RecipeViewModel @Inject constructor(
         }
     }
 
-    fun getRecipeDetail(index: Long) {
-        viewModelScope.launch {
-            getRecipeDetailUseCase(index)
-                .onSuccess {
-                    Log.d("recipeDetail", it.toString())
-                }.onFailure {
-                    Log.d("recipeDetail", it.message.toString())
-                }
-        }
-    }
 }
