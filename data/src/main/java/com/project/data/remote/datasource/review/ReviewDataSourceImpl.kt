@@ -1,7 +1,7 @@
 package com.project.data.remote.datasource.review
 
 import com.project.data.remote.model.request.ReviewRequest
-import com.project.data.remote.network.ReviewApi
+import com.project.data.remote.network.api.ReviewApi
 import com.project.data.remote.util.safeApiCall
 import javax.inject.Inject
 

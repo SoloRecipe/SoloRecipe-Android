@@ -9,7 +9,7 @@ import com.project.data.remote.datasource.recipe.RecipePagingSource
 import com.project.data.remote.model.request.asRecipesRequest
 import com.project.data.remote.model.response.asRecipeDetailResponseModel
 import com.project.data.remote.model.response.asRecipeResponseModel
-import com.project.data.remote.network.RecipeApi
+import com.project.data.remote.network.api.RecipeApi
 import com.project.domain.model.auth.response.RecipeResponseModel
 import com.project.domain.model.recipe.request.RecipesRequestModel
 import com.project.domain.repository.RecipeRepository

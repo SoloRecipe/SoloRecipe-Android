@@ -2,7 +2,7 @@ package com.project.data.remote.datasource.profile
 
 import com.project.data.remote.model.request.ProfileRequest
 import com.project.data.remote.model.response.ProfilesResponse
-import com.project.data.remote.network.ProfileApi
+import com.project.data.remote.network.api.ProfileApi
 import com.project.data.remote.util.safeApiCall
 import javax.inject.Inject
 
