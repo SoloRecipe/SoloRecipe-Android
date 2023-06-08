@@ -1,4 +1,4 @@
-package com.project.domain.usecase
+package com.project.domain.usecase.recipe
 
 import com.project.domain.repository.RecipeRepository
 import javax.inject.Inject

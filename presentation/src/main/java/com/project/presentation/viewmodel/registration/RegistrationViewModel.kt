@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.domain.model.recipe.RecipesRequestModel
-import com.project.domain.usecase.CreateRecipeUseCase
+import com.project.domain.usecase.recipe.CreateRecipeUseCase
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

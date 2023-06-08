@@ -1,4 +1,4 @@
-package com.project.domain.usecase
+package com.project.domain.usecase.like
 
 import com.project.domain.repository.LikeRepository
 import javax.inject.Inject

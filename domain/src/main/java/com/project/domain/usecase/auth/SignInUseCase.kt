@@ -1,4 +1,4 @@
-package com.project.domain.usecase
+package com.project.domain.usecase.auth
 
 import com.project.domain.model.auth.request.SignInRequestModel
 import com.project.domain.repository.AuthRepository

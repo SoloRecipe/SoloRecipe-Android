@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.domain.model.auth.request.SignInRequestModel
-import com.project.domain.usecase.SignInUseCase
+import com.project.domain.usecase.auth.SignInUseCase
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

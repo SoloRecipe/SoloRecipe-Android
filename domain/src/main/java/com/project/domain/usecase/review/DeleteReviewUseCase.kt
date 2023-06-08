@@ -1,4 +1,4 @@
-package com.project.domain.usecase
+package com.project.domain.usecase.review
 
 import com.project.domain.repository.ReviewRepository
 import javax.inject.Inject

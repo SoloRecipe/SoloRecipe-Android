@@ -6,9 +6,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.project.domain.model.auth.response.RecipeResponseModel
-import com.project.domain.usecase.GetAllRecipesUseCase
-import com.project.domain.usecase.GetRecommendRecipesUseCase
-import com.project.domain.usecase.SearchRecipeUseCase
+import com.project.domain.usecase.recipe.GetAllRecipesUseCase
+import com.project.domain.usecase.recipe.GetRecommendRecipesUseCase
+import com.project.domain.usecase.recipe.SearchRecipeUseCase
 import com.project.presentation.view.main.ALL
 import com.project.presentation.view.main.RECOMMEND
 import kotlinx.coroutines.flow.Flow
