@@ -49,7 +49,6 @@ import com.project.presentation.viewmodel.registration.RegistrationViewModel
 @Composable
 fun RegistrationScreen(
     modifier: Modifier = Modifier,
-    items: Int,
     registrationViewModel: RegistrationViewModel = hiltViewModel()
 ) {
     val list: List<RecipeRequestModel> = listOf()
@@ -72,7 +71,7 @@ fun RegistrationScreen(
                     .padding(horizontal = 26.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                repeat(items) {
+                repeat(5) {
                     StepItem()
                 }
             }

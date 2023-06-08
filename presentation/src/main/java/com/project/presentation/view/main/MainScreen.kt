@@ -55,7 +55,10 @@ const val ALL = 1
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
-    mainViewModel: MainViewModel = hiltViewModel()
+    mainViewModel: MainViewModel = hiltViewModel(),
+    navigateToProfile: () -> Unit,
+    navigateToDetail: (Long) -> Unit,
+    navigateToRegistration: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState()
@@ -66,7 +69,7 @@ fun MainScreen(
             FloatingActionButton(
                 containerColor = SoloRecipeTheme.color.Primary10,
                 shape = CircleShape,
-                onClick = { }
+                onClick = { navigateToRegistration() }
             ) {
                 IcPencil(
                     tint = SoloRecipeTheme.color.White,
@@ -102,7 +105,7 @@ fun MainScreen(
                         modifier = modifier.clickable(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null,
-                            onClick = { }
+                            onClick = { navigateToProfile() }
                         ),
                         contentDescription = "profile"
                     )
@@ -122,7 +125,13 @@ fun MainScreen(
                 pageCount = 2,
                 pageSpacing = 26.dp
             ) { page ->
-                if (page == RECOMMEND) RecipeList(spanItem = { TopItem() }) else RecipeList()
+                if (page == RECOMMEND) {
+                    RecipeList(spanItem = { TopItem { navigateToDetail(1) } }) {
+                        navigateToDetail(1)
+                    }
+                } else {
+                    RecipeList { navigateToDetail(1) }
+                }
             }
         }
     }
@@ -171,7 +180,8 @@ fun TabBar(
 @Composable
 fun RecipeList(
     modifier: Modifier = Modifier,
-    spanItem: (@Composable () -> Unit)? = null
+    spanItem: (@Composable () -> Unit)? = null,
+    navigateToDetail: () -> Unit
 ) {
     LazyVerticalGrid(
         modifier = modifier.fillMaxWidth(),
@@ -192,7 +202,7 @@ fun RecipeList(
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null,
-                        onClick = { }
+                        onClick = { navigateToDetail() }
                     ),
                 imageUrl = "https://example.com",
                 content = { Body4(text = "돈가스") }
@@ -202,7 +212,10 @@ fun RecipeList(
 }
 
 @Composable
-fun TopItem(modifier: Modifier = Modifier) {
+fun TopItem(
+    modifier: Modifier = Modifier,
+    navigateToDetail: () -> Unit
+) {
     Column {
         SoloRecipeItem(
             modifier = modifier
@@ -211,7 +224,7 @@ fun TopItem(modifier: Modifier = Modifier) {
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null,
-                    onClick = { }
+                    onClick = { navigateToDetail() }
                 ),
             imageUrl = "",
             content = { Body2(text = "첫번째 아이템!") }

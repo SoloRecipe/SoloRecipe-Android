@@ -48,13 +48,13 @@ import com.project.presentation.viewmodel.detail.DetailViewModel
 @Composable
 fun DetailScreen(
     modifier: Modifier = Modifier,
-    index: Long,
+    index: Long?,
     detailViewModel: DetailViewModel = hiltViewModel(),
-    stepItemCount: Int,
-    commentListCount: Int
 ) {
+    val recipeIndex = checkNotNull(index)
+
     LaunchedEffect(Unit) {
-        detailViewModel.getRecipeDetail(index)
+        detailViewModel.getRecipeDetail(recipeIndex)
     }
 
     Column(modifier = modifier.fillMaxSize()) {
@@ -70,7 +70,7 @@ fun DetailScreen(
             DetailTitle { detailViewModel.likeRecipe() }
             Spacer(modifier = modifier.height(26.dp))
             Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                repeat(stepItemCount) {
+                repeat(5) {
                     SoloRecipeStepItem(
                         modifier = modifier.fillMaxWidth(),
                         imageUrl = "https://example.com",
@@ -83,7 +83,7 @@ fun DetailScreen(
             Spacer(modifier = modifier.height(40.dp))
             Body3(text = "댓글")
             Spacer(modifier = modifier.height(20.dp))
-            MyComment(index = index) { index, content ->
+            MyComment(index = recipeIndex) { index, content ->
                 detailViewModel.writeReview(
                     recipeIndex = index,
                     body = ReviewRequestModel(content = content)
@@ -94,7 +94,7 @@ fun DetailScreen(
                 modifier = modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                repeat(commentListCount) {
+                repeat(5) {
                     CommentList()
                 }
             }
