@@ -1,15 +1,19 @@
 package com.project.presentation.viewmodel.detail
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.project.domain.model.recipe.response.RecipeDetailResponseModel
 import com.project.domain.model.review.request.ReviewRequestModel
 import com.project.domain.usecase.like.LikeRecipeUseCase
 import com.project.domain.usecase.recipe.GetRecipeDetailUseCase
 import com.project.domain.usecase.review.DeleteReviewUseCase
 import com.project.domain.usecase.review.ModifyReviewUseCase
 import com.project.domain.usecase.review.WriteReviewUseCase
+import com.project.presentation.viewmodel.util.UiState
+import com.project.presentation.viewmodel.util.exceptionHandling
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,14 +24,32 @@ class DetailViewModel @Inject constructor(
     private val deleteReviewUseCase: DeleteReviewUseCase,
     private val modifyReviewUseCase: ModifyReviewUseCase,
     private val writeReviewUseCase: WriteReviewUseCase
-): ViewModel(){
+) : ViewModel() {
+    private val _recipeUiState: MutableStateFlow<UiState<RecipeDetailResponseModel>> = MutableStateFlow(UiState.Loading)
+    val recipeUiState = _recipeUiState.asStateFlow()
+
+    private val _likeUiState: MutableStateFlow<UiState<Nothing>> = MutableStateFlow(UiState.Loading)
+    val likeUiState = _likeUiState.asStateFlow()
+
+    private val _deleteUiState: MutableStateFlow<UiState<Nothing>> = MutableStateFlow(UiState.Loading)
+    val deleteUiState = _recipeUiState.asStateFlow()
+
+    private val _modifyUiState: MutableStateFlow<UiState<Nothing>> = MutableStateFlow(UiState.Loading)
+    val modifyUiState = _modifyUiState.asStateFlow()
+
+    private val _writeUiState: MutableStateFlow<UiState<Nothing>> = MutableStateFlow(UiState.Loading)
+    val writeUiState = _writeUiState.asStateFlow()
+
     fun getRecipeDetail(index: Long) {
         viewModelScope.launch {
             getRecipeDetailUseCase(index)
                 .onSuccess {
-                    Log.d("recipeDetail", it.toString())
+                    _recipeUiState.value = UiState.Success(it)
                 }.onFailure {
-                    Log.d("recipeDetail", it.message.toString())
+                    it.exceptionHandling(
+                        unauthorizedAction = { _recipeUiState.value = UiState.Unauthorized },
+                        notFoundAction = { _recipeUiState.value = UiState.NotFound }
+                    )
                 }
         }
     }
@@ -36,9 +58,13 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch {
             likeRecipeUseCase()
                 .onSuccess {
-                    Log.d("likeRecipe", it.toString())
+                    _likeUiState.value = UiState.Success()
                 }.onFailure {
-                    Log.d("likeRecipe", it.message.toString())
+                    it.exceptionHandling(
+                        badRequestAction = { _likeUiState.value = UiState.BadRequest },
+                        unauthorizedAction = { _likeUiState.value = UiState.Unauthorized },
+                        notFoundAction = { _likeUiState.value = UiState.NotFound }
+                    )
                 }
         }
     }
@@ -47,9 +73,13 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch {
             deleteReviewUseCase(recipeIndex)
                 .onSuccess {
-                    Log.d("deleteReview", it.toString())
+                    _deleteUiState.value = UiState.Success()
                 }.onFailure {
-                    Log.d("deleteReview", it.message.toString())
+                    it.exceptionHandling(
+                        badRequestAction = { _deleteUiState.value = UiState.BadRequest },
+                        notFoundAction = { _deleteUiState.value = UiState.NotFound },
+                        forbiddenAction = { _deleteUiState.value = UiState.Forbidden }
+                    )
                 }
         }
     }
@@ -58,9 +88,13 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch {
             modifyReviewUseCase(recipeIndex, body)
                 .onSuccess {
-                    Log.d("modifyReview", it.toString())
+                    _modifyUiState.value = UiState.Success()
                 }.onFailure {
-                    Log.d("modifyReview", it.message.toString())
+                    it.exceptionHandling(
+                        badRequestAction = { _modifyUiState.value = UiState.BadRequest },
+                        notFoundAction = { _modifyUiState.value = UiState.NotFound },
+                        forbiddenAction = { _modifyUiState.value = UiState.Forbidden }
+                    )
                 }
         }
     }
@@ -69,9 +103,13 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch {
             writeReviewUseCase(recipeIndex, body)
                 .onSuccess {
-                    Log.d("writeReview", it.toString())
+                    _writeUiState.value = UiState.Success()
                 }.onFailure {
-                    Log.d("writeReview", it.message.toString())
+                    it.exceptionHandling(
+                        badRequestAction = { _writeUiState.value = UiState.BadRequest },
+                        unauthorizedAction = { _writeUiState.value = UiState.Unauthorized },
+                        notFoundAction = { _writeUiState.value = UiState.NotFound }
+                    )
                 }
         }
     }
