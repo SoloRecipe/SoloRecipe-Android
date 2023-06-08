@@ -2,6 +2,8 @@ package com.project.di
 
 import com.project.data.remote.datasource.auth.AuthDataSource
 import com.project.data.remote.datasource.auth.AuthDataSourceImpl
+import com.project.data.remote.datasource.image.ImageDataSource
+import com.project.data.remote.datasource.image.ImageDataSourceImpl
 import com.project.data.remote.datasource.like.LikeDataSource
 import com.project.data.remote.datasource.like.LikeDataSourceImpl
 import com.project.data.remote.datasource.profile.ProfileDataSource
@@ -42,4 +44,9 @@ interface RemoteDataSourceModule {
     fun bindsLikeDataSource(
         likeDataSourceImpl: LikeDataSourceImpl
     ): LikeDataSource
+
+    @Binds
+    fun bindsImageDataSource(
+        imageDataSourceImpl: ImageDataSourceImpl
+    ): ImageDataSource
 }
