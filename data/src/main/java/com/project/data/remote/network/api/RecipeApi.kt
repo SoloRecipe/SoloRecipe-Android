@@ -5,7 +5,9 @@ import com.project.data.remote.model.response.RecipeDetailResponse
 import com.project.data.remote.model.response.RecipeResponse
 import com.project.data.remote.model.response.RecipesResponse
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -37,4 +39,15 @@ interface RecipeApi {
     suspend fun getRecipeDetail(
         @Path("idx") index: Long
     ): RecipeDetailResponse
+
+    @PATCH("recipe")
+    suspend fun modifyRecipe(
+        @Path("idx") index: Long,
+        @Body body: RecipesRequest
+    )
+
+    @DELETE("recipe")
+    suspend fun deleteRecipe(
+        @Path("idx") index: Long
+    )
 }
