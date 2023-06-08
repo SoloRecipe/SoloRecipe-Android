@@ -8,4 +8,11 @@ interface AuthRepository {
     suspend fun signIn(signInRequestModel: SignInRequestModel): SignInResponseModel
 
     suspend fun signUp(signUpRequestModel: SignUpRequestModel)
+
+    suspend fun saveToken(
+        accessToken: String,
+        refreshToken: String,
+        accessTokenExp: String,
+        refreshTokenExp: String
+    )
 }
