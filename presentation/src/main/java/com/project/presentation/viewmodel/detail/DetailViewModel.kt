@@ -9,9 +9,11 @@ import com.project.domain.usecase.recipe.GetRecipeDetailUseCase
 import com.project.domain.usecase.review.DeleteReviewUseCase
 import com.project.domain.usecase.review.ModifyReviewUseCase
 import com.project.domain.usecase.review.WriteReviewUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class DetailViewModel @Inject constructor(
     private val getRecipeDetailUseCase: GetRecipeDetailUseCase,
     private val likeRecipeUseCase: LikeRecipeUseCase,

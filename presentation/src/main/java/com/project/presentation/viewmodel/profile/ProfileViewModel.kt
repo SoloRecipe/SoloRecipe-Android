@@ -7,9 +7,11 @@ import com.project.domain.model.profile.request.ProfileRequestModel
 import com.project.domain.usecase.profile.DeleteUserInfoUseCase
 import com.project.domain.usecase.profile.GetUserInfoUseCase
 import com.project.domain.usecase.profile.RenameUserNameUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val renameUserNameUseCase: RenameUserNameUseCase,

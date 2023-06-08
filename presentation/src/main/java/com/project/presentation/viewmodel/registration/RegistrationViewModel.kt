@@ -5,9 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.domain.model.recipe.request.RecipesRequestModel
 import com.project.domain.usecase.recipe.CreateRecipeUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class RegistrationViewModel @Inject constructor(
   private val createRecipeUseCase: CreateRecipeUseCase
 ): ViewModel() {

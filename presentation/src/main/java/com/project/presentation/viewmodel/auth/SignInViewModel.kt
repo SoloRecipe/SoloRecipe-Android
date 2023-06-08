@@ -6,9 +6,11 @@ import androidx.lifecycle.viewModelScope
 import com.project.domain.model.auth.request.SignInRequestModel
 import com.project.domain.usecase.auth.SaveTokenUseCase
 import com.project.domain.usecase.auth.SignInUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class SignInViewModel @Inject constructor(
     private val signInUseCase: SignInUseCase,
     private val saveTokenUseCase: SaveTokenUseCase
