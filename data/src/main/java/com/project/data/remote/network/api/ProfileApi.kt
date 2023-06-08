@@ -1,5 +1,6 @@
 package com.project.data.remote.network.api
 
+import com.project.data.remote.model.request.ProfileImageRequest
 import com.project.data.remote.model.request.ProfileRequest
 import com.project.data.remote.model.response.ProfilesResponse
 import retrofit2.http.Body
@@ -18,4 +19,9 @@ interface ProfileApi {
 
     @DELETE("user")
     suspend fun deleteUserInfo()
+
+    @PATCH("user/profile")
+    suspend fun modifyProfileImage(
+        @Body body: ProfileImageRequest
+    )
 }
