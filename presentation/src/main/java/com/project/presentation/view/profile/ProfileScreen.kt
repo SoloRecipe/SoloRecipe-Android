@@ -31,6 +31,7 @@ import com.project.design_system.theme.Body2
 import com.project.design_system.theme.Body4
 import com.project.design_system.theme.IcProfile
 import com.project.design_system.theme.SoloRecipeColor
+import com.project.domain.model.profile.request.ProfileImageRequestModel
 import com.project.domain.model.profile.request.ProfileRequestModel
 import com.project.presentation.viewmodel.profile.ProfileViewModel
 
@@ -58,8 +59,9 @@ fun ProfileScreen(
         )
         UserInfo(
             nickname = nickname,
-            changeNickname = profileViewModel::renameUserName
-        ) {}
+            changeNickname = profileViewModel::renameUserName,
+            changeImage = profileViewModel::modifyProfileImage
+        )
         Divider(
             modifier = modifier.fillMaxWidth(),
             color = SoloRecipeColor.Secondary20,
@@ -85,8 +87,9 @@ fun ProfileScreen(
 fun UserInfo(
     modifier: Modifier = Modifier,
     nickname: String,
+    profileImg: String = "",
     changeNickname: (ProfileRequestModel) -> Unit,
-    changeImage: () -> Unit
+    changeImage: (ProfileImageRequestModel) -> Unit
 ) {
     Row(
         modifier = modifier
@@ -100,7 +103,7 @@ fun UserInfo(
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null,
-                    onClick = { changeImage() }
+                    onClick = { changeImage(ProfileImageRequestModel(profileImg = profileImg)) }
                 ),
             contentDescription = "user image"
         )
