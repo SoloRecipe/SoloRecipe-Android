@@ -5,12 +5,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.domain.model.profile.request.ProfileImageRequestModel
 import com.project.domain.model.profile.request.ProfileRequestModel
+import com.project.domain.usecase.image.ImageUploadUseCase
 import com.project.domain.usecase.profile.DeleteUserInfoUseCase
 import com.project.domain.usecase.profile.GetUserInfoUseCase
 import com.project.domain.usecase.profile.ModifyProfileImageUseCase
 import com.project.domain.usecase.profile.RenameUserNameUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,7 +20,8 @@ class ProfileViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val renameUserNameUseCase: RenameUserNameUseCase,
     private val deleteUserInfoUseCase: DeleteUserInfoUseCase,
-    private val modifyProfileImageUseCase: ModifyProfileImageUseCase
+    private val modifyProfileImageUseCase: ModifyProfileImageUseCase,
+    private val imageUploadUseCase: ImageUploadUseCase
 ): ViewModel() {
     fun getUserInfo() {
         viewModelScope.launch {
@@ -64,6 +67,18 @@ class ProfileViewModel @Inject constructor(
                 }
                 .onFailure {
                     Log.d("modifyProfileImage", it.message.toString())
+                }
+        }
+    }
+
+    fun imageUpload(file: List<MultipartBody.Part>) {
+        viewModelScope.launch {
+            imageUploadUseCase(file)
+                .onSuccess {
+                    Log.d("imageUpload", it.toString())
+                }
+                .onFailure {
+                    Log.d("imageUpload", it.message.toString())
                 }
         }
     }
