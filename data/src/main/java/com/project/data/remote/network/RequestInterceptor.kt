@@ -1,7 +1,5 @@
 package com.project.data.remote.network
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.project.data.BuildConfig
@@ -57,10 +55,10 @@ class RequestInterceptor @Inject constructor(
                 val token = jsonParser.parse(response.body()!!.string()) as JsonObject
                 runBlocking {
                     localDataSource.saveToken(
-                        token["accessToken"].toString(),
-                        token["refreshToken"].toString(),
-                        token["accessExp"].toString(),
-                        token["refreshExp"].toString()
+                        token["accessToken"].asString,
+                        token["refreshToken"].asString,
+                        token["accessExp"].asString,
+                        token["refreshExp"].asString
                     )
                 }
             } else throw TokenExpiredException()
@@ -75,6 +73,6 @@ class RequestInterceptor @Inject constructor(
 }
 
 fun convertDateFormat(input: String): LocalDateTime {
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd 'T' HH:mm:ss")
-    return LocalDateTime.parse(input, formatter)
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
+    return LocalDateTime.parse(input.replace(" ", ""), formatter)
 }
