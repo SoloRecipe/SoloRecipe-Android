@@ -6,5 +6,5 @@ import javax.inject.Inject
 class GetRecipeDetailUseCase @Inject constructor(
     private val repository: RecipeRepository
 ) {
-    suspend operator fun invoke(index: Long) = repository.getRecipeDetail(index)
+    suspend operator fun invoke(index: Long) = kotlin.runCatching { repository.getRecipeDetail(index) }
 }
