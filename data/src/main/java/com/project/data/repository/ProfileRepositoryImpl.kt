@@ -1,8 +1,10 @@
 package com.project.data.repository
 
 import com.project.data.remote.datasource.profile.ProfileDataSource
+import com.project.data.remote.model.request.asProfileImageRequest
 import com.project.data.remote.model.request.asProfileRequest
 import com.project.data.remote.model.response.asProfilesResponseModel
+import com.project.domain.model.profile.request.ProfileImageRequestModel
 import com.project.domain.model.profile.request.ProfileRequestModel
 import com.project.domain.model.profile.response.ProfilesResponseModel
 import com.project.domain.repository.ProfileRepository
@@ -19,4 +21,7 @@ class ProfileRepositoryImpl @Inject constructor(
 
     override suspend fun deleteUserInfo() =
         profileDataSource.deleteUserInfo()
+
+    override suspend fun modifyProfileImage(profileImageRequestModel: ProfileImageRequestModel) =
+        profileDataSource.modifyProfileImage(profileImageRequestModel.asProfileImageRequest())
 }
