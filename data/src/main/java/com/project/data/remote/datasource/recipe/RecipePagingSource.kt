@@ -3,7 +3,7 @@ package com.project.data.remote.datasource.recipe
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.project.data.remote.model.response.RecipeResponse
-import com.project.data.remote.network.RecipeApi
+import com.project.data.remote.network.api.RecipeApi
 import com.project.data.remote.util.safeApiCall
 
 class RecipePagingSource(

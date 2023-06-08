@@ -1,4 +1,4 @@
-package com.project.data.remote.network
+package com.project.data.remote.network.api
 
 import retrofit2.http.POST
 

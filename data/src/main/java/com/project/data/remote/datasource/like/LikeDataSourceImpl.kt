@@ -1,6 +1,6 @@
 package com.project.data.remote.datasource.like
 
-import com.project.data.remote.network.LikeApi
+import com.project.data.remote.network.api.LikeApi
 import com.project.data.remote.util.safeApiCall
 import javax.inject.Inject
 

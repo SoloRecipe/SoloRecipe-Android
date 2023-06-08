@@ -1,10 +1,11 @@
 package com.project.di
 
-import com.project.data.remote.network.AuthApi
-import com.project.data.remote.network.LikeApi
-import com.project.data.remote.network.ProfileApi
-import com.project.data.remote.network.RecipeApi
-import com.project.data.remote.network.ReviewApi
+import com.project.data.remote.network.RequestInterceptor
+import com.project.data.remote.network.api.AuthApi
+import com.project.data.remote.network.api.LikeApi
+import com.project.data.remote.network.api.ProfileApi
+import com.project.data.remote.network.api.RecipeApi
+import com.project.data.remote.network.api.ReviewApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,8 +30,14 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(interceptor: HttpLoggingInterceptor): OkHttpClient =
-        OkHttpClient.Builder().addInterceptor(interceptor).build()
+    fun provideOkHttpClient(
+        httpLoggingInterceptor: HttpLoggingInterceptor,
+        requestInterceptor: RequestInterceptor
+    ): OkHttpClient =
+        OkHttpClient.Builder()
+            .addInterceptor(httpLoggingInterceptor)
+            .addInterceptor(requestInterceptor)
+            .build()
 
     @Provides
     @Singleton

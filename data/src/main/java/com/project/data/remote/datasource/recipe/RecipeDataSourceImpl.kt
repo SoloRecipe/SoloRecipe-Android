@@ -2,7 +2,7 @@ package com.project.data.remote.datasource.recipe
 
 import com.project.data.remote.model.request.RecipesRequest
 import com.project.data.remote.model.response.RecipeResponse
-import com.project.data.remote.network.RecipeApi
+import com.project.data.remote.network.api.RecipeApi
 import com.project.data.remote.util.safeApiCall
 import javax.inject.Inject
 

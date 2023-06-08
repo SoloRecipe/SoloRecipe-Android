@@ -1,4 +1,4 @@
-package com.project.data.remote.network
+package com.project.data.remote.network.api
 
 import com.project.data.remote.model.request.ProfileRequest
 import com.project.data.remote.model.response.ProfilesResponse

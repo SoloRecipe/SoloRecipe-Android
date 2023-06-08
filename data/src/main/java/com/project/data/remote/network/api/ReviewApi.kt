@@ -1,4 +1,4 @@
-package com.project.data.remote.network
+package com.project.data.remote.network.api
 
 import com.project.data.remote.model.request.ReviewRequest
 import retrofit2.http.Body
