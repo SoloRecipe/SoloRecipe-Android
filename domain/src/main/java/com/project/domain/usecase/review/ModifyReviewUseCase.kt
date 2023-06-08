@@ -1,4 +1,4 @@
-package com.project.domain.usecase
+package com.project.domain.usecase.review
 
 import com.project.domain.model.review.request.ReviewRequestModel
 import com.project.domain.repository.ReviewRepository
