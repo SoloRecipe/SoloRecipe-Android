@@ -127,8 +127,8 @@ class DetailViewModel @Inject constructor(
                 }
                 .onFailure {
                     it.exceptionHandling(
-                        badRequestAction = { _deleteRecipeUiState.value = UiState.BadRequest },
                         unauthorizedAction = { _deleteRecipeUiState.value = UiState.Unauthorized },
+                        forbiddenAction = { _deleteRecipeUiState.value = UiState.Forbidden },
                         notFoundAction = { _deleteRecipeUiState.value = UiState.NotFound }
                     )
                 }

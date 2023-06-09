@@ -72,7 +72,9 @@ class RegistrationViewModel @Inject constructor(
                 .onFailure {
                     it.exceptionHandling(
                         badRequestAction = { _modifyUistate.value = UiState.BadRequest },
-                        unauthorizedAction = { _modifyUistate.value = UiState.Unauthorized }
+                        unauthorizedAction = { _modifyUistate.value = UiState.Unauthorized },
+                        forbiddenAction = { _modifyUistate.value = UiState.Forbidden },
+                        notFoundAction = { _modifyUistate.value = UiState.NotFound }
                     )
                 }
         }
