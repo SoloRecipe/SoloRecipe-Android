@@ -63,4 +63,5 @@ dependencies {
     implementation(Dependencies.AndroidX.HILT_NAVIGATION_COMPOSE)
     implementation(Dependencies.AndroidX.LIFECYCLE_RUNTIME_COMPOSE)
     implementation(Dependencies.Libraries.RETROFIT)
+    implementation(Dependencies.Libraries.LANDSCAPIST_GLIDE)
 }
