@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.Divider
@@ -27,10 +28,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.project.design_system.R
 import com.project.design_system.component.SoloRecipeAppBar
 import com.project.design_system.component.SoloRecipeButton
 import com.project.design_system.component.SoloRecipeItem
@@ -47,6 +51,8 @@ import com.project.presentation.viewmodel.util.getPathFromUri
 import okhttp3.MultipartBody
 import java.io.File
 import com.project.presentation.viewmodel.util.UiState
+import com.skydoves.landscapist.ImageOptions
+import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
 fun ProfileScreen(
@@ -54,6 +60,10 @@ fun ProfileScreen(
     profileViewModel: ProfileViewModel = hiltViewModel(),
     navigateToSignIn: () -> Unit
 ) {
+    LaunchedEffect(Unit) {
+        profileViewModel.getUserInfo()
+    }
+
     val userUiState by profileViewModel.userUiState.collectAsStateWithLifecycle()
     val deleteUiState by profileViewModel.deleteUiState.collectAsStateWithLifecycle()
 
@@ -69,10 +79,6 @@ fun ProfileScreen(
         UiState.Loading -> {}
         is UiState.Success -> {
             var nickname by remember { mutableStateOf(state.data?.name ?: "") }
-
-            LaunchedEffect(Unit) {
-                profileViewModel.getUserInfo()
-            }
 
             Column(
                 modifier = modifier
