@@ -1,6 +1,5 @@
 package com.project.presentation.viewmodel.main
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -9,8 +8,6 @@ import com.project.domain.model.auth.response.RecipeResponseModel
 import com.project.domain.usecase.recipe.GetAllRecipesUseCase
 import com.project.domain.usecase.recipe.GetRecommendRecipesUseCase
 import com.project.domain.usecase.recipe.SearchRecipeUseCase
-import com.project.presentation.view.main.ALL
-import com.project.presentation.view.main.RECOMMEND
 import com.project.presentation.viewmodel.util.UiState
 import com.project.presentation.viewmodel.util.exceptionHandling
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,15 +25,10 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiState: MutableStateFlow<UiState<RecipeResponseModel>> = MutableStateFlow(UiState.Loading)
     val uiState = _uiState.asStateFlow()
-    fun getRecipes(type: Int = ALL): Flow<PagingData<RecipeResponseModel>> {
-        val recipes = if (type == RECOMMEND) {
-            getRecommendRecipesUseCase().cachedIn(viewModelScope)
-        } else {
-            getAllRecipesUseCase().cachedIn(viewModelScope)
-        }
-        Log.d("recipes", recipes.toString())
-        return recipes
-    }
+
+    fun getRecommendRecipes(): Flow<PagingData<RecipeResponseModel>> = getRecommendRecipesUseCase().cachedIn(viewModelScope)
+
+    fun getAllRecipes(): Flow<PagingData<RecipeResponseModel>> = getAllRecipesUseCase().cachedIn(viewModelScope)
 
     fun searchRecipe(name: String) {
         viewModelScope.launch {

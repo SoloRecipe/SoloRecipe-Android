@@ -70,11 +70,8 @@ fun MainScreen(
 
     var currentPage by remember { mutableStateOf(RECOMMEND) }
 
-    val recipes = if (currentPage == RECOMMEND) {
-        mainViewModel.getRecipes(RECOMMEND).collectAsLazyPagingItems()
-    } else {
-        mainViewModel.getRecipes(ALL).collectAsLazyPagingItems()
-    }
+    val recommendRecipes = mainViewModel.getRecommendRecipes().collectAsLazyPagingItems()
+    val allRecipes = mainViewModel.getAllRecipes().collectAsLazyPagingItems()
 
     Scaffold(
         floatingActionButton = {
@@ -142,12 +139,12 @@ fun MainScreen(
                 if (page == RECOMMEND) {
                     RecipeList(
                         spanItem = { TopItem(recipe = it) { navigateToDetail(1) } },
-                        recipes = recipes
+                        recipes = recommendRecipes
                     ) {
                         navigateToDetail(1)
                     }
                 } else {
-                    RecipeList(recipes = recipes) {
+                    RecipeList(recipes = allRecipes) {
                         navigateToDetail(1)
                     }
                 }
