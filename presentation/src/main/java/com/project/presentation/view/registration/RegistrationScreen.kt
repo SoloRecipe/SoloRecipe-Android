@@ -52,7 +52,7 @@ import com.project.presentation.viewmodel.util.UiState
 fun RegistrationScreen(
     modifier: Modifier = Modifier,
     registrationViewModel: RegistrationViewModel = hiltViewModel(),
-    index: Long?,
+    index: String?,
     type: String?,
     navigateToMain: () -> Unit,
 ) {
@@ -114,7 +114,7 @@ fun RegistrationScreen(
                         )
                     } else {
                         registrationViewModel.modifyRecipe(
-                            index = checkNotNull(index),
+                            index = checkNotNull(index?.toLong()),
                             body = RecipesRequestModel(
                                 name = title,
                                 thumbnail = "",

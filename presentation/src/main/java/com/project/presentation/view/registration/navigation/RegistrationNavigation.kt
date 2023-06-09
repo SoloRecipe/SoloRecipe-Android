@@ -20,14 +20,14 @@ fun NavGraphBuilder.registrationScreen(navigateToMain: () -> Unit) {
         arguments = listOf(
             navArgument("type") { type = NavType.StringType },
             navArgument("index") {
-                type = NavType.LongType
+                type = NavType.StringType
                 nullable = true
             }
         )
     ) { backStackEntry ->
         RegistrationScreen(
             type = backStackEntry.arguments?.getString("type"),
-            index = backStackEntry.arguments?.getLong("index"),
+            index = backStackEntry.arguments?.getString("index"),
             navigateToMain = navigateToMain
         )
     }
