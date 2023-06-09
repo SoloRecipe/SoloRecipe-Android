@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.project.domain.model.recipe.response.RecipeDetailResponseModel
 import com.project.domain.model.review.request.ReviewRequestModel
 import com.project.domain.usecase.like.LikeRecipeUseCase
+import com.project.domain.usecase.recipe.DeleteRecipeUseCase
 import com.project.domain.usecase.recipe.GetRecipeDetailUseCase
 import com.project.domain.usecase.review.DeleteReviewUseCase
 import com.project.domain.usecase.review.ModifyReviewUseCase
@@ -23,7 +24,8 @@ class DetailViewModel @Inject constructor(
     private val likeRecipeUseCase: LikeRecipeUseCase,
     private val deleteReviewUseCase: DeleteReviewUseCase,
     private val modifyReviewUseCase: ModifyReviewUseCase,
-    private val writeReviewUseCase: WriteReviewUseCase
+    private val writeReviewUseCase: WriteReviewUseCase,
+    private val deleteRecipeUseCase: DeleteRecipeUseCase
 ) : ViewModel() {
     private val _recipeUiState: MutableStateFlow<UiState<RecipeDetailResponseModel>> = MutableStateFlow(UiState.Loading)
     val recipeUiState = _recipeUiState.asStateFlow()
@@ -39,6 +41,9 @@ class DetailViewModel @Inject constructor(
 
     private val _writeUiState: MutableStateFlow<UiState<Nothing>> = MutableStateFlow(UiState.Loading)
     val writeUiState = _writeUiState.asStateFlow()
+
+    private val _deleteRecipeUiState: MutableStateFlow<UiState<Nothing>> = MutableStateFlow(UiState.Loading)
+    val deleteRecipeUiState = _deleteRecipeUiState.asStateFlow()
 
     fun getRecipeDetail(index: Long) {
         viewModelScope.launch {
@@ -109,6 +114,22 @@ class DetailViewModel @Inject constructor(
                         badRequestAction = { _writeUiState.value = UiState.BadRequest },
                         unauthorizedAction = { _writeUiState.value = UiState.Unauthorized },
                         notFoundAction = { _writeUiState.value = UiState.NotFound }
+                    )
+                }
+        }
+    }
+
+    fun deleteRecipe(index: Long) {
+        viewModelScope.launch {
+            deleteRecipeUseCase(index)
+                .onSuccess {
+                    _deleteRecipeUiState.value = UiState.Success()
+                }
+                .onFailure {
+                    it.exceptionHandling(
+                        unauthorizedAction = { _deleteRecipeUiState.value = UiState.Unauthorized },
+                        forbiddenAction = { _deleteRecipeUiState.value = UiState.Forbidden },
+                        notFoundAction = { _deleteRecipeUiState.value = UiState.NotFound }
                     )
                 }
         }
