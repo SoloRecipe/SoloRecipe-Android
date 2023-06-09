@@ -26,14 +26,18 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.project.design_system.component.SoloRecipeAppBar
 import com.project.design_system.component.SoloRecipeItem
@@ -44,6 +48,7 @@ import com.project.design_system.theme.IcProfile
 import com.project.design_system.theme.IcSearch
 import com.project.design_system.theme.SoloRecipeTheme
 import com.project.design_system.theme.Subtitle2
+import com.project.domain.model.auth.response.RecipeResponseModel
 import com.project.presentation.R
 import com.project.presentation.viewmodel.main.MainViewModel
 import kotlinx.coroutines.launch
@@ -62,7 +67,14 @@ fun MainScreen(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState()
-    val recipes = mainViewModel.getRecipes().collectAsLazyPagingItems()
+
+    var currentPage by remember { mutableStateOf(RECOMMEND) }
+
+    val recipes = if (currentPage == RECOMMEND) {
+        mainViewModel.getRecipes(RECOMMEND).collectAsLazyPagingItems()
+    } else {
+        mainViewModel.getRecipes(ALL).collectAsLazyPagingItems()
+    }
 
     Scaffold(
         floatingActionButton = {
@@ -116,6 +128,7 @@ fun MainScreen(
             TabBar(currentPage = pagerState.currentPage) {
                 coroutineScope.launch {
                     pagerState.animateScrollToPage(it)
+                    currentPage = it
                 }
             }
             Spacer(modifier = modifier.height(12.dp))
@@ -125,12 +138,18 @@ fun MainScreen(
                 pageCount = 2,
                 pageSpacing = 26.dp
             ) { page ->
+                currentPage = page
                 if (page == RECOMMEND) {
-                    RecipeList(spanItem = { TopItem { navigateToDetail(1) } }) {
+                    RecipeList(
+                        spanItem = { TopItem(recipe = it) { navigateToDetail(1) } },
+                        recipes = recipes
+                    ) {
                         navigateToDetail(1)
                     }
                 } else {
-                    RecipeList { navigateToDetail(1) }
+                    RecipeList(recipes = recipes) {
+                        navigateToDetail(1)
+                    }
                 }
             }
         }
@@ -180,8 +199,9 @@ fun TabBar(
 @Composable
 fun RecipeList(
     modifier: Modifier = Modifier,
-    spanItem: (@Composable () -> Unit)? = null,
-    navigateToDetail: () -> Unit
+    recipes: LazyPagingItems<RecipeResponseModel>,
+    spanItem: (@Composable (RecipeResponseModel?) -> Unit)? = null,
+    navigateToDetail: (idx: Long) -> Unit
 ) {
     LazyVerticalGrid(
         modifier = modifier.fillMaxWidth(),
@@ -192,20 +212,20 @@ fun RecipeList(
     ) {
         spanItem?.let { spanItem ->
             item(span = { GridItemSpan(2) }) {
-                spanItem()
+                spanItem(recipes[0])
             }
         }
-        items(10) {
+        items(recipes.itemCount) {
             SoloRecipeItem(
                 modifier = modifier
                     .fillMaxWidth()
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null,
-                        onClick = { navigateToDetail() }
+                        onClick = { navigateToDetail(recipes[it]?.idx ?: 0) }
                     ),
-                imageUrl = "https://example.com",
-                content = { Body4(text = "돈가스") }
+                imageUrl = recipes[it]?.thumbnail ?: "",
+                content = { Body4(text = recipes[it]?.name ?: "") }
             )
         }
     }
@@ -214,7 +234,8 @@ fun RecipeList(
 @Composable
 fun TopItem(
     modifier: Modifier = Modifier,
-    navigateToDetail: () -> Unit
+    recipe: RecipeResponseModel?,
+    navigateToDetail: (idx: Long) -> Unit
 ) {
     Column {
         SoloRecipeItem(
@@ -224,10 +245,10 @@ fun TopItem(
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null,
-                    onClick = { navigateToDetail() }
+                    onClick = { navigateToDetail(recipe?.idx ?: 0) }
                 ),
-            imageUrl = "",
-            content = { Body2(text = "첫번째 아이템!") }
+            imageUrl = recipe?.thumbnail ?: "",
+            content = { Body2(text = recipe?.name ?: "") }
         )
         Spacer(modifier = modifier.height(20.dp))
     }
