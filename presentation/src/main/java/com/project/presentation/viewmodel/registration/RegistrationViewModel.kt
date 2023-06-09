@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.project.domain.model.recipe.request.RecipesRequestModel
 import com.project.domain.usecase.image.ImageUploadUseCase
 import com.project.domain.usecase.recipe.CreateRecipeUseCase
+import com.project.domain.usecase.recipe.ModifyRecipeUseCase
 import com.project.presentation.viewmodel.util.UiState
 import com.project.presentation.viewmodel.util.exceptionHandling
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,20 +19,27 @@ import javax.inject.Inject
 @HiltViewModel
 class RegistrationViewModel @Inject constructor(
     private val createRecipeUseCase: CreateRecipeUseCase,
-    private val imageUploadUseCase: ImageUploadUseCase
+    private val imageUploadUseCase: ImageUploadUseCase,
+    private val modifyRecipeUseCase: ModifyRecipeUseCase
 ) : ViewModel() {
-    private val _uiState: MutableStateFlow<UiState<Nothing>> = MutableStateFlow(UiState.Loading)
-    val uiState = _uiState.asStateFlow()
+    private val _createUiState: MutableStateFlow<UiState<Nothing>> = MutableStateFlow(UiState.Loading)
+    val createUiState = _createUiState.asStateFlow()
+
+    private val _imageUploadUiState: MutableStateFlow<UiState<Nothing>> = MutableStateFlow(UiState.Loading)
+    val imageUploadUiState = _imageUploadUiState.asStateFlow()
+
+    private val _modifyUistate: MutableStateFlow<UiState<Nothing>> = MutableStateFlow(UiState.Loading)
+    val modifyUiState = _modifyUistate.asStateFlow()
     fun createRecipe(body: RecipesRequestModel) {
         viewModelScope.launch {
             createRecipeUseCase(body)
                 .onSuccess {
-                    _uiState.value = UiState.Success()
+                    _createUiState.value = UiState.Success()
                 }
                 .onFailure {
                     it.exceptionHandling(
-                        badRequestAction = { _uiState.value = UiState.BadRequest },
-                        unauthorizedAction = { _uiState.value = UiState.Unauthorized }
+                        badRequestAction = { _createUiState.value = UiState.BadRequest },
+                        unauthorizedAction = { _createUiState.value = UiState.Unauthorized }
                     )
                 }
         }
@@ -41,10 +49,31 @@ class RegistrationViewModel @Inject constructor(
         viewModelScope.launch {
             imageUploadUseCase(file)
                 .onSuccess {
-                    Log.d("imageUpload", it.toString())
+                    _imageUploadUiState.value = UiState.Success()
                 }
                 .onFailure {
-                    Log.d("imageUpload", it.message.toString())
+                    it.exceptionHandling(
+                        badRequestAction = { _imageUploadUiState.value = UiState.BadRequest },
+                        unauthorizedAction = { _imageUploadUiState.value = UiState.Unauthorized }
+                    )
+                }
+        }
+    }
+
+    fun modifyRecipe(
+        index:Long,
+        body: RecipesRequestModel
+    ) {
+        viewModelScope.launch {
+            modifyRecipeUseCase(index, body)
+                .onSuccess {
+                    _modifyUistate.value = UiState.Success()
+                }
+                .onFailure {
+                    it.exceptionHandling(
+                        badRequestAction = { _modifyUistate.value = UiState.BadRequest },
+                        unauthorizedAction = { _modifyUistate.value = UiState.Unauthorized }
+                    )
                 }
         }
     }
