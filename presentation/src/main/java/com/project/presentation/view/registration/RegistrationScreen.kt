@@ -51,10 +51,10 @@ import com.project.presentation.viewmodel.util.UiState
 @Composable
 fun RegistrationScreen(
     modifier: Modifier = Modifier,
+    registrationViewModel: RegistrationViewModel = hiltViewModel(),
     index: Long?,
     type: String?,
     navigateToMain: () -> Unit,
-    registrationViewModel: RegistrationViewModel = hiltViewModel(),
 ) {
     var step by remember { mutableStateOf(5) }
     var title by remember { mutableStateOf("") }
