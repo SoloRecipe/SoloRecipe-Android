@@ -1,6 +1,5 @@
 package com.project.presentation.viewmodel.registration
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.domain.model.recipe.request.RecipesRequestModel
@@ -25,8 +24,8 @@ class RegistrationViewModel @Inject constructor(
     private val _createUiState: MutableStateFlow<UiState<Nothing>> = MutableStateFlow(UiState.Loading)
     val createUiState = _createUiState.asStateFlow()
 
-    private val _modifyUistate: MutableStateFlow<UiState<Nothing>> = MutableStateFlow(UiState.Loading)
-    val modifyUiState = _modifyUistate.asStateFlow()
+    private val _modifyUiState: MutableStateFlow<UiState<Nothing>> = MutableStateFlow(UiState.Loading)
+    val modifyUiState = _modifyUiState.asStateFlow()
     fun createRecipe(body: RecipesRequestModel) {
         viewModelScope.launch {
             createRecipeUseCase(body)
@@ -57,14 +56,14 @@ class RegistrationViewModel @Inject constructor(
         viewModelScope.launch {
             modifyRecipeUseCase(index, body)
                 .onSuccess {
-                    _modifyUistate.value = UiState.Success()
+                    _modifyUiState.value = UiState.Success()
                 }
                 .onFailure {
                     it.exceptionHandling(
-                        badRequestAction = { _modifyUistate.value = UiState.BadRequest },
-                        unauthorizedAction = { _modifyUistate.value = UiState.Unauthorized },
-                        forbiddenAction = { _modifyUistate.value = UiState.Forbidden },
-                        notFoundAction = { _modifyUistate.value = UiState.NotFound }
+                        badRequestAction = { _modifyUiState.value = UiState.BadRequest },
+                        unauthorizedAction = { _modifyUiState.value = UiState.Unauthorized },
+                        forbiddenAction = { _modifyUiState.value = UiState.Forbidden },
+                        notFoundAction = { _modifyUiState.value = UiState.NotFound }
                     )
                 }
         }
