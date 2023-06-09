@@ -18,10 +18,10 @@ class RecipePagingSource(
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, RecipeResponse> {
-        val page = params.key ?: 1
+        val page = params.key ?: 0
         val response = safeApiCall {
             if (filter == "recommend") {
-                recipeApi.getAllRecipes(
+                recipeApi.getRecommendRecipes(
                     page = page,
                     size = params.loadSize
                 )

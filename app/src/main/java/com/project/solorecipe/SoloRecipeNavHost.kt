@@ -45,7 +45,11 @@ fun SoloRecipeNavHost(
                 navController.navigateToRegistration()
             }
         )
-        profileScreen()
-        registrationScreen()
+        registrationScreen(navigateToMain = {
+            navController.navigateToMain()
+        })
+        profileScreen(navigateToSignIn = {
+            navController.navigateToSignIn()
+        })
     }
 }

@@ -35,6 +35,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.project.design_system.component.SoloRecipeAppBar
 import com.project.design_system.component.SoloRecipeButton
 import com.project.design_system.theme.Body2
@@ -45,14 +46,31 @@ import com.project.design_system.theme.SoloRecipeTypography
 import com.project.domain.model.recipe.request.RecipeRequestModel
 import com.project.domain.model.recipe.request.RecipesRequestModel
 import com.project.presentation.viewmodel.registration.RegistrationViewModel
+import com.project.presentation.viewmodel.util.UiState
 
 @Composable
 fun RegistrationScreen(
     modifier: Modifier = Modifier,
-    registrationViewModel: RegistrationViewModel = hiltViewModel()
+    registrationViewModel: RegistrationViewModel = hiltViewModel(),
+    index: Long?,
+    type: String?,
+    navigateToMain: () -> Unit,
 ) {
-    val list: List<RecipeRequestModel> = listOf()
+    var step by remember { mutableStateOf(5) }
+    var title by remember { mutableStateOf("") }
 
+    val recipeProcess: List<RecipeRequestModel> = listOf()
+
+    val createUiState by registrationViewModel.createUiState.collectAsStateWithLifecycle()
+    val modifyUiState by registrationViewModel.modifyUiState.collectAsStateWithLifecycle()
+
+    when (createUiState) {
+        UiState.Loading -> {}
+        is UiState.Success -> { navigateToMain() }
+        UiState.BadRequest -> {}
+        UiState.Unauthorized -> {}
+        else -> {}
+    }
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -63,7 +81,7 @@ fun RegistrationScreen(
             Spacer(modifier = modifier.height(16.dp))
             Thumbnail()
             Spacer(modifier = modifier.height(9.dp))
-            ThumbnailTitle()
+            ThumbnailTitle(title = title) { title = it }
             Spacer(modifier = modifier.height(30.dp))
             Column(
                 modifier = modifier
@@ -71,7 +89,7 @@ fun RegistrationScreen(
                     .padding(horizontal = 26.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                repeat(5) {
+                repeat(step) {
                     StepItem()
                 }
             }
@@ -79,11 +97,33 @@ fun RegistrationScreen(
             RecipeAddButton(
                 name = "",
                 thumbnail = "",
-                recipeProcess = list,
-                onClick = registrationViewModel::createRecipe
+                recipeProcess = recipeProcess,
+                onClick = { step++ }
             )
             Spacer(modifier = modifier.height(50.dp))
-            RecipeRegisterButton()
+            RecipeRegisterButton(
+                type = type ?: "registration",
+                onClick = {
+                    if (type == "registration") {
+                        registrationViewModel.createRecipe(
+                            RecipesRequestModel(
+                                name = title,
+                                thumbnail = "",
+                                recipeProcess = recipeProcess
+                            )
+                        )
+                    } else {
+                        registrationViewModel.modifyRecipe(
+                            index = checkNotNull(index),
+                            body = RecipesRequestModel(
+                                name = title,
+                                thumbnail = "",
+                                recipeProcess = recipeProcess
+                            )
+                        )
+                    }
+                }
+            )
             Spacer(modifier = modifier.height(30.dp))
         }
     }
@@ -160,9 +200,11 @@ fun StepItem(
 }
 
 @Composable
-fun ThumbnailTitle(modifier: Modifier = Modifier) {
-    var title by remember { mutableStateOf("") }
-
+fun ThumbnailTitle(
+    modifier: Modifier = Modifier,
+    title: String,
+    onValueChanged: (String) -> Unit
+) {
     TextField(
         modifier = modifier
             .fillMaxWidth()
@@ -170,7 +212,7 @@ fun ThumbnailTitle(modifier: Modifier = Modifier) {
         value = title,
         hint = "제목을 입력해주세요",
         textStyle = SoloRecipeTypography.body2,
-        onValueChanged = { title = it }
+        onValueChanged = { onValueChanged(it) }
     )
 }
 
@@ -243,12 +285,18 @@ fun RecipeAddButton(
 }
 
 @Composable
-fun RecipeRegisterButton(modifier: Modifier = Modifier) {
+fun RecipeRegisterButton(
+    modifier: Modifier = Modifier,
+    type: String,
+    onClick: () -> Unit
+) {
     SoloRecipeButton(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 26.dp),
-        text = "등록하기",
+        text = if (type == "registration") "등록하기" else "수정하기",
         containerColor = SoloRecipeColor.Primary10
-    ) {}
+    ) {
+        onClick()
+    }
 }
