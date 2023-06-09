@@ -1,5 +1,8 @@
 package com.project.presentation.view.profile
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -22,6 +25,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.project.design_system.component.SoloRecipeAppBar
@@ -31,9 +35,12 @@ import com.project.design_system.theme.Body2
 import com.project.design_system.theme.Body4
 import com.project.design_system.theme.IcProfile
 import com.project.design_system.theme.SoloRecipeColor
-import com.project.domain.model.profile.request.ProfileImageRequestModel
 import com.project.domain.model.profile.request.ProfileRequestModel
 import com.project.presentation.viewmodel.profile.ProfileViewModel
+import com.project.presentation.viewmodel.util.changeToPartList
+import com.project.presentation.viewmodel.util.getPathFromUri
+import okhttp3.MultipartBody
+import java.io.File
 
 @Composable
 fun ProfileScreen(
@@ -60,7 +67,7 @@ fun ProfileScreen(
         UserInfo(
             nickname = nickname,
             changeNickname = profileViewModel::renameUserName,
-            changeImage = profileViewModel::modifyProfileImage
+            imageUpload = profileViewModel::imageUpload
         )
         Divider(
             modifier = modifier.fillMaxWidth(),
@@ -78,7 +85,9 @@ fun ProfileScreen(
             thickness = 1.dp
         )
         Spacer(modifier = modifier.height(40.dp))
-        LogoutButton(logout = profileViewModel::deleteUserInfo)
+        LogoutButton(
+            logout = profileViewModel::deleteUserInfo
+        )
         Spacer(modifier = modifier.weight(1f))
     }
 }
@@ -87,10 +96,18 @@ fun ProfileScreen(
 fun UserInfo(
     modifier: Modifier = Modifier,
     nickname: String,
-    profileImg: String = "",
     changeNickname: (ProfileRequestModel) -> Unit,
-    changeImage: (ProfileImageRequestModel) -> Unit
+    imageUpload: (List<MultipartBody.Part>) -> Unit
 ) {
+    val context = LocalContext.current
+    val profileImageUri = remember { mutableStateOf(Uri.EMPTY) }
+    val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
+        profileImageUri.value = it
+        val file = File(getPathFromUri(context, profileImageUri.value))
+        val partList = changeToPartList(file)
+        imageUpload(partList)
+    }
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -103,7 +120,7 @@ fun UserInfo(
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null,
-                    onClick = { changeImage(ProfileImageRequestModel(profileImg = profileImg)) }
+                    onClick = { galleryLauncher.launch("image/*") }
                 ),
             contentDescription = "user image"
         )
@@ -158,7 +175,7 @@ fun LikedRecipeList(modifier: Modifier = Modifier) {
             items(5) {
                 SoloRecipeItem(
                     imageUrl = "https://pixabay.com/ko/photos/%ed%8c%ac%ec%bc%80%ec%9d%b4%ed%81%ac-%eb%a9%94%ec%9d%b4%ed%94%8c-%ec%8b%9c%eb%9f%bd-%eb%9d%bc%ec%a6%88%eb%b2%a0%eb%a6%ac-2291908/",
-                    content = { Body4(text = "피자")}
+                    content = { Body4(text = "피자") }
                 )
             }
         }
