@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.project.design_system.component.SoloRecipeButton
 import com.project.design_system.component.SoloRecipeTextField
 import com.project.design_system.theme.Body3
@@ -36,18 +37,30 @@ import com.project.design_system.theme.SoloRecipeTheme
 import com.project.design_system.theme.Subtitle1
 import com.project.domain.model.auth.request.SignUpRequestModel
 import com.project.presentation.viewmodel.auth.SignUpViewModel
+import com.project.presentation.viewmodel.util.UiState
 
 @Composable
 fun SignUpScreen(
     modifier: Modifier = Modifier,
-    signUpViewModel: SignUpViewModel = hiltViewModel()
+    signUpViewModel: SignUpViewModel = hiltViewModel(),
+    navigateToSignIn: () -> Unit
 ) {
+    val uiState by signUpViewModel.uiState.collectAsStateWithLifecycle()
+
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
     var nickname by remember { mutableStateOf("") }
     var isAgreed by remember { mutableStateOf(false) }
     var isPasswordShowed by remember { mutableStateOf(false) }
+
+    when (uiState) {
+        UiState.Loading -> {}
+        is UiState.Success -> { navigateToSignIn() }
+        UiState.Unauthorized -> {}
+        UiState.NotFound -> {}
+        else -> {}
+    }
 
     Column(
         modifier = modifier
