@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.project.design_system.component.SoloRecipeButton
 import com.project.design_system.component.SoloRecipeTextField
 import com.project.design_system.theme.Body3
@@ -30,6 +31,7 @@ import com.project.design_system.theme.Subtitle1
 import com.project.domain.model.auth.request.SignInRequestModel
 import com.project.presentation.R
 import com.project.presentation.viewmodel.auth.SignInViewModel
+import com.project.presentation.viewmodel.util.UiState
 
 @Composable
 fun SignInScreen(
@@ -38,8 +40,18 @@ fun SignInScreen(
     navigateToSignUp: () -> Unit,
     navigateToMain: () -> Unit
 ) {
+    val uiState by signInViewModel.uiState.collectAsStateWithLifecycle()
+
     var id by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+
+    when (uiState) {
+        UiState.Loading -> {}
+        is UiState.Success -> { navigateToMain() }
+        UiState.BadRequest -> {}
+        UiState.NotFound -> {}
+        else -> {}
+    }
 
     Column(
         modifier = modifier
@@ -85,7 +97,7 @@ fun SignInScreen(
                     password = password
                 )
             )
-            navigateToMain()
+//            navigateToMain()
         }
         Spacer(modifier = modifier.height(32.dp))
         Row(

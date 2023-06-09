@@ -3,6 +3,7 @@ package com.project.solorecipe
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.project.presentation.view.auth.signin.navigation.navigateToSignIn
 import com.project.presentation.view.auth.signin.navigation.signInScreen
 import com.project.presentation.view.auth.signup.navigation.navigateToSignUp
 import com.project.presentation.view.auth.signup.navigation.signUpScreen
@@ -29,7 +30,9 @@ fun SoloRecipeNavHost(
                 navController.navigateToMain()
             }
         )
-        signUpScreen()
+        signUpScreen(navigateToSignIn = {
+            navController.navigateToSignIn()
+        })
         detailScreen()
         mainScreen(
             navigateToProfile = {
