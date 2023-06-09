@@ -120,7 +120,6 @@ fun ProfileScreen(
 fun UserInfo(
     modifier: Modifier = Modifier,
     nickname: String,
-    profileImg: String = "",
     onNicknameChanged: (String) -> Unit,
     changeNickname: (ProfileRequestModel) -> Unit,
     imageUpload: (List<MultipartBody.Part>) -> Unit
