@@ -97,7 +97,6 @@ fun SignInScreen(
                     password = password
                 )
             )
-//            navigateToMain()
         }
         Spacer(modifier = modifier.height(32.dp))
         Row(
