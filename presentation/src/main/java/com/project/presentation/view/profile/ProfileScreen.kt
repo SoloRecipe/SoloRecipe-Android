@@ -147,15 +147,20 @@ fun UserInfo(
             .padding(top = 30.dp, bottom = 17.dp),
         horizontalArrangement = Arrangement.Center
     ) {
-        IcProfile(
-            modifier = modifier
+        GlideImage(
+            imageModel = {
+                if (profileImageUri.value.toString() != "") profileImageUri.value
+                else R.drawable.ic_profile
+            },
+            modifier = Modifier
                 .size(85.dp)
+                .clip(shape = RoundedCornerShape(8.dp))
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null,
                     onClick = { galleryLauncher.launch("image/*") }
                 ),
-            contentDescription = "user image"
+            imageOptions = ImageOptions(contentScale = ContentScale.Crop)
         )
     }
     Row(
