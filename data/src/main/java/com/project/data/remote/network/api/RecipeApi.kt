@@ -35,18 +35,18 @@ interface RecipeApi {
         @Body body: RecipesRequest
     )
 
-    @GET("recipe/detail")
+    @GET("recipe/detail/{idx}")
     suspend fun getRecipeDetail(
         @Path("idx") index: Long
     ): RecipeDetailResponse
 
-    @PATCH("recipe")
+    @PATCH("recipe/{idx}")
     suspend fun modifyRecipe(
         @Path("idx") index: Long,
         @Body body: RecipesRequest
     )
 
-    @DELETE("recipe")
+    @DELETE("recipe/{idx}")
     suspend fun deleteRecipe(
         @Path("idx") index: Long
     )

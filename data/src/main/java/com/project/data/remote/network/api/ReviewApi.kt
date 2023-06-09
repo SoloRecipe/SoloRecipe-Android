@@ -8,19 +8,19 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface ReviewApi {
-    @POST("review")
+    @POST("review/{recipe-idx}")
     suspend fun writeReview(
         @Path("recipe-idx") recipeIndex: Long,
         @Body body: ReviewRequest
     )
 
-    @PATCH("review")
+    @PATCH("review/{recipe-idx}")
     suspend fun modifyReview(
         @Path("recipe-idx") recipeIndex: Long,
         @Body body: ReviewRequest
     )
 
-    @DELETE("review")
+    @DELETE("review/{recipe-idx}")
     suspend fun deleteReview(
         @Path("recipe-idx") recipeIndex: Long
     )
