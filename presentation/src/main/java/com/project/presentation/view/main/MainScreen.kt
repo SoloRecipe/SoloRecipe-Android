@@ -212,7 +212,7 @@ fun RecipeList(
     ) {
         spanItem?.let { spanItem ->
             item(span = { GridItemSpan(2) }) {
-                spanItem(recipes[0])
+                if (recipes.itemCount != 0) spanItem(recipes[0])
             }
         }
         items(recipes.itemCount) {
