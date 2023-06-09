@@ -4,8 +4,9 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
+import com.project.data.remote.datasource.recipe.AllRecipePagingSource
 import com.project.data.remote.datasource.recipe.RecipeDataSource
-import com.project.data.remote.datasource.recipe.RecipePagingSource
+import com.project.data.remote.datasource.recipe.RecommendRecipePagingSource
 import com.project.data.remote.model.request.asRecipesRequest
 import com.project.data.remote.model.response.asRecipeDetailResponseModel
 import com.project.data.remote.model.response.asRecipeResponseModel
@@ -23,11 +24,10 @@ class RecipeRepositoryImpl @Inject constructor(
 ) : RecipeRepository {
     override fun getRecommendRecipes(): Flow<PagingData<RecipeResponseModel>> {
         return Pager(
-            config = PagingConfig(pageSize = 5),
+            config = PagingConfig(pageSize = 2),
             pagingSourceFactory = {
-                RecipePagingSource(
-                    recipeApi = recipeApi,
-                    filter = "recommend"
+                RecommendRecipePagingSource(
+                    recipeApi = recipeApi
                 )
             }
         ).flow.map { pagingData ->
@@ -37,9 +37,9 @@ class RecipeRepositoryImpl @Inject constructor(
 
     override fun getAllRecipes(): Flow<PagingData<RecipeResponseModel>> {
         return Pager(
-            config = PagingConfig(pageSize = 5),
+            config = PagingConfig(pageSize = 2),
             pagingSourceFactory = {
-                RecipePagingSource(recipeApi = recipeApi)
+                AllRecipePagingSource(recipeApi = recipeApi)
             }
         ).flow.map { pagingData ->
             pagingData.map { it.asRecipeResponseModel() }
