@@ -21,7 +21,7 @@ class RecipePagingSource(
         val page = params.key ?: 1
         val response = safeApiCall {
             if (filter == "recommend") {
-                recipeApi.getAllRecipes(
+                recipeApi.getRecommendRecipes(
                     page = page,
                     size = params.loadSize
                 )
