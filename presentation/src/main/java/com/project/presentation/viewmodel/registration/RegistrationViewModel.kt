@@ -25,9 +25,6 @@ class RegistrationViewModel @Inject constructor(
     private val _createUiState: MutableStateFlow<UiState<Nothing>> = MutableStateFlow(UiState.Loading)
     val createUiState = _createUiState.asStateFlow()
 
-    private val _imageUploadUiState: MutableStateFlow<UiState<Nothing>> = MutableStateFlow(UiState.Loading)
-    val imageUploadUiState = _imageUploadUiState.asStateFlow()
-
     private val _modifyUistate: MutableStateFlow<UiState<Nothing>> = MutableStateFlow(UiState.Loading)
     val modifyUiState = _modifyUistate.asStateFlow()
     fun createRecipe(body: RecipesRequestModel) {
@@ -48,15 +45,8 @@ class RegistrationViewModel @Inject constructor(
     fun imageUpload(file: List<MultipartBody.Part>) {
         viewModelScope.launch {
             imageUploadUseCase(file)
-                .onSuccess {
-                    _imageUploadUiState.value = UiState.Success()
-                }
-                .onFailure {
-                    it.exceptionHandling(
-                        badRequestAction = { _imageUploadUiState.value = UiState.BadRequest },
-                        unauthorizedAction = { _imageUploadUiState.value = UiState.Unauthorized }
-                    )
-                }
+                .onSuccess { }
+                .onFailure { }
         }
     }
 
