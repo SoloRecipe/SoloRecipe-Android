@@ -1,5 +1,6 @@
 package com.project.presentation.viewmodel.detail
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.domain.model.recipe.response.RecipeDetailResponseModel
@@ -30,17 +31,11 @@ class DetailViewModel @Inject constructor(
     private val _recipeUiState: MutableStateFlow<UiState<RecipeDetailResponseModel>> = MutableStateFlow(UiState.Loading)
     val recipeUiState = _recipeUiState.asStateFlow()
 
-    private val _likeUiState: MutableStateFlow<UiState<Nothing>> = MutableStateFlow(UiState.Loading)
-    val likeUiState = _likeUiState.asStateFlow()
-
     private val _deleteUiState: MutableStateFlow<UiState<Nothing>> = MutableStateFlow(UiState.Loading)
     val deleteUiState = _recipeUiState.asStateFlow()
 
     private val _modifyUiState: MutableStateFlow<UiState<Nothing>> = MutableStateFlow(UiState.Loading)
     val modifyUiState = _modifyUiState.asStateFlow()
-
-    private val _writeUiState: MutableStateFlow<UiState<Nothing>> = MutableStateFlow(UiState.Loading)
-    val writeUiState = _writeUiState.asStateFlow()
 
     private val _deleteRecipeUiState: MutableStateFlow<UiState<Nothing>> = MutableStateFlow(UiState.Loading)
     val deleteRecipeUiState = _deleteRecipeUiState.asStateFlow()
@@ -63,12 +58,12 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch {
             likeRecipeUseCase()
                 .onSuccess {
-                    _likeUiState.value = UiState.Success()
+                    Log.d("likeRecipe", "success")
                 }.onFailure {
                     it.exceptionHandling(
-                        badRequestAction = { _likeUiState.value = UiState.BadRequest },
-                        unauthorizedAction = { _likeUiState.value = UiState.Unauthorized },
-                        notFoundAction = { _likeUiState.value = UiState.NotFound }
+                        badRequestAction = { },
+                        unauthorizedAction = { },
+                        notFoundAction = { }
                     )
                 }
         }
@@ -108,12 +103,12 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch {
             writeReviewUseCase(recipeIndex, body)
                 .onSuccess {
-                    _writeUiState.value = UiState.Success()
+                    Log.d("writeReview", "success")
                 }.onFailure {
                     it.exceptionHandling(
-                        badRequestAction = { _writeUiState.value = UiState.BadRequest },
-                        unauthorizedAction = { _writeUiState.value = UiState.Unauthorized },
-                        notFoundAction = { _writeUiState.value = UiState.NotFound }
+                        badRequestAction = { },
+                        unauthorizedAction = { },
+                        notFoundAction = { }
                     )
                 }
         }
