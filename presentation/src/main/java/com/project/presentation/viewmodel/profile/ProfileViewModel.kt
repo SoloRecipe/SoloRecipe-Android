@@ -83,26 +83,20 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun modifyProfileImage(profileImageRequestModel: ProfileImageRequestModel) {
-        viewModelScope.launch {
-            modifyProfileImageUseCase(profileImageRequestModel)
-                .onSuccess {
-                    _modifyUiState.value = UiState.Success()
-                }
-                .onFailure {
-                    it.exceptionHandling(
-                        unauthorizedAction = { _modifyUiState.value = UiState.Unauthorized },
-                        notFoundAction = { _modifyUiState.value = UiState.NotFound }
-                    )
-                }
-        }
-    }
-
     fun imageUpload(file: List<MultipartBody.Part>) {
         viewModelScope.launch {
             imageUploadUseCase(file)
                 .onSuccess {
-                    Log.d("imageUpload", it.toString())
+                    modifyProfileImageUseCase(ProfileImageRequestModel(it.url[0]))
+                        .onSuccess {
+                            _modifyUiState.value = UiState.Success()
+                        }
+                        .onFailure {
+                            it.exceptionHandling(
+                                unauthorizedAction = { _modifyUiState.value = UiState.Unauthorized },
+                                notFoundAction = { _modifyUiState.value = UiState.NotFound }
+                            )
+                        }
                 }
                 .onFailure {
                     Log.d("imageUpload", it.message.toString())

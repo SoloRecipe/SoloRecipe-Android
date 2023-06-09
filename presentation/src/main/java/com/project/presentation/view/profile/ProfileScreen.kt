@@ -1,5 +1,8 @@
 package com.project.presentation.view.profile
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -24,6 +27,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -35,10 +39,13 @@ import com.project.design_system.theme.Body4
 import com.project.design_system.theme.IcPencil
 import com.project.design_system.theme.IcProfile
 import com.project.design_system.theme.SoloRecipeColor
-import com.project.domain.model.profile.request.ProfileImageRequestModel
 import com.project.domain.model.profile.request.ProfileRequestModel
 import com.project.domain.model.profile.response.ProfileResponseModel
 import com.project.presentation.viewmodel.profile.ProfileViewModel
+import com.project.presentation.viewmodel.util.changeToPartList
+import com.project.presentation.viewmodel.util.getPathFromUri
+import okhttp3.MultipartBody
+import java.io.File
 import com.project.presentation.viewmodel.util.UiState
 
 @Composable
@@ -57,7 +64,7 @@ fun ProfileScreen(
         UiState.NotFound -> {}
         else -> {}
     }
-
+    
     when (val state = userUiState) {
         UiState.Loading -> {}
         is UiState.Success -> {
@@ -82,7 +89,7 @@ fun ProfileScreen(
                     nickname = nickname,
                     onNicknameChanged = { nickname = it },
                     changeNickname = profileViewModel::renameUserName,
-                    changeImage = profileViewModel::modifyProfileImage
+                    imageUpload = profileViewModel::imageUpload
                 )
                 Divider(
                     modifier = modifier.fillMaxWidth(),
@@ -113,11 +120,19 @@ fun ProfileScreen(
 fun UserInfo(
     modifier: Modifier = Modifier,
     nickname: String,
-    profileImg: String = "",
     onNicknameChanged: (String) -> Unit,
     changeNickname: (ProfileRequestModel) -> Unit,
-    changeImage: (ProfileImageRequestModel) -> Unit
+    imageUpload: (List<MultipartBody.Part>) -> Unit
 ) {
+    val context = LocalContext.current
+    val profileImageUri = remember { mutableStateOf(Uri.EMPTY) }
+    val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
+        profileImageUri.value = it
+        val file = File(getPathFromUri(context, profileImageUri.value))
+        val partList = changeToPartList(file)
+        imageUpload(partList)
+    }
+    
     var isReadOnly by remember { mutableStateOf(false) }
 
     Row(
@@ -132,7 +147,7 @@ fun UserInfo(
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null,
-                    onClick = { changeImage(ProfileImageRequestModel(profileImg = profileImg)) }
+                    onClick = { galleryLauncher.launch("image/*") }
                 ),
             contentDescription = "user image"
         )
