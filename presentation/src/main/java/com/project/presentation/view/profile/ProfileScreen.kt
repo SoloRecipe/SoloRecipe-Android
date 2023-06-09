@@ -89,7 +89,7 @@ fun ProfileScreen(
                     nickname = nickname,
                     onNicknameChanged = { nickname = it },
                     changeNickname = profileViewModel::renameUserName,
-                    changeImage = profileViewModel::modifyProfileImage
+                    imageUpload = profileViewModel::imageUpload
                 )
                 Divider(
                     modifier = modifier.fillMaxWidth(),
