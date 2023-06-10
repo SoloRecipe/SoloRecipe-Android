@@ -34,8 +34,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -55,6 +57,8 @@ import com.project.presentation.viewmodel.registration.RegistrationViewModel
 import com.project.presentation.viewmodel.util.UiState
 import com.project.presentation.viewmodel.util.changeToPartList
 import com.project.presentation.viewmodel.util.getPathFromUri
+import com.skydoves.landscapist.ImageOptions
+import com.skydoves.landscapist.glide.GlideImage
 import okhttp3.MultipartBody
 import java.io.File
 
@@ -145,34 +149,55 @@ fun Thumbnail(
     imageUpload: (List<MultipartBody.Part>) -> Unit
 ) {
     val context = LocalContext.current
-    val profileImageUri = remember { mutableStateOf(Uri.EMPTY) }
+    val registrationImageUri = remember { mutableStateOf(Uri.EMPTY) }
     val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
-        profileImageUri.value = it
-        val file = File(getPathFromUri(context, profileImageUri.value))
+        registrationImageUri.value = it
+        val file = File(getPathFromUri(context, registrationImageUri.value))
         val partList = changeToPartList(file)
         imageUpload(partList)
     }
+    var clicked by remember { mutableStateOf(false) }
 
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(250.dp)
-            .padding(horizontal = 26.dp)
-            .background(
-                color = SoloRecipeColor.Secondary10,
-                shape = RoundedCornerShape(8.dp)
-            )
-            .clickable (
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null,
-                onClick = { galleryLauncher.launch("image/*") }
-            )
-    ) {
-        IcCamera(
+    if (!clicked) {
+        Box(
             modifier = modifier
-                .size(40.dp, 32.dp)
-                .align(Center),
-            contentDescription = "camera"
+                .fillMaxWidth()
+                .height(250.dp)
+                .padding(horizontal = 26.dp)
+                .background(
+                    color = SoloRecipeColor.Secondary10,
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .clickable (
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                    onClick = {
+                        galleryLauncher.launch("image/*")
+                        clicked = !clicked
+                    }
+                )
+        ) {
+            IcCamera(
+                modifier = modifier
+                    .size(40.dp, 32.dp)
+                    .align(Center),
+                contentDescription = "camera"
+            )
+        }
+    } else {
+        GlideImage(
+            imageModel = { registrationImageUri.value },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(250.dp)
+                .padding(horizontal = 26.dp)
+                .clip(shape = RoundedCornerShape(8.dp))
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                    onClick = { galleryLauncher.launch("image/*") }
+                ),
+            imageOptions = ImageOptions(contentScale = ContentScale.Crop)
         )
     }
 }
@@ -184,34 +209,54 @@ fun StepItem(
 ) {
     var content by remember { mutableStateOf("") }
     val context = LocalContext.current
-    val profileImageUri = remember { mutableStateOf(Uri.EMPTY) }
+    val registrationImageUri = remember { mutableStateOf(Uri.EMPTY) }
     val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
-        profileImageUri.value = it
-        val file = File(getPathFromUri(context, profileImageUri.value))
+        registrationImageUri.value = it
+        val file = File(getPathFromUri(context, registrationImageUri.value))
         val partList = changeToPartList(file)
         imageUpload(partList)
     }
+    var clicked by remember { mutableStateOf(false) }
 
     Row(modifier = modifier.height(70.dp)) {
-        Box(
-            modifier = modifier
-                .width(80.dp)
-                .fillMaxHeight()
-                .background(
-                    color = SoloRecipeColor.Secondary10,
-                    shape = RoundedCornerShape(8.dp)
-                )
-                .clickable (
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null,
-                    onClick = { galleryLauncher.launch("image/*") }
-                )
-        ) {
-            IcCamera(
+        if (!clicked) {
+            Box(
                 modifier = modifier
-                    .size(20.dp, 16.dp)
-                    .align(Center),
-                contentDescription = "camera"
+                    .width(80.dp)
+                    .fillMaxHeight()
+                    .background(
+                        color = SoloRecipeColor.Secondary10,
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .clickable (
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        onClick = {
+                            galleryLauncher.launch("image/*")
+                            clicked = !clicked
+                        }
+                    )
+            ) {
+                IcCamera(
+                    modifier = modifier
+                        .size(20.dp, 16.dp)
+                        .align(Center),
+                    contentDescription = "camera"
+                )
+            }
+        } else {
+            GlideImage(
+                imageModel = { registrationImageUri.value },
+                modifier = Modifier
+                    .width(80.dp)
+                    .fillMaxHeight()
+                    .clip(shape = RoundedCornerShape(8.dp))
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        onClick = { galleryLauncher.launch("image/*") }
+                    ),
+                imageOptions = ImageOptions(contentScale = ContentScale.Crop)
             )
         }
         Spacer(modifier = Modifier.width(10.dp))
