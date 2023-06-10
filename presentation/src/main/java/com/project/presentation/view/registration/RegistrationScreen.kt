@@ -1,8 +1,13 @@
 package com.project.presentation.view.registration
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,6 +36,7 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -47,6 +53,10 @@ import com.project.domain.model.recipe.request.RecipeRequestModel
 import com.project.domain.model.recipe.request.RecipesRequestModel
 import com.project.presentation.viewmodel.registration.RegistrationViewModel
 import com.project.presentation.viewmodel.util.UiState
+import com.project.presentation.viewmodel.util.changeToPartList
+import com.project.presentation.viewmodel.util.getPathFromUri
+import okhttp3.MultipartBody
+import java.io.File
 
 @Composable
 fun RegistrationScreen(
@@ -79,7 +89,7 @@ fun RegistrationScreen(
         SoloRecipeAppBar { }
         Column(modifier = modifier.verticalScroll(rememberScrollState())) {
             Spacer(modifier = modifier.height(16.dp))
-            Thumbnail()
+            Thumbnail(imageUpload = registrationViewModel::imageUpload)
             Spacer(modifier = modifier.height(9.dp))
             ThumbnailTitle(title = title) { title = it }
             Spacer(modifier = modifier.height(30.dp))
@@ -90,7 +100,7 @@ fun RegistrationScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 repeat(step) {
-                    StepItem()
+                    StepItem(imageUpload = registrationViewModel::imageUpload)
                 }
             }
             Spacer(modifier = modifier.height(25.dp))
@@ -132,7 +142,17 @@ fun RegistrationScreen(
 @Composable
 fun Thumbnail(
     modifier: Modifier = Modifier,
+    imageUpload: (List<MultipartBody.Part>) -> Unit
 ) {
+    val context = LocalContext.current
+    val profileImageUri = remember { mutableStateOf(Uri.EMPTY) }
+    val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
+        profileImageUri.value = it
+        val file = File(getPathFromUri(context, profileImageUri.value))
+        val partList = changeToPartList(file)
+        imageUpload(partList)
+    }
+
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -141,6 +161,11 @@ fun Thumbnail(
             .background(
                 color = SoloRecipeColor.Secondary10,
                 shape = RoundedCornerShape(8.dp)
+            )
+            .clickable (
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = { galleryLauncher.launch("image/*") }
             )
     ) {
         IcCamera(
@@ -155,8 +180,17 @@ fun Thumbnail(
 @Composable
 fun StepItem(
     modifier: Modifier = Modifier,
+    imageUpload: (List<MultipartBody.Part>) -> Unit
 ) {
     var content by remember { mutableStateOf("") }
+    val context = LocalContext.current
+    val profileImageUri = remember { mutableStateOf(Uri.EMPTY) }
+    val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
+        profileImageUri.value = it
+        val file = File(getPathFromUri(context, profileImageUri.value))
+        val partList = changeToPartList(file)
+        imageUpload(partList)
+    }
 
     Row(modifier = modifier.height(70.dp)) {
         Box(
@@ -166,6 +200,11 @@ fun StepItem(
                 .background(
                     color = SoloRecipeColor.Secondary10,
                     shape = RoundedCornerShape(8.dp)
+                )
+                .clickable (
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                    onClick = { galleryLauncher.launch("image/*") }
                 )
         ) {
             IcCamera(
