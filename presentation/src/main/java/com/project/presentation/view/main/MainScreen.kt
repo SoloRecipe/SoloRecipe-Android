@@ -138,14 +138,14 @@ fun MainScreen(
                 currentPage = page
                 if (page == RECOMMEND) {
                     RecipeList(
-                        spanItem = { TopItem(recipe = it) { navigateToDetail(1) } },
+                        spanItem = { TopItem(recipe = it) { idx -> navigateToDetail(idx) } },
                         recipes = recommendRecipes
                     ) {
-                        navigateToDetail(1)
+                        navigateToDetail(it)
                     }
                 } else {
                     RecipeList(recipes = allRecipes) {
-                        navigateToDetail(1)
+                        navigateToDetail(it)
                     }
                 }
             }
