@@ -54,7 +54,7 @@ import com.skydoves.landscapist.glide.GlideImage
 @Composable
 fun DetailScreen(
     modifier: Modifier = Modifier,
-    index: Long?,
+    index: String?,
     detailViewModel: DetailViewModel = hiltViewModel(),
 ) {
     val recipeIndex = checkNotNull(index)
@@ -62,7 +62,7 @@ fun DetailScreen(
     val recipeUiState by detailViewModel.recipeUiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        detailViewModel.getRecipeDetail(recipeIndex)
+        detailViewModel.getRecipeDetail(recipeIndex.toLong())
     }
 
     when (val state = recipeUiState) {
@@ -78,7 +78,7 @@ fun DetailScreen(
                         .verticalScroll(rememberScrollState()),
                 ) {
                     Spacer(modifier = modifier.height(16.dp))
-                    DetailTitle(recipeDetail = state.data) { detailViewModel.likeRecipe() }
+                    DetailTitle(recipeDetail = state.data) { detailViewModel.likeRecipe(index.toLong()) }
                     Spacer(modifier = modifier.height(26.dp))
                     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
                         val recipeProcess = state.data?.recipeProcess
@@ -94,9 +94,9 @@ fun DetailScreen(
                     Spacer(modifier = modifier.height(40.dp))
                     Body3(text = "댓글")
                     Spacer(modifier = modifier.height(20.dp))
-                    MyComment(index = recipeIndex) { index, content ->
+                    MyComment(index = recipeIndex.toLong()) { index, content ->
                         detailViewModel.writeReview(
-                            recipeIndex = recipeIndex,
+                            recipeIndex = recipeIndex.toLong(),
                             body = ReviewRequestModel(content = content)
                         )
                         detailViewModel.getRecipeDetail(index)

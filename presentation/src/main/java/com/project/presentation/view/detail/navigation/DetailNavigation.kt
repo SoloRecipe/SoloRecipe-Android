@@ -2,7 +2,9 @@ package com.project.presentation.view.detail.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.project.presentation.view.detail.DetailScreen
 
 
@@ -13,7 +15,10 @@ fun NavController.navigateToDetail(index: Long) {
 }
 
 fun NavGraphBuilder.detailScreen() {
-    composable("$detailRoute/{index}") { backStackEntry ->
-        DetailScreen(index = backStackEntry.arguments?.getLong("index"))
+    composable(
+        route = "$detailRoute/{index}",
+        arguments = listOf(navArgument("index") { type = NavType.StringType })
+    ) { backStackEntry ->
+        DetailScreen(index = backStackEntry.arguments?.getString("index"))
     }
 }
