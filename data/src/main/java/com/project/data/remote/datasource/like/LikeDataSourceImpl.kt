@@ -7,5 +7,5 @@ import javax.inject.Inject
 class LikeDataSourceImpl @Inject constructor(
     private val likeApi: LikeApi
 ): LikeDataSource {
-    override suspend fun likeRecipe() = safeApiCall { likeApi.likeRecipe() }
+    override suspend fun likeRecipe(index: Long) = safeApiCall { likeApi.likeRecipe(index) }
 }
