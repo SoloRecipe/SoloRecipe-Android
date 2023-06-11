@@ -54,9 +54,9 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    fun likeRecipe() {
+    fun likeRecipe(index: Long) {
         viewModelScope.launch {
-            likeRecipeUseCase()
+            likeRecipeUseCase(index)
                 .onSuccess {
                     Log.d("likeRecipe", "success")
                 }.onFailure {

@@ -1,5 +1,5 @@
 package com.project.domain.repository
 
 interface LikeRepository {
-    suspend fun likeRecipe()
+    suspend fun likeRecipe(index: Long)
 }
