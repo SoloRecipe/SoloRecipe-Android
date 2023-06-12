@@ -48,11 +48,10 @@ import com.project.presentation.viewmodel.util.UiState
 fun SearchScreen(
     modifier: Modifier = Modifier,
     mainViewModel: MainViewModel = hiltViewModel(),
-    keyword: String = "",
     navigateToPrevious: () -> Unit,
     navigateToDetail: (Long) -> Unit,
 ) {
-    var text by remember { mutableStateOf(keyword) }
+    var text by remember { mutableStateOf("") }
     val uiState by mainViewModel.uiState.collectAsStateWithLifecycle()
 
     Column(
@@ -64,7 +63,7 @@ fun SearchScreen(
         SoloRecipeAppBar { navigateToPrevious() }
         Spacer(modifier = modifier.height(20.dp))
         SearchBar(
-            keyword = keyword
+            text = text
         ) {
             text = it
             mainViewModel.searchRecipe(it)
@@ -89,7 +88,7 @@ fun SearchScreen(
 @Composable
 fun SearchBar(
     modifier: Modifier = Modifier,
-    keyword: String,
+    text: String,
     onSearch: (String) -> Unit
 ) {
     Row(
@@ -111,7 +110,7 @@ fun SearchBar(
         TextField(
             modifier = modifier
                 .fillMaxWidth(),
-            value = keyword,
+            value = text,
             hint = "검색어를 입력해주세요",
             textStyle = SoloRecipeTypography.body4,
             onValueChanged = { onSearch(it) }
