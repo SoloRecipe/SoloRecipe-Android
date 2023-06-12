@@ -83,20 +83,20 @@ fun RegistrationScreen(
     var removeClicked by remember { mutableStateOf(false) }
     var modifyClicked by remember { mutableStateOf(false) }
 
-    var step by remember { mutableStateOf(5) }
-    var title by remember {
-        mutableStateOf(
-            if (type == "modify") {
-                when (val state = recipeUiState) {
-                    is UiState.Success -> { state.data!!.name }
-                    else -> ""
-                }
-            } else ""
-        )
-    }
     LaunchedEffect(Unit) {
         if (type == "modify") registrationViewModel.getRecipeDetail(checkNotNull(index!!.toLong()))
     }
+
+    val state = recipeUiState
+    var step by remember { mutableStateOf(5) }
+    val titleText = if (type == "modify") {
+        when (state) {
+            is UiState.Success -> state.data!!.name
+            else -> ""
+        }
+    } else ""
+    var title by remember { mutableStateOf(titleText) }
+    title = titleText
 
     if (removeClicked) {
         SoloRecipeDialog(
@@ -201,7 +201,7 @@ fun RegistrationScreen(
             Thumbnail(
                 imageUpload = registrationViewModel::imageUpload,
                 image = if (type == "modify") {
-                    when (val state = recipeUiState) {
+                    when (state) {
                         is UiState.Success -> {
                             state.data!!.thumbnail
                         }
@@ -223,9 +223,14 @@ fun RegistrationScreen(
                     StepItem(
                         imageUpload = registrationViewModel::imageUpload,
                         step = if (type == "modify") {
-                            when (val state = recipeUiState) {
+                            when (state) {
                                 is UiState.Success -> {
-                                    Pair(state.data!!.recipeProcess[it].image, state.data.recipeProcess[it].description)
+                                    val idx = state.data?.recipeProcess?.size ?: 0
+                                    if (it < idx) {
+                                        Pair(state.data?.recipeProcess?.get(it)?.image, state.data?.recipeProcess?.get(it)?.description)
+                                    } else {
+                                        Pair("", "")
+                                    }
                                 }
 
                                 else -> Pair("", "")
@@ -348,9 +353,11 @@ fun Thumbnail(
 fun StepItem(
     modifier: Modifier = Modifier,
     imageUpload: (List<MultipartBody.Part>) -> Unit,
-    step: Pair<String, String>? = null
+    step: Pair<String?, String?>? = null
 ) {
-    var content by remember { mutableStateOf(step?.second ?: "") }
+
+    var content by remember { mutableStateOf("") }
+    content = step?.second ?: ""
     var clicked by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
@@ -409,7 +416,7 @@ fun StepItem(
 
             else -> {
                 GlideImage(
-                    imageModel = { step.second },
+                    imageModel = { step.first },
                     modifier = Modifier
                         .width(80.dp)
                         .fillMaxHeight()
