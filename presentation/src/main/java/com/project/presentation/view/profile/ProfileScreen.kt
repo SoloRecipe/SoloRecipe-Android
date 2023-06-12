@@ -7,7 +7,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -104,7 +103,7 @@ fun ProfileScreen(
                     color = SoloRecipeColor.Secondary20,
                     thickness = 1.dp
                 )
-                Spacer(modifier = modifier.height(35.dp))
+                Spacer(modifier = modifier.height(30.dp))
                 MyRecipeList(
                     myRecipes = state.data?.myRecipe,
                     navigateToRegistration = navigateToRegistration
@@ -120,7 +119,7 @@ fun ProfileScreen(
                     color = SoloRecipeColor.Secondary20,
                     thickness = 1.dp
                 )
-                Spacer(modifier = modifier.height(40.dp))
+                Spacer(modifier = modifier.height(30.dp))
                 LogoutButton(logout = profileViewModel::deleteUserInfo)
                 Spacer(modifier = modifier.weight(1f))
             }
@@ -204,7 +203,7 @@ fun MyRecipeList(
             .padding(horizontal = 26.dp)
     ) {
         Body2(text = "작성한 레시피")
-        Spacer(modifier = modifier.height(30.dp))
+        Spacer(modifier = modifier.height(15.dp))
         LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             items(myRecipes?.size ?: 0) {
                 val idx = myRecipes!![it].idx
@@ -231,7 +230,7 @@ fun LikedRecipeList(
             .padding(horizontal = 26.dp)
     ) {
         Body2(text = "좋아요한 레시피")
-        Spacer(modifier = modifier.height(30.dp))
+        Spacer(modifier = modifier.height(15.dp))
         LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             items(likedRecipes?.size ?: 0) {
                 val idx = likedRecipes!![it].idx
