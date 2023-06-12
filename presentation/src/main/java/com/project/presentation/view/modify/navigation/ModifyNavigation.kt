@@ -13,11 +13,16 @@ fun NavController.navigateToModify(index: Long) {
     this.navigate("$modifyRoute/$index")
 }
 
-fun NavGraphBuilder.modifyScreen() {
+fun NavGraphBuilder.modifyScreen(
+    navigateToPrevious: () -> Unit
+) {
     composable(
         route = "$modifyRoute/{index}",
         arguments = listOf(navArgument("index") { type = NavType.LongType})
     ) { backStackEntry ->
-        ModifyScreen(index = backStackEntry.arguments?.getLong("index"))
+        ModifyScreen(
+            index = backStackEntry.arguments?.getLong("index"),
+            navigateToPrevious = navigateToPrevious
+        )
     }
 }
