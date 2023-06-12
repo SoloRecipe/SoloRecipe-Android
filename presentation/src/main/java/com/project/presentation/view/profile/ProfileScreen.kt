@@ -1,6 +1,7 @@
 package com.project.presentation.view.profile
 
 import android.net.Uri
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -104,6 +105,7 @@ fun ProfileScreen(
                 )
                 UserInfo(
                     nickname = nickname,
+                    profileImg = state.data!!.profileImg,
                     onNicknameChanged = { nickname = it },
                     changeNickname = profileViewModel::renameUserName,
                     imageUpload = profileViewModel::imageUpload
@@ -145,6 +147,7 @@ fun ProfileScreen(
 fun UserInfo(
     modifier: Modifier = Modifier,
     nickname: String,
+    profileImg: String,
     onNicknameChanged: (String) -> Unit,
     changeNickname: (ProfileRequestModel) -> Unit,
     imageUpload: (List<MultipartBody.Part>) -> Unit
@@ -169,8 +172,7 @@ fun UserInfo(
     ) {
         GlideImage(
             imageModel = {
-                if (profileImageUri.value.toString() != "") profileImageUri.value
-                else R.drawable.ic_profile
+                if (profileImg != "") profileImg else R.drawable.ic_profile
             },
             modifier = Modifier
                 .size(85.dp)
