@@ -504,7 +504,7 @@ fun TextField(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box {
-                    if (value.isEmpty()) {
+                    if (text.isEmpty()) {
                         Body2(
                             text = hint,
                             textColor = SoloRecipeColor.Secondary10,
