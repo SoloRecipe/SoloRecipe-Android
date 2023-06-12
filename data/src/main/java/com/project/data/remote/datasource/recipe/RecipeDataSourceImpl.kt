@@ -9,7 +9,7 @@ import javax.inject.Inject
 class RecipeDataSourceImpl @Inject constructor(
     private val recipeApi: RecipeApi
 ): RecipeDataSource {
-    override suspend fun searchRecipe(name: String): RecipeResponse = safeApiCall {
+    override suspend fun searchRecipe(name: String): List<RecipeResponse> = safeApiCall {
         recipeApi.searchRecipe(name)
     }
 

@@ -11,7 +11,7 @@ import com.project.data.remote.model.request.asRecipesRequest
 import com.project.data.remote.model.response.asRecipeDetailResponseModel
 import com.project.data.remote.model.response.asRecipeResponseModel
 import com.project.data.remote.network.api.RecipeApi
-import com.project.domain.model.auth.response.RecipeResponseModel
+import com.project.domain.model.recipe.response.RecipeResponseModel
 import com.project.domain.model.recipe.request.RecipesRequestModel
 import com.project.domain.repository.RecipeRepository
 import kotlinx.coroutines.flow.Flow
@@ -46,8 +46,8 @@ class RecipeRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun searchRecipe(name: String): RecipeResponseModel =
-        recipeDataSource.searchRecipe(name = name).asRecipeResponseModel()
+    override suspend fun searchRecipe(name: String): List<RecipeResponseModel> =
+        recipeDataSource.searchRecipe(name = name).map { it.asRecipeResponseModel() }
 
     override suspend fun createRecipe(body: RecipesRequestModel) =
         recipeDataSource.createRecipe(body.asRecipesRequest())

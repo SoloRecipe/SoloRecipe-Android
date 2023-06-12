@@ -28,7 +28,7 @@ interface RecipeApi {
     @GET("recipe/search")
     suspend fun searchRecipe(
         @Query("name") name: String
-    ): RecipeResponse
+    ): List<RecipeResponse>
 
     @POST("recipe")
     suspend fun createRecipe(
