@@ -10,15 +10,21 @@ import com.project.presentation.view.detail.DetailScreen
 
 const val detailRoute = "detail_route"
 
-fun NavController.navigateToDetail(index: Long) {
-    this.navigate("$detailRoute/$index")
+fun NavController.navigateToDetail(index: Long, isLikedRecipe: Boolean = false) {
+    this.navigate("$detailRoute/$index/$isLikedRecipe")
 }
 
 fun NavGraphBuilder.detailScreen() {
     composable(
-        route = "$detailRoute/{index}",
-        arguments = listOf(navArgument("index") { type = NavType.StringType })
+        route = "$detailRoute/{index}/{isLikedRecipe}",
+        arguments = listOf(
+            navArgument("index") { type = NavType.StringType },
+            navArgument("isLikedRecipe") { type = NavType.BoolType }
+        )
     ) { backStackEntry ->
-        DetailScreen(index = backStackEntry.arguments?.getString("index"))
+        DetailScreen(
+            index = backStackEntry.arguments?.getString("index"),
+            isLikedRecipe = backStackEntry.arguments?.getBoolean("isLikedRecipe")
+        )
     }
 }
