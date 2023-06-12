@@ -27,10 +27,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -47,12 +49,12 @@ import com.project.design_system.theme.SoloRecipeTheme
 import com.project.domain.model.recipe.response.RecipeDetailResponseModel
 import com.project.domain.model.recipe.response.ReviewModel
 import com.project.domain.model.review.request.ReviewRequestModel
-import com.project.presentation.R
 import com.project.presentation.viewmodel.detail.DetailViewModel
 import com.project.presentation.viewmodel.util.UiState
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun DetailScreen(
     modifier: Modifier = Modifier,
@@ -63,11 +65,13 @@ fun DetailScreen(
 ) {
     val recipeIndex = checkNotNull(index)
 
-    val recipeUiState by detailViewModel.recipeUiState.collectAsStateWithLifecycle()
-
     LaunchedEffect(Unit) {
         detailViewModel.getRecipeDetail(recipeIndex.toLong())
     }
+
+    val recipeUiState by detailViewModel.recipeUiState.collectAsStateWithLifecycle()
+
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     when (val state = recipeUiState) {
         UiState.Loading -> {}
@@ -108,12 +112,14 @@ fun DetailScreen(
                     Spacer(modifier = modifier.height(40.dp))
                     Body3(text = "댓글")
                     Spacer(modifier = modifier.height(20.dp))
-                    MyComment(index = recipeIndex.toLong()) { index, content ->
+                    MyComment(
+                        index = recipeIndex.toLong(),
+                    ) { recipeIndex, content ->
                         detailViewModel.writeReview(
-                            recipeIndex = recipeIndex.toLong(),
+                            recipeIndex = recipeIndex,
                             body = ReviewRequestModel(content = content)
                         )
-                        detailViewModel.getRecipeDetail(index)
+                        keyboardController?.hide()
                     }
                     Spacer(modifier = modifier.height(30.dp))
                     Column(
@@ -128,7 +134,6 @@ fun DetailScreen(
                 }
             }
         }
-
         UiState.Unauthorized -> {}
         UiState.NotFound -> {}
         else -> {}
