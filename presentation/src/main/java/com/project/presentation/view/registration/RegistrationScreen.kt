@@ -27,6 +27,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -73,16 +74,29 @@ fun RegistrationScreen(
     type: String?,
     navigateToMain: () -> Unit,
 ) {
-    var step by remember { mutableStateOf(5) }
-    var title by remember { mutableStateOf("") }
-
     val recipeProcess: List<RecipeRequestModel> = listOf()
 
+    val recipeUiState by registrationViewModel.recipeUiState.collectAsStateWithLifecycle()
     val createUiState by registrationViewModel.createUiState.collectAsStateWithLifecycle()
     val modifyUiState by registrationViewModel.modifyUiState.collectAsStateWithLifecycle()
 
     var removeClicked by remember { mutableStateOf(false) }
     var modifyClicked by remember { mutableStateOf(false) }
+
+    var step by remember { mutableStateOf(5) }
+    var title by remember {
+        mutableStateOf(
+            if (type == "modify") {
+                when (val state = recipeUiState) {
+                    is UiState.Success -> { state.data!!.name }
+                    else -> ""
+                }
+            } else ""
+        )
+    }
+    LaunchedEffect(Unit) {
+        if (type == "modify") registrationViewModel.getRecipeDetail(checkNotNull(index!!.toLong()))
+    }
 
     if (removeClicked) {
         SoloRecipeDialog(
@@ -151,6 +165,20 @@ fun RegistrationScreen(
         UiState.Unauthorized -> {}
         else -> {}
     }
+
+    when (modifyUiState) {
+        UiState.Loading -> {}
+        is UiState.Success -> {
+            navigateToMain()
+        }
+
+        UiState.BadRequest -> {}
+        UiState.Unauthorized -> {}
+        UiState.Forbidden -> {}
+        UiState.NotFound -> {}
+        else -> {}
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -170,7 +198,18 @@ fun RegistrationScreen(
         }
         Column(modifier = modifier.verticalScroll(rememberScrollState())) {
             Spacer(modifier = modifier.height(16.dp))
-            Thumbnail(imageUpload = registrationViewModel::imageUpload)
+            Thumbnail(
+                imageUpload = registrationViewModel::imageUpload,
+                image = if (type == "modify") {
+                    when (val state = recipeUiState) {
+                        is UiState.Success -> {
+                            state.data!!.thumbnail
+                        }
+
+                        else -> ""
+                    }
+                } else null
+            )
             Spacer(modifier = modifier.height(9.dp))
             ThumbnailTitle(title = title) { title = it }
             Spacer(modifier = modifier.height(30.dp))
@@ -181,7 +220,18 @@ fun RegistrationScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 repeat(step) {
-                    StepItem(imageUpload = registrationViewModel::imageUpload)
+                    StepItem(
+                        imageUpload = registrationViewModel::imageUpload,
+                        step = if (type == "modify") {
+                            when (val state = recipeUiState) {
+                                is UiState.Success -> {
+                                    Pair(state.data!!.recipeProcess[it].image, state.data.recipeProcess[it].description)
+                                }
+
+                                else -> Pair("", "")
+                            }
+                        } else null
+                    )
                 }
             }
             Spacer(modifier = modifier.height(25.dp))
@@ -216,7 +266,8 @@ fun RegistrationScreen(
 @Composable
 fun Thumbnail(
     modifier: Modifier = Modifier,
-    imageUpload: (List<MultipartBody.Part>) -> Unit
+    imageUpload: (List<MultipartBody.Part>) -> Unit,
+    image: String? = null
 ) {
     val context = LocalContext.current
     val registrationImageUri = remember { mutableStateOf(Uri.EMPTY) }
@@ -228,98 +279,59 @@ fun Thumbnail(
     }
     var clicked by remember { mutableStateOf(false) }
 
-    if (!clicked) {
-        Box(
-            modifier = modifier
-                .fillMaxWidth()
-                .height(250.dp)
-                .padding(horizontal = 26.dp)
-                .background(
-                    color = SoloRecipeColor.Secondary10,
-                    shape = RoundedCornerShape(8.dp)
-                )
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null,
-                    onClick = {
-                        galleryLauncher.launch("image/*")
-                        clicked = !clicked
-                    }
-                )
-        ) {
-            IcCamera(
-                modifier = modifier
-                    .size(40.dp, 32.dp)
-                    .align(Center),
-                contentDescription = "camera"
-            )
-        }
-    } else {
-        GlideImage(
-            imageModel = { registrationImageUri.value },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(250.dp)
-                .padding(horizontal = 26.dp)
-                .clip(shape = RoundedCornerShape(8.dp))
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null,
-                    onClick = { galleryLauncher.launch("image/*") }
-                ),
-            imageOptions = ImageOptions(contentScale = ContentScale.Crop)
-        )
-    }
-}
-
-@Composable
-fun StepItem(
-    modifier: Modifier = Modifier,
-    imageUpload: (List<MultipartBody.Part>) -> Unit
-) {
-    var content by remember { mutableStateOf("") }
-    val context = LocalContext.current
-    val registrationImageUri = remember { mutableStateOf(Uri.EMPTY) }
-    val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
-        registrationImageUri.value = it
-        val file = File(getPathFromUri(context, registrationImageUri.value))
-        val partList = changeToPartList(file)
-        imageUpload(partList)
-    }
-    var clicked by remember { mutableStateOf(false) }
-
-    Row(modifier = modifier.height(70.dp)) {
-        if (!clicked) {
-            Box(
-                modifier = modifier
-                    .width(80.dp)
-                    .fillMaxHeight()
-                    .background(
-                        color = SoloRecipeColor.Secondary10,
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null,
-                        onClick = {
-                            galleryLauncher.launch("image/*")
-                            clicked = !clicked
-                        }
-                    )
-            ) {
-                IcCamera(
+    when (image) {
+        null -> {
+            if (!clicked) {
+                Box(
                     modifier = modifier
-                        .size(20.dp, 16.dp)
-                        .align(Center),
-                    contentDescription = "camera"
+                        .fillMaxWidth()
+                        .height(250.dp)
+                        .padding(horizontal = 26.dp)
+                        .background(
+                            color = SoloRecipeColor.Secondary10,
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            onClick = {
+                                galleryLauncher.launch("image/*")
+                                clicked = !clicked
+                            }
+                        )
+                ) {
+                    IcCamera(
+                        modifier = modifier
+                            .size(40.dp, 32.dp)
+                            .align(Center),
+                        contentDescription = "camera"
+                    )
+                }
+            } else {
+                GlideImage(
+                    imageModel = { registrationImageUri.value },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(250.dp)
+                        .padding(horizontal = 26.dp)
+                        .clip(shape = RoundedCornerShape(8.dp))
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            onClick = { galleryLauncher.launch("image/*") }
+                        ),
+                    imageOptions = ImageOptions(contentScale = ContentScale.Crop)
                 )
             }
-        } else {
+        }
+
+        else -> {
             GlideImage(
-                imageModel = { registrationImageUri.value },
+                imageModel = { image },
                 modifier = Modifier
-                    .width(80.dp)
-                    .fillMaxHeight()
+                    .fillMaxWidth()
+                    .height(250.dp)
+                    .padding(horizontal = 26.dp)
                     .clip(shape = RoundedCornerShape(8.dp))
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
@@ -328,6 +340,88 @@ fun StepItem(
                     ),
                 imageOptions = ImageOptions(contentScale = ContentScale.Crop)
             )
+        }
+    }
+}
+
+@Composable
+fun StepItem(
+    modifier: Modifier = Modifier,
+    imageUpload: (List<MultipartBody.Part>) -> Unit,
+    step: Pair<String, String>? = null
+) {
+    var content by remember { mutableStateOf(step?.second ?: "") }
+    var clicked by remember { mutableStateOf(false) }
+
+    val context = LocalContext.current
+    val registrationImageUri = remember { mutableStateOf(Uri.EMPTY) }
+    val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
+        registrationImageUri.value = it
+        val file = File(getPathFromUri(context, registrationImageUri.value))
+        val partList = changeToPartList(file)
+        imageUpload(partList)
+    }
+
+    Row(modifier = modifier.height(70.dp)) {
+        when (step?.first) {
+            null -> {
+                if (!clicked) {
+                    Box(
+                        modifier = modifier
+                            .width(80.dp)
+                            .fillMaxHeight()
+                            .background(
+                                color = SoloRecipeColor.Secondary10,
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                                onClick = {
+                                    galleryLauncher.launch("image/*")
+                                    clicked = !clicked
+                                }
+                            )
+                    ) {
+                        IcCamera(
+                            modifier = modifier
+                                .size(20.dp, 16.dp)
+                                .align(Center),
+                            contentDescription = "camera"
+                        )
+                    }
+                } else {
+                    GlideImage(
+                        imageModel = { registrationImageUri.value },
+                        modifier = Modifier
+                            .width(80.dp)
+                            .fillMaxHeight()
+                            .clip(shape = RoundedCornerShape(8.dp))
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                                onClick = { galleryLauncher.launch("image/*") }
+                            ),
+                        imageOptions = ImageOptions(contentScale = ContentScale.Crop)
+                    )
+                }
+            }
+
+            else -> {
+                GlideImage(
+                    imageModel = { step.second },
+                    modifier = Modifier
+                        .width(80.dp)
+                        .fillMaxHeight()
+                        .clip(shape = RoundedCornerShape(8.dp))
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            onClick = { galleryLauncher.launch("image/*") }
+                        ),
+                    imageOptions = ImageOptions(contentScale = ContentScale.Crop)
+                )
+            }
         }
         Spacer(modifier = Modifier.width(10.dp))
         Column(
