@@ -10,7 +10,7 @@ import com.project.presentation.view.registration.RegistrationScreen
 const val registrationRoute = "registration_route"
 
 fun NavController.navigateToRegistration(type: String = "registration", index: Long? = null) {
-    val route = if (index != null) "$registrationRoute/$type/$index" else "$registrationRoute/$type"
+    val route = if (index != null) "$registrationRoute/$type?index=$index" else "$registrationRoute/$type"
     this.navigate(route)
 }
 

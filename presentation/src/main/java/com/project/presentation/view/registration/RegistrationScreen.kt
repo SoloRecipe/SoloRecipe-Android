@@ -46,10 +46,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.project.design_system.component.SoloRecipeAppBar
 import com.project.design_system.component.SoloRecipeButton
+import com.project.design_system.component.SoloRecipeDialog
 import com.project.design_system.theme.Body2
 import com.project.design_system.theme.Body3
 import com.project.design_system.theme.IcCamera
+import com.project.design_system.theme.IcTrashcan
 import com.project.design_system.theme.SoloRecipeColor
+import com.project.design_system.theme.SoloRecipeTheme
 import com.project.design_system.theme.SoloRecipeTypography
 import com.project.domain.model.recipe.request.RecipeRequestModel
 import com.project.domain.model.recipe.request.RecipesRequestModel
@@ -78,9 +81,72 @@ fun RegistrationScreen(
     val createUiState by registrationViewModel.createUiState.collectAsStateWithLifecycle()
     val modifyUiState by registrationViewModel.modifyUiState.collectAsStateWithLifecycle()
 
+    var removeClicked by remember { mutableStateOf(false) }
+    var modifyClicked by remember { mutableStateOf(false) }
+
+    if (removeClicked) {
+        SoloRecipeDialog(
+            title = "레시피 삭제",
+            description = "글을 삭제하시면 복구가 불가능합니다.",
+            onDismiss = { removeClicked = false }
+        ) {
+            SoloRecipeButton(
+                modifier = modifier.weight(1f),
+                text = "취소",
+                containerColor = SoloRecipeTheme.color.Primary10
+            ) {
+                removeClicked = false
+            }
+            Spacer(modifier = modifier.width(10.dp))
+            SoloRecipeButton(
+                modifier = modifier
+                    .border(width = 1.dp, color = SoloRecipeTheme.color.Primary10, shape = RoundedCornerShape(8.dp))
+                    .weight(1f),
+                text = "삭제",
+                textColor = SoloRecipeTheme.color.Black,
+                containerColor = SoloRecipeTheme.color.White,
+            ) {
+
+            }
+        }
+    }
+
+    if (modifyClicked) {
+        SoloRecipeDialog(title = "레시피 수정", description = "레시피를 수정하시겠습니까?", onDismiss = { modifyClicked = false }) {
+            SoloRecipeButton(
+                modifier = modifier.weight(1f),
+                text = "취소",
+                containerColor = SoloRecipeTheme.color.Primary10
+            ) {
+                modifyClicked = false
+            }
+            Spacer(modifier = modifier.width(10.dp))
+            SoloRecipeButton(
+                modifier = modifier
+                    .border(width = 1.dp, color = SoloRecipeTheme.color.Primary10, shape = RoundedCornerShape(8.dp))
+                    .weight(1f),
+                text = "수정",
+                textColor = SoloRecipeTheme.color.Black,
+                containerColor = SoloRecipeTheme.color.White
+            ) {
+                registrationViewModel.modifyRecipe(
+                    index = checkNotNull(index?.toLong()),
+                    body = RecipesRequestModel(
+                        name = title,
+                        thumbnail = "",
+                        recipeProcess = recipeProcess
+                    )
+                )
+            }
+        }
+    }
+
     when (createUiState) {
         UiState.Loading -> {}
-        is UiState.Success -> { navigateToMain() }
+        is UiState.Success -> {
+            navigateToMain()
+        }
+
         UiState.BadRequest -> {}
         UiState.Unauthorized -> {}
         else -> {}
@@ -90,7 +156,18 @@ fun RegistrationScreen(
             .fillMaxSize()
             .background(SoloRecipeColor.White)
     ) {
-        SoloRecipeAppBar { }
+        SoloRecipeAppBar(
+            endIcons = {
+                if (type == "modify") {
+                    IcTrashcan(
+                        modifier = modifier.clickable { removeClicked = true },
+                        contentDescription = "remove"
+                    )
+                }
+            }
+        ) {
+
+        }
         Column(modifier = modifier.verticalScroll(rememberScrollState())) {
             Spacer(modifier = modifier.height(16.dp))
             Thumbnail(imageUpload = registrationViewModel::imageUpload)
@@ -127,14 +204,7 @@ fun RegistrationScreen(
                             )
                         )
                     } else {
-                        registrationViewModel.modifyRecipe(
-                            index = checkNotNull(index?.toLong()),
-                            body = RecipesRequestModel(
-                                name = title,
-                                thumbnail = "",
-                                recipeProcess = recipeProcess
-                            )
-                        )
+                        modifyClicked = true
                     }
                 }
             )
@@ -168,7 +238,7 @@ fun Thumbnail(
                     color = SoloRecipeColor.Secondary10,
                     shape = RoundedCornerShape(8.dp)
                 )
-                .clickable (
+                .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null,
                     onClick = {
@@ -228,7 +298,7 @@ fun StepItem(
                         color = SoloRecipeColor.Secondary10,
                         shape = RoundedCornerShape(8.dp)
                     )
-                    .clickable (
+                    .clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null,
                         onClick = {
