@@ -1,4 +1,4 @@
-package com.project.domain.model.auth.response
+package com.project.domain.model.recipe.response
 
 data class RecipesResponseModel(
     val page: Int,

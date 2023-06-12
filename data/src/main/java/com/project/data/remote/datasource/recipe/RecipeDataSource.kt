@@ -5,7 +5,7 @@ import com.project.data.remote.model.response.RecipeDetailResponse
 import com.project.data.remote.model.response.RecipeResponse
 
 interface RecipeDataSource {
-    suspend fun searchRecipe(name: String): RecipeResponse
+    suspend fun searchRecipe(name: String): List<RecipeResponse>
 
     suspend fun createRecipe(body: RecipesRequest)
 
