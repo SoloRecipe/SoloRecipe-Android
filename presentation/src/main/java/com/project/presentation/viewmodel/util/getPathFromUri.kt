@@ -9,12 +9,12 @@ fun getPathFromUri(context: Context, uri: Uri): String? {
     var filePath: String? = null
     val cursor = context.contentResolver.query(uri, null, null, null, null)
     cursor?.let {
-        if (it.moveToFirst()) {
+        if (it.moveToNext()) {
             val columnIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
             filePath = it.getString(columnIndex)
         }
         Log.d("filepathTest", "getPathFromUri: ${filePath}")
         cursor.close()
     }
-    return filePath
+    return "/storage/emulated/0/Pictures/" + filePath
 }

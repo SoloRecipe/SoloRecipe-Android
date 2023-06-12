@@ -20,7 +20,7 @@ import javax.inject.Inject
 class DetailViewModel @Inject constructor(
     private val getRecipeDetailUseCase: GetRecipeDetailUseCase,
     private val likeRecipeUseCase: LikeRecipeUseCase,
-    private val writeReviewUseCase: WriteReviewUseCase,
+    private val writeReviewUseCase: WriteReviewUseCase
 ) : ViewModel() {
     private val _recipeUiState: MutableStateFlow<UiState<RecipeDetailResponseModel>> = MutableStateFlow(UiState.Loading)
     val recipeUiState = _recipeUiState.asStateFlow()
