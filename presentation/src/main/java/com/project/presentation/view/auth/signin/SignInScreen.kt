@@ -69,7 +69,7 @@ fun SignInScreen(
             modifier = modifier.align(Alignment.CenterHorizontally),
             text = "혼시피"
         )
-        Spacer(modifier = modifier.weight(1f))
+        Spacer(modifier = modifier.height(70.dp))
         Subtitle1(text = "아이디")
         Spacer(modifier = modifier.height(5.dp))
         SoloRecipeTextField(
@@ -77,7 +77,7 @@ fun SignInScreen(
             hint = "아이디를 입력해 주세요.",
             onValueChanged = { id = it }
         )
-        Spacer(modifier = modifier.height(32.dp))
+        Spacer(modifier = modifier.height(30.dp))
         Subtitle1(text = "비밀번호")
         Spacer(modifier = modifier.height(5.dp))
         SoloRecipeTextField(
@@ -98,7 +98,7 @@ fun SignInScreen(
                 )
             )
         }
-        Spacer(modifier = modifier.height(32.dp))
+        Spacer(modifier = modifier.height(30.dp))
         Row(
             modifier = modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
@@ -111,6 +111,6 @@ fun SignInScreen(
                 onClick = { navigateToSignUp() }
             )
         }
-        Spacer(modifier = modifier.height(53.dp))
+        Spacer(modifier = modifier.weight(1f))
     }
 }
