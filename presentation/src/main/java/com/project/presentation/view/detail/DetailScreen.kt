@@ -55,6 +55,7 @@ import com.skydoves.landscapist.glide.GlideImage
 fun DetailScreen(
     modifier: Modifier = Modifier,
     index: String?,
+    isLikedRecipe: Boolean?,
     detailViewModel: DetailViewModel = hiltViewModel(),
 ) {
     val recipeIndex = checkNotNull(index)
@@ -78,7 +79,12 @@ fun DetailScreen(
                         .verticalScroll(rememberScrollState()),
                 ) {
                     Spacer(modifier = modifier.height(16.dp))
-                    DetailTitle(recipeDetail = state.data) { detailViewModel.likeRecipe(index.toLong()) }
+                    DetailTitle(
+                        recipeDetail = state.data,
+                        isLikedRecipe = checkNotNull(isLikedRecipe)
+                    ) {
+                        detailViewModel.likeRecipe(index.toLong())
+                    }
                     Spacer(modifier = modifier.height(26.dp))
                     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
                         val recipeProcess = state.data?.recipeProcess
@@ -114,6 +120,7 @@ fun DetailScreen(
                 }
             }
         }
+
         UiState.Unauthorized -> {}
         UiState.NotFound -> {}
         else -> {}
@@ -123,10 +130,11 @@ fun DetailScreen(
 @Composable
 fun DetailTitle(
     modifier: Modifier = Modifier,
+    isLikedRecipe: Boolean,
     recipeDetail: RecipeDetailResponseModel?,
     onLike: (Boolean) -> Unit
 ) {
-    var liked by remember { mutableStateOf(false) }
+    var liked by remember { mutableStateOf(isLikedRecipe) }
 
     GlideImage(
         modifier = modifier

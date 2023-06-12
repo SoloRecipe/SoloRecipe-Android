@@ -16,6 +16,7 @@ import com.project.design_system.theme.SoloRecipeColor
 fun SoloRecipeButton(
     modifier: Modifier = Modifier,
     text: String,
+    textColor: Color = SoloRecipeColor.White,
     enabled: Boolean = true,
     containerColor: Color,
     contentPadding: PaddingValues = PaddingValues(vertical = 16.dp),
@@ -31,7 +32,7 @@ fun SoloRecipeButton(
     ) {
         Body3(
             text = text,
-            textColor = SoloRecipeColor.White,
+            textColor = textColor,
             textAlign = TextAlign.Center
         )
     }
