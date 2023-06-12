@@ -30,7 +30,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -185,35 +184,32 @@ fun UserInfo(
             imageOptions = ImageOptions(contentScale = ContentScale.Crop)
         )
     }
-    Box(
+    Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(bottom = 30.dp)
+            .padding(bottom = 30.dp),
+        horizontalArrangement = Arrangement.Center
     ) {
-        Row(
-            modifier = modifier.align(Alignment.Center)
-        ) {
-            BasicTextField(
-                modifier = modifier.width(70.dp),
-                value = nickname,
-                onValueChange = { onNicknameChanged(it) },
-                keyboardActions = KeyboardActions(onDone = {
-                    changeNickname(ProfileRequestModel(name = nickname))
-                    isReadOnly = true
-                    keyboardController?.hide()
-                }),
-                readOnly = isReadOnly,
-                singleLine = true,
-                maxLines = 1,
-                textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center)
-            )
-            IcPencil(
-                modifier = modifier
-                    .clickable { isReadOnly = !isReadOnly }
-                    .padding(start = 8.dp),
-                contentDescription = "rename"
-            )
-        }
+        BasicTextField(
+            modifier = modifier.width(70.dp),
+            value = nickname,
+            onValueChange = { onNicknameChanged(it) },
+            keyboardActions = KeyboardActions(onDone = {
+                changeNickname(ProfileRequestModel(name = nickname))
+                isReadOnly = true
+                keyboardController?.hide()
+            }),
+            readOnly = isReadOnly,
+            singleLine = true,
+            maxLines = 1,
+            textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center)
+        )
+        IcPencil(
+            modifier = modifier
+                .clickable { isReadOnly = !isReadOnly }
+                .padding(start = 8.dp),
+            contentDescription = "rename"
+        )
     }
 }
 
