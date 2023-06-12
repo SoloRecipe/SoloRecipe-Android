@@ -41,7 +41,6 @@ import com.project.design_system.component.SoloRecipeItem
 import com.project.design_system.theme.Body2
 import com.project.design_system.theme.Body4
 import com.project.design_system.theme.IcPencil
-import com.project.design_system.theme.IcProfile
 import com.project.design_system.theme.SoloRecipeColor
 import com.project.domain.model.profile.request.ProfileRequestModel
 import com.project.domain.model.profile.response.ProfileResponseModel
@@ -58,7 +57,10 @@ import com.skydoves.landscapist.glide.GlideImage
 fun ProfileScreen(
     modifier: Modifier = Modifier,
     profileViewModel: ProfileViewModel = hiltViewModel(),
-    navigateToSignIn: () -> Unit
+    navigateToSignIn: () -> Unit,
+    navigateToDetail: (Long) -> Unit,
+    navigateToRegistration: (Long) -> Unit,
+    navigateToPrevious: () -> Unit
 ) {
     LaunchedEffect(Unit) {
         profileViewModel.getUserInfo()
@@ -85,7 +87,7 @@ fun ProfileScreen(
                     .fillMaxSize()
                     .background(SoloRecipeColor.White)
             ) {
-                SoloRecipeAppBar { }
+                SoloRecipeAppBar { navigateToPrevious() }
                 Divider(
                     modifier = modifier.fillMaxWidth(),
                     color = SoloRecipeColor.Secondary10,
@@ -103,9 +105,15 @@ fun ProfileScreen(
                     thickness = 1.dp
                 )
                 Spacer(modifier = modifier.height(35.dp))
-                MyRecipeList(myRecipes = state.data?.myRecipe)
+                MyRecipeList(
+                    myRecipes = state.data?.myRecipe,
+                    navigateToRegistration = navigateToRegistration
+                )
                 Spacer(modifier = modifier.height(18.dp))
-                LikedRecipeList(likedRecipes = state.data?.likeRecipe)
+                LikedRecipeList(
+                    likedRecipes = state.data?.likeRecipe,
+                    navigateToDetail = navigateToDetail
+                )
                 Spacer(modifier = modifier.height(38.dp))
                 Divider(
                     modifier = modifier.fillMaxWidth(),
@@ -188,6 +196,7 @@ fun UserInfo(
 fun MyRecipeList(
     modifier: Modifier = Modifier,
     myRecipes: List<ProfileResponseModel>?,
+    navigateToRegistration: (Long) -> Unit
 ) {
     Box(
         modifier = modifier
@@ -198,9 +207,12 @@ fun MyRecipeList(
         Spacer(modifier = modifier.height(30.dp))
         LazyRow {
             items(myRecipes?.size ?: 0) {
+                val idx = myRecipes!![it].idx
+
                 SoloRecipeItem(
-                    imageUrl = myRecipes?.get(it)?.thumbnail ?: "",
-                    content = { Body4(text = myRecipes?.get(it)?.name ?: "") }
+                    modifier = modifier.clickable { navigateToRegistration(idx) },
+                    imageUrl = myRecipes[it].thumbnail,
+                    content = { Body4(text = myRecipes[it].name) }
                 )
             }
         }
@@ -210,7 +222,8 @@ fun MyRecipeList(
 @Composable
 fun LikedRecipeList(
     modifier: Modifier = Modifier,
-    likedRecipes: List<ProfileResponseModel>?
+    likedRecipes: List<ProfileResponseModel>?,
+    navigateToDetail: (Long) -> Unit,
 ) {
     Box(
         modifier = modifier
@@ -221,9 +234,12 @@ fun LikedRecipeList(
         Spacer(modifier = modifier.height(30.dp))
         LazyRow {
             items(likedRecipes?.size ?: 0) {
+                val idx = likedRecipes!![it].idx
+
                 SoloRecipeItem(
-                    imageUrl = likedRecipes?.get(it)?.thumbnail ?: "",
-                    content = { Body4(text = likedRecipes?.get(it)?.name ?: "") }
+                    modifier = modifier.clickable { navigateToDetail(idx) },
+                    imageUrl = likedRecipes[it].thumbnail,
+                    content = { Body4(text = likedRecipes[it].name) }
                 )
             }
         }

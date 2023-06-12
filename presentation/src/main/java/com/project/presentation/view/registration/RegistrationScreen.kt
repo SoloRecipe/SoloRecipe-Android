@@ -73,6 +73,7 @@ fun RegistrationScreen(
     index: String?,
     type: String?,
     navigateToMain: () -> Unit,
+    navigateToPrevious: () -> Unit
 ) {
     val recipeProcess: List<RecipeRequestModel> = listOf()
 
@@ -194,7 +195,7 @@ fun RegistrationScreen(
                 }
             }
         ) {
-
+            navigateToPrevious()
         }
         Column(modifier = modifier.verticalScroll(rememberScrollState())) {
             Spacer(modifier = modifier.height(16.dp))

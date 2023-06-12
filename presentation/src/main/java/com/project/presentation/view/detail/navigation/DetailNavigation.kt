@@ -14,7 +14,9 @@ fun NavController.navigateToDetail(index: Long, isLikedRecipe: Boolean = false) 
     this.navigate("$detailRoute/$index/$isLikedRecipe")
 }
 
-fun NavGraphBuilder.detailScreen() {
+fun NavGraphBuilder.detailScreen(
+    navigateToPrevious: () -> Unit
+) {
     composable(
         route = "$detailRoute/{index}/{isLikedRecipe}",
         arguments = listOf(
@@ -24,7 +26,8 @@ fun NavGraphBuilder.detailScreen() {
     ) { backStackEntry ->
         DetailScreen(
             index = backStackEntry.arguments?.getString("index"),
-            isLikedRecipe = backStackEntry.arguments?.getBoolean("isLikedRecipe")
+            isLikedRecipe = backStackEntry.arguments?.getBoolean("isLikedRecipe"),
+            navigateToPrevious = navigateToPrevious
         )
     }
 }
