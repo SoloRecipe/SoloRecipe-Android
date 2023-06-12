@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.project.domain.model.auth.response.RecipeResponseModel
+import com.project.domain.model.recipe.response.RecipeResponseModel
 import com.project.domain.usecase.recipe.GetAllRecipesUseCase
 import com.project.domain.usecase.recipe.GetRecommendRecipesUseCase
 import com.project.domain.usecase.recipe.SearchRecipeUseCase
@@ -23,7 +23,7 @@ class MainViewModel @Inject constructor(
     private val getRecommendRecipesUseCase: GetRecommendRecipesUseCase,
     private val searchRecipeUseCase: SearchRecipeUseCase,
 ) : ViewModel() {
-    private val _uiState: MutableStateFlow<UiState<RecipeResponseModel>> = MutableStateFlow(UiState.Loading)
+    private val _uiState: MutableStateFlow<UiState<List<RecipeResponseModel>>> = MutableStateFlow(UiState.Loading)
     val uiState = _uiState.asStateFlow()
 
     fun getRecommendRecipes(): Flow<PagingData<RecipeResponseModel>> = getRecommendRecipesUseCase().cachedIn(viewModelScope)
