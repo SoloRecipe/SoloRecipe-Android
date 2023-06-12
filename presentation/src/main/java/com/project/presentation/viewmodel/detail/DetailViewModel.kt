@@ -103,7 +103,7 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch {
             writeReviewUseCase(recipeIndex, body)
                 .onSuccess {
-                    Log.d("writeReview", "success")
+                    getRecipeDetail(recipeIndex)
                 }.onFailure {
                     it.exceptionHandling(
                         badRequestAction = { },
