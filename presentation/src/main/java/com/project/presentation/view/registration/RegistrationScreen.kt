@@ -192,9 +192,10 @@ fun Thumbnail(
 fun StepItem(
     modifier: Modifier = Modifier,
     imageUpload: (List<MultipartBody.Part>) -> Unit,
-    image: String? = null
+    image: String? = null,
+    text: String? = null
 ) {
-    var content by remember { mutableStateOf("") }
+    var content by remember { mutableStateOf(text ?: "") }
     var clicked by remember { mutableStateOf(false) }
 
     val context = LocalContext.current

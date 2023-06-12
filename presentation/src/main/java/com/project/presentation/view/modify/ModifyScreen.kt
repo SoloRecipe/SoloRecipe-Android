@@ -87,7 +87,11 @@ fun ModifyScreen(
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         repeat(step) {
-                            StepItem(imageUpload = modifyViewModel::imageUpload)
+                            StepItem(
+                                imageUpload = modifyViewModel::imageUpload,
+                                image = state.data?.recipeProcess?.get(it)?.image,
+                                text = state.data?.recipeProcess?.get(it)?.description
+                            )
                         }
                     }
                     Spacer(modifier = modifier.height(25.dp))
