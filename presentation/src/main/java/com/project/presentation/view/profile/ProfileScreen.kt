@@ -64,7 +64,7 @@ fun ProfileScreen(
     profileViewModel: ProfileViewModel = hiltViewModel(),
     navigateToSignIn: () -> Unit,
     navigateToDetail: (Long) -> Unit,
-    navigateToRegistration: (Long) -> Unit,
+    navigateToModify: (Long) -> Unit,
     navigateToPrevious: () -> Unit
 ) {
     LaunchedEffect(Unit) {
@@ -116,7 +116,7 @@ fun ProfileScreen(
                 Spacer(modifier = modifier.height(30.dp))
                 MyRecipeList(
                     myRecipes = state.data?.myRecipe,
-                    navigateToRegistration = navigateToRegistration
+                    navigateToModify = navigateToModify
                 )
                 Spacer(modifier = modifier.height(18.dp))
                 LikedRecipeList(
@@ -216,7 +216,7 @@ fun UserInfo(
 fun MyRecipeList(
     modifier: Modifier = Modifier,
     myRecipes: List<ProfileResponseModel>?,
-    navigateToRegistration: (Long) -> Unit
+    navigateToModify: (Long) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -230,7 +230,7 @@ fun MyRecipeList(
                 val idx = myRecipes!![it].idx
 
                 SoloRecipeItem(
-                    modifier = modifier.clickable { navigateToRegistration(idx) },
+                    modifier = modifier.clickable { navigateToModify(idx) },
                     imageUrl = myRecipes[it].thumbnail,
                     content = { Body4(text = myRecipes[it].name) }
                 )

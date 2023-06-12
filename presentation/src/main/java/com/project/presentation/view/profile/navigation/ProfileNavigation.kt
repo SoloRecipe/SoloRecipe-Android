@@ -14,14 +14,14 @@ fun NavController.navigateToProfile() {
 fun NavGraphBuilder.profileScreen(
     navigateToSignIn: () -> Unit,
     navigateToDetail: (Long) -> Unit,
-    navigateToRegistration: (Long) -> Unit,
+    navigateToModify: (Long) -> Unit,
     navigateToPrevious: () -> Unit
 ) {
     composable(profileRoute) {
         ProfileScreen(
             navigateToSignIn = navigateToSignIn,
             navigateToDetail = navigateToDetail,
-            navigateToRegistration = navigateToRegistration,
+            navigateToModify = navigateToModify,
             navigateToPrevious = navigateToPrevious
         )
     }
