@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.domain.model.profile.request.ProfileImageRequestModel
 import com.project.domain.model.profile.request.ProfileRequestModel
+import com.project.domain.model.profile.response.ImageUploadResponseModel
 import com.project.domain.model.profile.response.ProfilesResponseModel
 import com.project.domain.usecase.image.ImageUploadUseCase
 import com.project.domain.usecase.profile.DeleteUserInfoUseCase
@@ -37,7 +38,7 @@ class ProfileViewModel @Inject constructor(
     private val _deleteUiState: MutableStateFlow<UiState<Nothing>> = MutableStateFlow(UiState.Loading)
     val deleteUiState = _deleteUiState.asStateFlow()
 
-    private val _modifyUiState: MutableStateFlow<UiState<Nothing>> = MutableStateFlow(UiState.Loading)
+    private val _modifyUiState: MutableStateFlow<UiState<ImageUploadResponseModel>> = MutableStateFlow(UiState.Loading)
     val modifyUiState = _modifyUiState.asStateFlow()
     fun getUserInfo() {
         viewModelScope.launch {
@@ -87,7 +88,7 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             imageUploadUseCase(file)
                 .onSuccess {
-                    modifyProfileImageUseCase(ProfileImageRequestModel(it.url[0]))
+                    modifyProfileImageUseCase(ProfileImageRequestModel(it.images[0]))
                         .onSuccess {
                             _modifyUiState.value = UiState.Success()
                         }

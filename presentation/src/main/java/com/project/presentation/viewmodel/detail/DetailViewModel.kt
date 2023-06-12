@@ -6,7 +6,10 @@ import androidx.lifecycle.viewModelScope
 import com.project.domain.model.recipe.response.RecipeDetailResponseModel
 import com.project.domain.model.review.request.ReviewRequestModel
 import com.project.domain.usecase.like.LikeRecipeUseCase
+import com.project.domain.usecase.recipe.DeleteRecipeUseCase
 import com.project.domain.usecase.recipe.GetRecipeDetailUseCase
+import com.project.domain.usecase.review.DeleteReviewUseCase
+import com.project.domain.usecase.review.ModifyReviewUseCase
 import com.project.domain.usecase.review.WriteReviewUseCase
 import com.project.presentation.viewmodel.util.UiState
 import com.project.presentation.viewmodel.util.exceptionHandling
@@ -21,6 +24,7 @@ class DetailViewModel @Inject constructor(
     private val getRecipeDetailUseCase: GetRecipeDetailUseCase,
     private val likeRecipeUseCase: LikeRecipeUseCase,
     private val writeReviewUseCase: WriteReviewUseCase,
+    private val unlikeRecipeUseCase: UnlikeRecipeUseCase
 ) : ViewModel() {
     private val _recipeUiState: MutableStateFlow<UiState<RecipeDetailResponseModel>> = MutableStateFlow(UiState.Loading)
     val recipeUiState = _recipeUiState.asStateFlow()
@@ -64,6 +68,21 @@ class DetailViewModel @Inject constructor(
                         badRequestAction = { },
                         unauthorizedAction = { },
                         notFoundAction = { }
+                    )
+                }
+        }
+    }
+
+    fun unlikeRecipe(index: Long) {
+        viewModelScope.launch {
+            unlikeRecipeUseCase(index)
+                .onSuccess {
+                    Log.d("unlike", "success")
+                }.onFailure {
+                    it.exceptionHandling(
+                        badRequestAction = {},
+                        unauthorizedAction = {},
+                        notFoundAction = {}
                     )
                 }
         }
