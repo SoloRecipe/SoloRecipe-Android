@@ -90,6 +90,7 @@ fun MainScreen(
         Column(
             modifier = modifier
                 .fillMaxSize()
+                .background(Color.White)
                 .padding(paddingValues)
         ) {
             SoloRecipeAppBar(
