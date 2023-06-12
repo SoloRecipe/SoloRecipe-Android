@@ -73,6 +73,8 @@ fun DetailScreen(
 
     val keyboardController = LocalSoftwareKeyboardController.current
 
+    var liked by remember { mutableStateOf(isLikedRecipe ?: false) }
+
     when (val state = recipeUiState) {
         UiState.Loading -> {}
         is UiState.Success -> {
@@ -95,7 +97,8 @@ fun DetailScreen(
                         recipeDetail = state.data,
                         isLikedRecipe = checkNotNull(isLikedRecipe)
                     ) {
-                        detailViewModel.likeRecipe(index.toLong())
+                        liked = it
+                        if (liked) detailViewModel.likeRecipe(index.toLong()) else detailViewModel.unlikeRecipe(index.toLong())
                     }
                     Spacer(modifier = modifier.height(26.dp))
                     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
