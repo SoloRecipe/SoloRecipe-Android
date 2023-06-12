@@ -86,7 +86,8 @@ fun ModifyScreen(
                             .padding(horizontal = 26.dp),
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        repeat(step) {
+                        val idx = if (step < (state.data?.recipeProcess?.size ?: 0)) step else 0
+                        repeat(idx) {
                             StepItem(
                                 imageUpload = modifyViewModel::imageUpload,
                                 image = state.data?.recipeProcess?.get(it)?.image,
