@@ -8,4 +8,6 @@ class LikeDataSourceImpl @Inject constructor(
     private val likeApi: LikeApi
 ): LikeDataSource {
     override suspend fun likeRecipe(index: Long) = safeApiCall { likeApi.likeRecipe(index) }
+
+    override suspend fun unlikeRecipe(index: Long) = safeApiCall { likeApi.unlikeRecipe(index) }
 }
