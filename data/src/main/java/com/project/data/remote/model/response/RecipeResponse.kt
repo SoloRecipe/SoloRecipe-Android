@@ -1,6 +1,6 @@
 package com.project.data.remote.model.response
 
-import com.project.domain.model.auth.response.RecipeResponseModel
+import com.project.domain.model.recipe.response.RecipeResponseModel
 
 data class RecipeResponse(
     val idx: Long,

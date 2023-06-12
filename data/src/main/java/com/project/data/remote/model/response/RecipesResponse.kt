@@ -1,6 +1,6 @@
 package com.project.data.remote.model.response
 
-import com.project.domain.model.auth.response.RecipesResponseModel
+import com.project.domain.model.recipe.response.RecipesResponseModel
 
 data class RecipesResponse(
     val page: Int,
