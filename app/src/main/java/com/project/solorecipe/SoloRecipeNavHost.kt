@@ -15,6 +15,8 @@ import com.project.presentation.view.profile.navigation.navigateToProfile
 import com.project.presentation.view.profile.navigation.profileScreen
 import com.project.presentation.view.registration.navigation.navigateToRegistration
 import com.project.presentation.view.registration.navigation.registrationScreen
+import com.project.presentation.view.search.navigation.navigateToSearch
+import com.project.presentation.view.search.navigation.searchScreen
 
 @Composable
 fun SoloRecipeNavHost(
@@ -47,6 +49,9 @@ fun SoloRecipeNavHost(
             },
             navigateToRegistration = {
                 navController.navigateToRegistration()
+            },
+            navigateToSearch = {
+                navController.navigateToSearch()
             }
         )
         registrationScreen(
@@ -69,6 +74,14 @@ fun SoloRecipeNavHost(
             },
             navigateToPrevious = {
                 navController.popBackStack()
+            }
+        )
+        searchScreen(
+            navigateToPrevious = {
+                navController.popBackStack()
+            },
+            navigateToDetail = {
+                navController.navigateToDetail(it)
             }
         )
     }
