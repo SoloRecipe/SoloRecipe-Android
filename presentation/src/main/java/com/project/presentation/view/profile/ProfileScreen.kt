@@ -16,21 +16,26 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.Divider
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -71,12 +76,15 @@ fun ProfileScreen(
 
     when (deleteUiState) {
         UiState.Loading -> {}
-        is UiState.Success -> { navigateToSignIn() }
+        is UiState.Success -> {
+            navigateToSignIn()
+        }
+
         UiState.Unauthorized -> {}
         UiState.NotFound -> {}
         else -> {}
     }
-    
+
     when (val state = userUiState) {
         UiState.Loading -> {}
         is UiState.Success -> {
@@ -126,11 +134,13 @@ fun ProfileScreen(
                 Spacer(modifier = modifier.weight(1f))
             }
         }
+
         UiState.Unauthorized -> {}
         else -> {}
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun UserInfo(
     modifier: Modifier = Modifier,
@@ -139,6 +149,7 @@ fun UserInfo(
     changeNickname: (ProfileRequestModel) -> Unit,
     imageUpload: (List<MultipartBody.Part>) -> Unit
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     val context = LocalContext.current
     val profileImageUri = remember { mutableStateOf(Uri.EMPTY) }
     val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
@@ -147,8 +158,8 @@ fun UserInfo(
         val partList = changeToPartList(file)
         imageUpload(partList)
     }
-    
-    var isReadOnly by remember { mutableStateOf(false) }
+
+    var isReadOnly by remember { mutableStateOf(true) }
 
     Row(
         modifier = modifier
@@ -179,16 +190,24 @@ fun UserInfo(
         horizontalArrangement = Arrangement.Center
     ) {
         BasicTextField(
+            modifier = modifier.width(70.dp),
             value = nickname,
             onValueChange = { onNicknameChanged(it) },
             keyboardActions = KeyboardActions(onDone = {
                 changeNickname(ProfileRequestModel(name = nickname))
+                isReadOnly = true
+                keyboardController?.hide()
             }),
-            readOnly = isReadOnly
+            readOnly = isReadOnly,
+            singleLine = true,
+            maxLines = 1,
+            textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center)
         )
         IcPencil(
-            contentDescription = "rename",
-            modifier = modifier.clickable { isReadOnly = !isReadOnly }
+            modifier = modifier
+                .clickable { isReadOnly = !isReadOnly }
+                .padding(start = 8.dp),
+            contentDescription = "rename"
         )
     }
 }
