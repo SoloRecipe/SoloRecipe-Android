@@ -98,7 +98,7 @@ fun RegistrationScreen(
         }
     } else ""
     var title by remember { mutableStateOf(titleText) }
-    title = titleText
+    if (type == "modify") title = titleText
 
     if (removeClicked) {
         SoloRecipeDialog(
@@ -122,7 +122,6 @@ fun RegistrationScreen(
                 textColor = SoloRecipeTheme.color.Black,
                 containerColor = SoloRecipeTheme.color.White,
             ) {
-
             }
         }
     }
@@ -463,14 +462,19 @@ fun ThumbnailTitle(
     title: String,
     onValueChanged: (String) -> Unit
 ) {
+    var text by remember { mutableStateOf(title) }
+
     TextField(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 26.dp),
-        value = title,
+        value = text,
         hint = "제목을 입력해주세요",
         textStyle = SoloRecipeTypography.body2,
-        onValueChanged = { onValueChanged(it) }
+        onValueChanged = {
+            text = it
+            onValueChanged(it)
+        }
     )
 }
 
@@ -484,19 +488,23 @@ fun TextField(
     onValueChanged: (String) -> Unit
 ) {
     val mergedTextStyle = textStyle.merge(TextStyle(color = textColor))
+    var text by remember { mutableStateOf(value) }
 
     BasicTextField(
-        value = value,
+        value = text,
         textStyle = mergedTextStyle,
         cursorBrush = SolidColor(SoloRecipeColor.Primary10),
-        onValueChange = onValueChanged,
+        onValueChange = {
+            text = it
+            onValueChanged(it)
+        },
         decorationBox = { innerTextField ->
             Row(
                 modifier = modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box {
-                    if (value.isEmpty()) {
+                    if (text.isEmpty()) {
                         Body2(
                             text = hint,
                             textColor = SoloRecipeColor.Secondary10,
