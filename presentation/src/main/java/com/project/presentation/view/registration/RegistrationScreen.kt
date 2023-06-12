@@ -28,7 +28,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,13 +47,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.project.design_system.component.SoloRecipeAppBar
 import com.project.design_system.component.SoloRecipeButton
-import com.project.design_system.component.SoloRecipeDialog
 import com.project.design_system.theme.Body2
 import com.project.design_system.theme.Body3
 import com.project.design_system.theme.IcCamera
-import com.project.design_system.theme.IcTrashcan
 import com.project.design_system.theme.SoloRecipeColor
-import com.project.design_system.theme.SoloRecipeTheme
 import com.project.design_system.theme.SoloRecipeTypography
 import com.project.domain.model.recipe.request.RecipeRequestModel
 import com.project.domain.model.recipe.request.RecipesRequestModel
@@ -71,112 +67,21 @@ import java.io.File
 fun RegistrationScreen(
     modifier: Modifier = Modifier,
     registrationViewModel: RegistrationViewModel = hiltViewModel(),
-    index: String?,
-    type: String?,
     navigateToMain: () -> Unit,
     navigateToPrevious: () -> Unit
 ) {
     val recipeProcess: List<RecipeRequestModel> = listOf()
 
-    val recipeUiState by registrationViewModel.recipeUiState.collectAsStateWithLifecycle()
     val createUiState by registrationViewModel.createUiState.collectAsStateWithLifecycle()
-    val modifyUiState by registrationViewModel.modifyUiState.collectAsStateWithLifecycle()
 
-    var removeClicked by remember { mutableStateOf(false) }
-    var modifyClicked by remember { mutableStateOf(false) }
-
-    LaunchedEffect(Unit) {
-        if (type == "modify") registrationViewModel.getRecipeDetail(checkNotNull(index!!.toLong()))
-    }
-
-    val state = recipeUiState
     var step by remember { mutableStateOf(5) }
-    val titleText = if (type == "modify") {
-        when (state) {
-            is UiState.Success -> state.data!!.name
-            else -> ""
-        }
-    } else ""
-    var title by remember { mutableStateOf(titleText) }
-    if (type == "modify") title = titleText
-
-    if (removeClicked) {
-        SoloRecipeDialog(
-            title = "레시피 삭제",
-            description = "글을 삭제하시면 복구가 불가능합니다.",
-            onDismiss = { removeClicked = false }
-        ) {
-            SoloRecipeButton(
-                modifier = modifier.weight(1f),
-                text = "취소",
-                containerColor = SoloRecipeTheme.color.Primary10
-            ) {
-                removeClicked = false
-            }
-            Spacer(modifier = modifier.width(10.dp))
-            SoloRecipeButton(
-                modifier = modifier
-                    .border(width = 1.dp, color = SoloRecipeTheme.color.Primary10, shape = RoundedCornerShape(8.dp))
-                    .weight(1f),
-                text = "삭제",
-                textColor = SoloRecipeTheme.color.Black,
-                containerColor = SoloRecipeTheme.color.White,
-            ) {
-            }
-        }
-    }
-
-    if (modifyClicked) {
-        SoloRecipeDialog(title = "레시피 수정", description = "레시피를 수정하시겠습니까?", onDismiss = { modifyClicked = false }) {
-            SoloRecipeButton(
-                modifier = modifier.weight(1f),
-                text = "취소",
-                containerColor = SoloRecipeTheme.color.Primary10
-            ) {
-                modifyClicked = false
-            }
-            Spacer(modifier = modifier.width(10.dp))
-            SoloRecipeButton(
-                modifier = modifier
-                    .border(width = 1.dp, color = SoloRecipeTheme.color.Primary10, shape = RoundedCornerShape(8.dp))
-                    .weight(1f),
-                text = "수정",
-                textColor = SoloRecipeTheme.color.Black,
-                containerColor = SoloRecipeTheme.color.White
-            ) {
-                registrationViewModel.modifyRecipe(
-                    index = checkNotNull(index?.toLong()),
-                    body = RecipesRequestModel(
-                        name = title,
-                        thumbnail = "",
-                        recipeProcess = recipeProcess
-                    )
-                )
-            }
-        }
-    }
+    var title by remember { mutableStateOf("") }
 
     when (createUiState) {
         UiState.Loading -> {}
-        is UiState.Success -> {
-            navigateToMain()
-        }
-
+        is UiState.Success -> { navigateToMain() }
         UiState.BadRequest -> {}
         UiState.Unauthorized -> {}
-        else -> {}
-    }
-
-    when (modifyUiState) {
-        UiState.Loading -> {}
-        is UiState.Success -> {
-            navigateToMain()
-        }
-
-        UiState.BadRequest -> {}
-        UiState.Unauthorized -> {}
-        UiState.Forbidden -> {}
-        UiState.NotFound -> {}
         else -> {}
     }
 
@@ -186,32 +91,10 @@ fun RegistrationScreen(
             .background(SoloRecipeColor.White)
             .systemBarsPadding()
     ) {
-        SoloRecipeAppBar(
-            endIcons = {
-                if (type == "modify") {
-                    IcTrashcan(
-                        modifier = modifier.clickable { removeClicked = true },
-                        contentDescription = "remove"
-                    )
-                }
-            }
-        ) {
-            navigateToPrevious()
-        }
+        SoloRecipeAppBar { navigateToPrevious() }
         Column(modifier = modifier.verticalScroll(rememberScrollState())) {
             Spacer(modifier = modifier.height(16.dp))
-            Thumbnail(
-                imageUpload = registrationViewModel::imageUpload,
-                image = if (type == "modify") {
-                    when (state) {
-                        is UiState.Success -> {
-                            state.data!!.thumbnail
-                        }
-
-                        else -> ""
-                    }
-                } else null
-            )
+            Thumbnail(imageUpload = registrationViewModel::imageUpload)
             Spacer(modifier = modifier.height(9.dp))
             ThumbnailTitle(title = title) { title = it }
             Spacer(modifier = modifier.height(30.dp))
@@ -222,23 +105,7 @@ fun RegistrationScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 repeat(step) {
-                    StepItem(
-                        imageUpload = registrationViewModel::imageUpload,
-                        step = if (type == "modify") {
-                            when (state) {
-                                is UiState.Success -> {
-                                    val idx = state.data?.recipeProcess?.size ?: 0
-                                    if (it < idx) {
-                                        Pair(state.data?.recipeProcess?.get(it)?.image, state.data?.recipeProcess?.get(it)?.description)
-                                    } else {
-                                        Pair("", "")
-                                    }
-                                }
-
-                                else -> Pair("", "")
-                            }
-                        } else null
-                    )
+                    StepItem(imageUpload = registrationViewModel::imageUpload)
                 }
             }
             Spacer(modifier = modifier.height(25.dp))
@@ -249,22 +116,15 @@ fun RegistrationScreen(
                 onClick = { step++ }
             )
             Spacer(modifier = modifier.height(50.dp))
-            RecipeRegisterButton(
-                type = type ?: "registration",
-                onClick = {
-                    if (type == "registration") {
-                        registrationViewModel.createRecipe(
-                            RecipesRequestModel(
-                                name = title,
-                                thumbnail = "",
-                                recipeProcess = recipeProcess
-                            )
-                        )
-                    } else {
-                        modifyClicked = true
-                    }
-                }
-            )
+            RecipeRegisterButton {
+                registrationViewModel.createRecipe(
+                    RecipesRequestModel(
+                        name = title,
+                        thumbnail = "",
+                        recipeProcess = recipeProcess
+                    )
+                )
+            }
             Spacer(modifier = modifier.height(30.dp))
         }
     }
@@ -286,14 +146,84 @@ fun Thumbnail(
     }
     var clicked by remember { mutableStateOf(false) }
 
-    when (image) {
-        null -> {
-            if (!clicked) {
+    GlideImage(
+        imageModel = { image },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(250.dp)
+            .clip(shape = RoundedCornerShape(8.dp))
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = { galleryLauncher.launch("image/*") }
+            ),
+        imageOptions = ImageOptions(contentScale = ContentScale.Crop),
+        failure = {
+            Box(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .height(250.dp)
+                    .padding(horizontal = 26.dp)
+                    .background(
+                        color = SoloRecipeColor.Secondary10,
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        onClick = {
+                            galleryLauncher.launch("image/*")
+                            clicked = !clicked
+                        }
+                    )
+            ) {
+                IcCamera(
+                    modifier = modifier
+                        .size(40.dp, 32.dp)
+                        .align(Center),
+                    contentDescription = "camera"
+                )
+            }
+        }
+    )
+}
+
+@Composable
+fun StepItem(
+    modifier: Modifier = Modifier,
+    imageUpload: (List<MultipartBody.Part>) -> Unit,
+    image: String? = null
+) {
+    var content by remember { mutableStateOf("") }
+    var clicked by remember { mutableStateOf(false) }
+
+    val context = LocalContext.current
+    val registrationImageUri = remember { mutableStateOf(Uri.EMPTY) }
+    val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
+        registrationImageUri.value = it
+        val file = File(getPathFromUri(context, registrationImageUri.value))
+        val partList = changeToPartList(file)
+        imageUpload(partList)
+    }
+
+    Row(modifier = modifier.height(70.dp)) {
+        GlideImage(
+            imageModel = { image },
+            modifier = Modifier
+                .width(80.dp)
+                .fillMaxHeight()
+                .clip(shape = RoundedCornerShape(8.dp))
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                    onClick = { galleryLauncher.launch("image/*") }
+                ),
+            imageOptions = ImageOptions(contentScale = ContentScale.Crop),
+            failure = {
                 Box(
                     modifier = modifier
-                        .fillMaxWidth()
-                        .height(250.dp)
-                        .padding(horizontal = 26.dp)
+                        .width(80.dp)
+                        .fillMaxHeight()
                         .background(
                             color = SoloRecipeColor.Secondary10,
                             shape = RoundedCornerShape(8.dp)
@@ -309,134 +239,17 @@ fun Thumbnail(
                 ) {
                     IcCamera(
                         modifier = modifier
-                            .size(40.dp, 32.dp)
+                            .size(20.dp, 16.dp)
                             .align(Center),
                         contentDescription = "camera"
                     )
                 }
-            } else {
-                GlideImage(
-                    imageModel = { registrationImageUri.value },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(250.dp)
-                        .padding(horizontal = 26.dp)
-                        .clip(shape = RoundedCornerShape(8.dp))
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                            onClick = { galleryLauncher.launch("image/*") }
-                        ),
-                    imageOptions = ImageOptions(contentScale = ContentScale.Crop)
-                )
             }
-        }
-
-        else -> {
-            GlideImage(
-                imageModel = { image },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(250.dp)
-                    .padding(horizontal = 26.dp)
-                    .clip(shape = RoundedCornerShape(8.dp))
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null,
-                        onClick = { galleryLauncher.launch("image/*") }
-                    ),
-                imageOptions = ImageOptions(contentScale = ContentScale.Crop)
-            )
-        }
-    }
-}
-
-@Composable
-fun StepItem(
-    modifier: Modifier = Modifier,
-    imageUpload: (List<MultipartBody.Part>) -> Unit,
-    step: Pair<String?, String?>? = null
-) {
-
-    var content by remember { mutableStateOf("") }
-    content = step?.second ?: ""
-    var clicked by remember { mutableStateOf(false) }
-
-    val context = LocalContext.current
-    val registrationImageUri = remember { mutableStateOf(Uri.EMPTY) }
-    val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
-        registrationImageUri.value = it
-        val file = File(getPathFromUri(context, registrationImageUri.value))
-        val partList = changeToPartList(file)
-        imageUpload(partList)
-    }
-
-    Row(modifier = modifier.height(70.dp)) {
-        when (step?.first) {
-            null -> {
-                if (!clicked) {
-                    Box(
-                        modifier = modifier
-                            .width(80.dp)
-                            .fillMaxHeight()
-                            .background(
-                                color = SoloRecipeColor.Secondary10,
-                                shape = RoundedCornerShape(8.dp)
-                            )
-                            .clickable(
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = null,
-                                onClick = {
-                                    galleryLauncher.launch("image/*")
-                                    clicked = !clicked
-                                }
-                            )
-                    ) {
-                        IcCamera(
-                            modifier = modifier
-                                .size(20.dp, 16.dp)
-                                .align(Center),
-                            contentDescription = "camera"
-                        )
-                    }
-                } else {
-                    GlideImage(
-                        imageModel = { registrationImageUri.value },
-                        modifier = Modifier
-                            .width(80.dp)
-                            .fillMaxHeight()
-                            .clip(shape = RoundedCornerShape(8.dp))
-                            .clickable(
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = null,
-                                onClick = { galleryLauncher.launch("image/*") }
-                            ),
-                        imageOptions = ImageOptions(contentScale = ContentScale.Crop)
-                    )
-                }
-            }
-
-            else -> {
-                GlideImage(
-                    imageModel = { step.first },
-                    modifier = Modifier
-                        .width(80.dp)
-                        .fillMaxHeight()
-                        .clip(shape = RoundedCornerShape(8.dp))
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                            onClick = { galleryLauncher.launch("image/*") }
-                        ),
-                    imageOptions = ImageOptions(contentScale = ContentScale.Crop)
-                )
-            }
-        }
+        )
         Spacer(modifier = Modifier.width(10.dp))
         Column(
             modifier = modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
+                .fillMaxSize()
                 .border(
                     border = BorderStroke(
                         width = 1.dp,
@@ -553,14 +366,13 @@ fun RecipeAddButton(
 @Composable
 fun RecipeRegisterButton(
     modifier: Modifier = Modifier,
-    type: String,
     onClick: () -> Unit
 ) {
     SoloRecipeButton(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 26.dp),
-        text = if (type == "registration") "등록하기" else "수정하기",
+        text = "등록하기",
         containerColor = SoloRecipeColor.Primary10
     ) {
         onClick()
