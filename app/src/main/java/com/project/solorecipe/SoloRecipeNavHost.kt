@@ -11,6 +11,8 @@ import com.project.presentation.view.detail.navigation.detailScreen
 import com.project.presentation.view.detail.navigation.navigateToDetail
 import com.project.presentation.view.main.navigation.mainScreen
 import com.project.presentation.view.main.navigation.navigateToMain
+import com.project.presentation.view.modify.navigation.modifyScreen
+import com.project.presentation.view.modify.navigation.navigateToModify
 import com.project.presentation.view.profile.navigation.navigateToProfile
 import com.project.presentation.view.profile.navigation.profileScreen
 import com.project.presentation.view.registration.navigation.navigateToRegistration
@@ -69,8 +71,8 @@ fun SoloRecipeNavHost(
             navigateToDetail = {
                 navController.navigateToDetail(it, true)
             },
-            navigateToRegistration = {
-                navController.navigateToRegistration("modify", it)
+            navigateToModify = {
+                navController.navigateToModify(it)
             },
             navigateToPrevious = {
                 navController.popBackStack()
@@ -84,5 +86,8 @@ fun SoloRecipeNavHost(
                 navController.navigateToDetail(it)
             }
         )
+        modifyScreen(navigateToPrevious = {
+            navController.popBackStack()
+        })
     }
 }
