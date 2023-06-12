@@ -10,12 +10,15 @@ import com.project.domain.usecase.recipe.GetRecipeDetailUseCase
 import com.project.domain.usecase.recipe.ModifyRecipeUseCase
 import com.project.presentation.viewmodel.util.UiState
 import com.project.presentation.viewmodel.util.exceptionHandling
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
+import javax.inject.Inject
 
-class ModifyViewModel(
+@HiltViewModel
+class ModifyViewModel @Inject constructor(
     private val modifyRecipeUseCase: ModifyRecipeUseCase,
     private val deleteRecipeUseCase: DeleteRecipeUseCase,
     private val getRecipeDetailUseCase: GetRecipeDetailUseCase,
