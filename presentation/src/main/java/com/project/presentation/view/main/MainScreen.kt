@@ -48,7 +48,7 @@ import com.project.design_system.theme.IcProfile
 import com.project.design_system.theme.IcSearch
 import com.project.design_system.theme.SoloRecipeTheme
 import com.project.design_system.theme.Subtitle2
-import com.project.domain.model.auth.response.RecipeResponseModel
+import com.project.domain.model.recipe.response.RecipeResponseModel
 import com.project.presentation.R
 import com.project.presentation.viewmodel.main.MainViewModel
 import kotlinx.coroutines.launch
