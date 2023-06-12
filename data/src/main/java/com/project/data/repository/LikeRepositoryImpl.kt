@@ -8,4 +8,5 @@ class LikeRepositoryImpl @Inject constructor(
     private val likeDataSource: LikeDataSource
 ): LikeRepository {
     override suspend fun likeRecipe(index: Long) = likeDataSource.likeRecipe(index)
+    override suspend fun unlikeRecipe(index: Long) = likeDataSource.unlikeRecipe(index)
 }
