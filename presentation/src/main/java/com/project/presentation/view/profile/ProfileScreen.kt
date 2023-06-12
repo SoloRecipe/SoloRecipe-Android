@@ -198,14 +198,14 @@ fun MyRecipeList(
     myRecipes: List<ProfileResponseModel>?,
     navigateToRegistration: (Long) -> Unit
 ) {
-    Box(
+    Column(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 26.dp)
     ) {
         Body2(text = "작성한 레시피")
         Spacer(modifier = modifier.height(30.dp))
-        LazyRow {
+        LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             items(myRecipes?.size ?: 0) {
                 val idx = myRecipes!![it].idx
 
@@ -225,14 +225,14 @@ fun LikedRecipeList(
     likedRecipes: List<ProfileResponseModel>?,
     navigateToDetail: (Long) -> Unit,
 ) {
-    Box(
+    Column(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 26.dp)
     ) {
         Body2(text = "좋아요한 레시피")
         Spacer(modifier = modifier.height(30.dp))
-        LazyRow {
+        LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             items(likedRecipes?.size ?: 0) {
                 val idx = likedRecipes!![it].idx
 
