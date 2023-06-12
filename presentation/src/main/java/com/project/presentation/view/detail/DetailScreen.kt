@@ -143,7 +143,14 @@ fun DetailTitle(
             .height(250.dp)
             .clip(RoundedCornerShape(8.dp)),
         imageModel = { recipeDetail?.thumbnail },
-        imageOptions = ImageOptions(contentScale = ContentScale.Crop)
+        imageOptions = ImageOptions(contentScale = ContentScale.Crop),
+        failure = {
+            Image(
+                painter = painterResource(id = com.project.design_system.R.drawable.title_image),
+                contentDescription = "title_image",
+                contentScale = ContentScale.Crop
+            )
+        }
     )
     Spacer(modifier = modifier.height(9.dp))
     Row(
@@ -192,7 +199,7 @@ fun MyComment(
             modifier = modifier
                 .size(30.dp)
                 .clip(CircleShape),
-            painter = painterResource(id = R.drawable.ic_logo),
+            painter = painterResource(id = com.project.design_system.R.drawable.ic_profile),
             contentDescription = "profile"
         )
         Spacer(modifier = modifier.width(17.dp))
