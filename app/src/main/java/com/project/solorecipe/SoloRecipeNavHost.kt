@@ -33,7 +33,11 @@ fun SoloRecipeNavHost(
         signUpScreen(navigateToSignIn = {
             navController.navigateToSignIn()
         })
-        detailScreen()
+        detailScreen(
+            navigateToPrevious = {
+                navController.popBackStack()
+            }
+        )
         mainScreen(
             navigateToProfile = {
                 navController.navigateToProfile()
@@ -45,11 +49,27 @@ fun SoloRecipeNavHost(
                 navController.navigateToRegistration()
             }
         )
-        registrationScreen(navigateToMain = {
-            navController.navigateToMain()
-        })
-        profileScreen(navigateToSignIn = {
-            navController.navigateToSignIn()
-        })
+        registrationScreen(
+            navigateToMain = {
+                navController.navigateToMain()
+            },
+            navigateToPrevious = {
+                navController.popBackStack()
+            }
+        )
+        profileScreen(
+            navigateToSignIn = {
+                navController.navigateToSignIn()
+            },
+            navigateToDetail = {
+                navController.navigateToDetail(it, true)
+            },
+            navigateToRegistration = {
+                navController.navigateToRegistration("modify", it)
+            },
+            navigateToPrevious = {
+                navController.popBackStack()
+            }
+        )
     }
 }

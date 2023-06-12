@@ -14,7 +14,10 @@ fun NavController.navigateToRegistration(type: String = "registration", index: L
     this.navigate(route)
 }
 
-fun NavGraphBuilder.registrationScreen(navigateToMain: () -> Unit) {
+fun NavGraphBuilder.registrationScreen(
+    navigateToMain: () -> Unit,
+    navigateToPrevious: () -> Unit
+) {
     composable(
         route = "$registrationRoute/{type}?index={index}",
         arguments = listOf(
@@ -28,7 +31,8 @@ fun NavGraphBuilder.registrationScreen(navigateToMain: () -> Unit) {
         RegistrationScreen(
             type = backStackEntry.arguments?.getString("type"),
             index = backStackEntry.arguments?.getString("index"),
-            navigateToMain = navigateToMain
+            navigateToMain = navigateToMain,
+            navigateToPrevious = navigateToPrevious
         )
     }
 }

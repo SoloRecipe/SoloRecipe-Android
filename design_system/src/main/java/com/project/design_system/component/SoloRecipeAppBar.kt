@@ -55,7 +55,7 @@ fun SoloRecipeAppBar(
             modifier = modifier
                 .fillMaxHeight()
                 .padding(start = 16.dp)
-                .clickable { onStartIconClick() },
+                .clickable(enabled = startIcon == null) { onStartIconClick() },
             contentAlignment = Alignment.Center
         ) {
             startIcon?.let { startIcon ->

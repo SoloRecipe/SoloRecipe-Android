@@ -57,6 +57,7 @@ fun DetailScreen(
     index: String?,
     isLikedRecipe: Boolean?,
     detailViewModel: DetailViewModel = hiltViewModel(),
+    navigateToPrevious: () -> Unit
 ) {
     val recipeIndex = checkNotNull(index)
 
@@ -70,7 +71,7 @@ fun DetailScreen(
         UiState.Loading -> {}
         is UiState.Success -> {
             Column(modifier = modifier.fillMaxSize()) {
-                SoloRecipeAppBar { }
+                SoloRecipeAppBar { navigateToPrevious() }
                 Column(
                     modifier = modifier
                         .fillMaxSize()
