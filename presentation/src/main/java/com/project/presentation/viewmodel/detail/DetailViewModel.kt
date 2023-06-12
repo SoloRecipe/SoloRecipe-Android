@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.project.domain.model.recipe.response.RecipeDetailResponseModel
 import com.project.domain.model.review.request.ReviewRequestModel
 import com.project.domain.usecase.like.LikeRecipeUseCase
+import com.project.domain.usecase.like.UnlikeRecipeUseCase
 import com.project.domain.usecase.recipe.DeleteRecipeUseCase
 import com.project.domain.usecase.recipe.GetRecipeDetailUseCase
 import com.project.domain.usecase.review.DeleteReviewUseCase
@@ -26,7 +27,8 @@ class DetailViewModel @Inject constructor(
     private val deleteReviewUseCase: DeleteReviewUseCase,
     private val modifyReviewUseCase: ModifyReviewUseCase,
     private val writeReviewUseCase: WriteReviewUseCase,
-    private val deleteRecipeUseCase: DeleteRecipeUseCase
+    private val deleteRecipeUseCase: DeleteRecipeUseCase,
+    private val unlikeRecipeUseCase: UnlikeRecipeUseCase
 ) : ViewModel() {
     private val _recipeUiState: MutableStateFlow<UiState<RecipeDetailResponseModel>> = MutableStateFlow(UiState.Loading)
     val recipeUiState = _recipeUiState.asStateFlow()
@@ -125,6 +127,21 @@ class DetailViewModel @Inject constructor(
                         unauthorizedAction = { _deleteRecipeUiState.value = UiState.Unauthorized },
                         forbiddenAction = { _deleteRecipeUiState.value = UiState.Forbidden },
                         notFoundAction = { _deleteRecipeUiState.value = UiState.NotFound }
+                    )
+                }
+        }
+    }
+
+    fun unlikeRecipe(index: Long) {
+        viewModelScope.launch {
+            unlikeRecipeUseCase(index)
+                .onSuccess {
+                    Log.d("unlike", "success")
+                }.onFailure {
+                    it.exceptionHandling(
+                        badRequestAction = {},
+                        unauthorizedAction = {},
+                        notFoundAction = {}
                     )
                 }
         }
