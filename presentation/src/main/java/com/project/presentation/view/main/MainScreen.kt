@@ -63,7 +63,8 @@ fun MainScreen(
     mainViewModel: MainViewModel = hiltViewModel(),
     navigateToProfile: () -> Unit,
     navigateToDetail: (Long) -> Unit,
-    navigateToRegistration: () -> Unit
+    navigateToRegistration: () -> Unit,
+    navigateToSearch: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState()
@@ -106,7 +107,7 @@ fun MainScreen(
                         modifier = modifier.clickable(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null,
-                            onClick = { }
+                            onClick = { navigateToSearch() }
                         ),
                         contentDescription = "search"
                     )
