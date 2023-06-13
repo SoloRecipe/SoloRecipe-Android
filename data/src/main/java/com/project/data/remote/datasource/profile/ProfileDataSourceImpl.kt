@@ -14,7 +14,7 @@ class ProfileDataSourceImpl @Inject constructor(
 
     override suspend fun renameUserName(body: ProfileRequest) = safeApiCall { profileApi.renameUserName(body) }
 
-    override suspend fun deleteUserInfo() = safeApiCall { profileApi.deleteUserInfo() }
+    override suspend fun deleteUserInfo(header: String) = safeApiCall { profileApi.deleteUserInfo(header) }
 
     override suspend fun modifyProfileImage(body: ProfileImageRequest) = safeApiCall { profileApi.modifyProfileImage(body) }
 }
