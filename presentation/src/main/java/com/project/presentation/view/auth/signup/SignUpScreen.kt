@@ -43,7 +43,8 @@ import com.project.presentation.viewmodel.util.UiState
 fun SignUpScreen(
     modifier: Modifier = Modifier,
     signUpViewModel: SignUpViewModel = hiltViewModel(),
-    navigateToSignIn: () -> Unit
+    navigateToSignIn: () -> Unit,
+    navigateToPrevious: () -> Unit
 ) {
     val uiState by signUpViewModel.uiState.collectAsStateWithLifecycle()
 
@@ -68,7 +69,7 @@ fun SignUpScreen(
             .padding(horizontal = 26.dp)
     ) {
         Spacer(modifier = modifier.height(33.dp))
-        SignUpHeader { }
+        SignUpHeader { navigateToPrevious() }
         Spacer(modifier = modifier.height(52.dp))
         SignUpField(
             label = "이메일",

@@ -34,9 +34,14 @@ fun SoloRecipeNavHost(
                 navController.navigateToMain()
             }
         )
-        signUpScreen(navigateToSignIn = {
+        signUpScreen(
+            navigateToSignIn = {
             navController.navigateToSignIn()
-        })
+            },
+            navigateToPrevious = {
+                navController.popBackStack()
+            }
+        )
         detailScreen(
             navigateToPrevious = {
                 navController.popBackStack()
