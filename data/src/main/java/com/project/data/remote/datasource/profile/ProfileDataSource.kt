@@ -9,7 +9,7 @@ interface ProfileDataSource {
 
     suspend fun renameUserName(body: ProfileRequest)
 
-    suspend fun deleteUserInfo()
+    suspend fun deleteUserInfo(header: String)
 
     suspend fun modifyProfileImage(body: ProfileImageRequest)
 }

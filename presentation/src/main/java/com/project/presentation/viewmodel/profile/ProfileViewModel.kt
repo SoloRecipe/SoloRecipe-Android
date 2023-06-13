@@ -9,6 +9,7 @@ import com.project.domain.model.profile.response.ImageUploadResponseModel
 import com.project.domain.model.profile.response.ProfilesResponseModel
 import com.project.domain.usecase.image.ImageUploadUseCase
 import com.project.domain.usecase.profile.DeleteUserInfoUseCase
+import com.project.domain.usecase.profile.GetRefreshTokenUseCase
 import com.project.domain.usecase.profile.GetUserInfoUseCase
 import com.project.domain.usecase.profile.ModifyProfileImageUseCase
 import com.project.domain.usecase.profile.RenameUserNameUseCase
@@ -17,6 +18,7 @@ import com.project.presentation.viewmodel.util.exceptionHandling
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import javax.inject.Inject
@@ -27,19 +29,29 @@ class ProfileViewModel @Inject constructor(
     private val renameUserNameUseCase: RenameUserNameUseCase,
     private val deleteUserInfoUseCase: DeleteUserInfoUseCase,
     private val modifyProfileImageUseCase: ModifyProfileImageUseCase,
-    private val imageUploadUseCase: ImageUploadUseCase
-): ViewModel() {
-    private val _userUiState: MutableStateFlow<UiState<ProfilesResponseModel>> = MutableStateFlow(UiState.Loading)
+    private val imageUploadUseCase: ImageUploadUseCase,
+    private val getRefreshTokenUseCase: GetRefreshTokenUseCase
+) : ViewModel() {
+    private val _userUiState: MutableStateFlow<UiState<ProfilesResponseModel>> =
+        MutableStateFlow(UiState.Loading)
     val userUiState = _userUiState.asStateFlow()
 
-    private val _renameUiState: MutableStateFlow<UiState<Nothing>> = MutableStateFlow(UiState.Loading)
+    private val _renameUiState: MutableStateFlow<UiState<Nothing>> =
+        MutableStateFlow(UiState.Loading)
     val renameUiState = _renameUiState.asStateFlow()
 
-    private val _deleteUiState: MutableStateFlow<UiState<Nothing>> = MutableStateFlow(UiState.Loading)
+    private val _deleteUiState: MutableStateFlow<UiState<Nothing>> =
+        MutableStateFlow(UiState.Loading)
     val deleteUiState = _deleteUiState.asStateFlow()
 
-    private val _modifyUiState: MutableStateFlow<UiState<ImageUploadResponseModel>> = MutableStateFlow(UiState.Loading)
+    private val _modifyUiState: MutableStateFlow<UiState<ImageUploadResponseModel>> =
+        MutableStateFlow(UiState.Loading)
     val modifyUiState = _modifyUiState.asStateFlow()
+
+    private val _tokenUiState: MutableStateFlow<UiState<String>> =
+        MutableStateFlow(UiState.Loading)
+    val tokenUiState = _tokenUiState.asStateFlow()
+
     fun getUserInfo() {
         viewModelScope.launch {
             getUserInfoUseCase()
@@ -69,9 +81,9 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun deleteUserInfo() {
+    fun deleteUserInfo(header: String) {
         viewModelScope.launch {
-            deleteUserInfoUseCase()
+            deleteUserInfoUseCase(header)
                 .onSuccess {
                     _deleteUiState.value = UiState.Success()
                 }
@@ -101,6 +113,21 @@ class ProfileViewModel @Inject constructor(
                 }
                 .onFailure {
                     Log.d("imageUpload", it.message.toString())
+                }
+        }
+    }
+
+    fun getRefreshToken() {
+        viewModelScope.launch {
+            getRefreshTokenUseCase()
+                .onSuccess {
+                    _tokenUiState.value = UiState.Success(it.first())
+                }
+                .onFailure {
+                    it.exceptionHandling(
+                        unauthorizedAction = { _modifyUiState.value = UiState.Unauthorized },
+                        notFoundAction = { _modifyUiState.value = UiState.NotFound }
+                    )
                 }
         }
     }
