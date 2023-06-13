@@ -51,10 +51,9 @@ import com.project.domain.model.profile.request.ProfileRequestModel
 import com.project.domain.model.profile.response.ProfileResponseModel
 import com.project.presentation.viewmodel.profile.ProfileViewModel
 import com.project.presentation.viewmodel.util.changeToPartList
-import com.project.presentation.viewmodel.util.getPathFromUri
 import okhttp3.MultipartBody
-import java.io.File
 import com.project.presentation.viewmodel.util.UiState
+import com.project.presentation.viewmodel.util.getFileFromUri
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
 
@@ -156,9 +155,11 @@ fun UserInfo(
     val profileImageUri = remember { mutableStateOf(Uri.EMPTY) }
     val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
         profileImageUri.value = it
-        val file = File(getPathFromUri(context, profileImageUri.value))
-        val partList = changeToPartList(file)
-        imageUpload(partList)
+        val file = getFileFromUri(context, profileImageUri.value)
+        file?.let {
+            val partList = changeToPartList(file)
+            imageUpload(partList)
+        }
     }
 
     var isReadOnly by remember { mutableStateOf(true) }
