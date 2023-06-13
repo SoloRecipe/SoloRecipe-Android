@@ -23,21 +23,24 @@ class ModifyViewModel @Inject constructor(
     private val deleteRecipeUseCase: DeleteRecipeUseCase,
     private val getRecipeDetailUseCase: GetRecipeDetailUseCase,
     private val imageUploadUseCase: ImageUploadUseCase
-): ViewModel() {
-    private val _modifyUiState: MutableStateFlow<UiState<Nothing>> = MutableStateFlow(UiState.Loading)
-    val modifyUiState = _modifyUiState.asStateFlow()
-
-    private val _deleteRecipeUiState: MutableStateFlow<UiState<Nothing>> = MutableStateFlow(UiState.Loading)
-    val deleteRecipeUiState = _deleteRecipeUiState.asStateFlow()
-
+) : ViewModel() {
     private val _recipeUiState: MutableStateFlow<UiState<RecipeDetailResponseModel>> = MutableStateFlow(UiState.Loading)
     val recipeUiState = _recipeUiState.asStateFlow()
+
+    val recipeImages = mutableListOf<String>()
+    val recipeTexts = mutableListOf<String>()
 
     fun getRecipeDetail(index: Long) {
         viewModelScope.launch {
             getRecipeDetailUseCase(index)
-                .onSuccess {
-                    _recipeUiState.value = UiState.Success(it)
+                .onSuccess { result ->
+                    _recipeUiState.value = UiState.Success(result)
+                    recipeImages.add(result.thumbnail)
+                    recipeTexts.add(result.name)
+                    repeat(result.recipeProcess.size) {
+                        recipeImages.add(result.recipeProcess[it].image)
+                        recipeTexts.add(result.recipeProcess[it].description)
+                    }
                 }.onFailure {
                     it.exceptionHandling(
                         unauthorizedAction = { _recipeUiState.value = UiState.Unauthorized },
@@ -47,21 +50,20 @@ class ModifyViewModel @Inject constructor(
         }
 
     }
+
     fun modifyRecipe(
-        index:Long,
+        index: Long,
         body: RecipesRequestModel
     ) {
         viewModelScope.launch {
             modifyRecipeUseCase(index, body)
-                .onSuccess {
-                    _modifyUiState.value = UiState.Success()
-                }
+                .onSuccess { }
                 .onFailure {
                     it.exceptionHandling(
-                        badRequestAction = { _modifyUiState.value = UiState.BadRequest },
-                        unauthorizedAction = { _modifyUiState.value = UiState.Unauthorized },
-                        forbiddenAction = { _modifyUiState.value = UiState.Forbidden },
-                        notFoundAction = { _modifyUiState.value = UiState.NotFound }
+                        badRequestAction = { },
+                        unauthorizedAction = { },
+                        forbiddenAction = { },
+                        notFoundAction = { }
                     )
                 }
         }
@@ -70,24 +72,27 @@ class ModifyViewModel @Inject constructor(
     fun deleteRecipe(index: Long) {
         viewModelScope.launch {
             deleteRecipeUseCase(index)
-                .onSuccess {
-                    _deleteRecipeUiState.value = UiState.Success()
-                }
+                .onSuccess { }
                 .onFailure {
                     it.exceptionHandling(
-                        unauthorizedAction = { _deleteRecipeUiState.value = UiState.Unauthorized },
-                        forbiddenAction = { _deleteRecipeUiState.value = UiState.Forbidden },
-                        notFoundAction = { _deleteRecipeUiState.value = UiState.NotFound }
+                        unauthorizedAction = { },
+                        forbiddenAction = { },
+                        notFoundAction = { }
                     )
                 }
         }
     }
 
-    fun imageUpload(file: List<MultipartBody.Part>) {
+    fun imageUpload(file: List<MultipartBody.Part>, index: Int) {
         viewModelScope.launch {
             imageUploadUseCase(file)
-                .onSuccess { }
-                .onFailure { }
+                .onSuccess { recipeImages[index] = it.images[0] }
+                .onFailure {
+                    it.exceptionHandling(
+                        badRequestAction = { },
+                        unauthorizedAction = { }
+                    )
+                }
         }
     }
 }

@@ -91,8 +91,13 @@ fun SoloRecipeNavHost(
                 navController.navigateToDetail(it)
             }
         )
-        modifyScreen(navigateToPrevious = {
-            navController.popBackStack()
-        })
+        modifyScreen(
+            navigateToProfile = {
+                navController.navigateToProfile()
+            },
+            navigateToPrevious = {
+                navController.popBackStack()
+            }
+        )
     }
 }
