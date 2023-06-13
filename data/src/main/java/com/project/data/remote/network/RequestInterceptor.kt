@@ -31,7 +31,6 @@ class RequestInterceptor @Inject constructor(
             }
         }
 
-        val accessToken = runBlocking { localDataSource.getAccessToken().first() }
         val refreshToken = runBlocking { localDataSource.getRefreshToken().first() }
         val currentTime = LocalDateTime.now()
         val accessTokenExp = runBlocking { convertDateFormat(localDataSource.getAccessTokenExp().first()) }
@@ -63,6 +62,8 @@ class RequestInterceptor @Inject constructor(
                 }
             } else throw TokenExpiredException()
         }
+
+        val accessToken = runBlocking { localDataSource.getAccessToken().first() }
 
         return chain.proceed(
             request.newBuilder()
