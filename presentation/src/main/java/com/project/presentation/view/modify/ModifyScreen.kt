@@ -86,12 +86,13 @@ fun ModifyScreen(
                             .padding(horizontal = 26.dp),
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        val idx = if (step < (state.data?.recipeProcess?.size ?: 0)) step else 0
+                        val idx = if (step < (state.data.recipeProcess.size)) step else 0
                         repeat(idx) {
                             StepItem(
                                 imageUpload = modifyViewModel::imageUpload,
-                                image = state.data?.recipeProcess?.get(it)?.image!!,
-                                text = state.data?.recipeProcess?.get(it)?.description
+                                image = state.data.recipeProcess[it].image,
+                                text = state.data.recipeProcess[it].description,
+                                textUpload = {}
                             )
                         }
                     }
@@ -109,7 +110,7 @@ fun ModifyScreen(
                             index = checkNotNull(index),
                             body = RecipesRequestModel(
                                 name = title,
-                                thumbnail = state.data!!.thumbnail,
+                                thumbnail = state.data.thumbnail,
                                 recipeProcess = recipeProcess
                             )
                         )
