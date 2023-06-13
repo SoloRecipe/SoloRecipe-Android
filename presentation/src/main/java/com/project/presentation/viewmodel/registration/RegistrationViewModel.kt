@@ -26,8 +26,8 @@ class RegistrationViewModel @Inject constructor(
 
     private val _modifyUiState: MutableStateFlow<UiState<ImageUploadResponseModel>> = MutableStateFlow(UiState.Loading)
     val modifyUiState = _modifyUiState.asStateFlow()
-    val recipeImages = mutableListOf<String>("")
-    val recipeTexts = mutableListOf<String>("")
+    val recipeImages = mutableListOf("")
+    val recipeTexts = mutableListOf("")
 
     fun createRecipe(body: RecipesRequestModel) {
         viewModelScope.launch {
