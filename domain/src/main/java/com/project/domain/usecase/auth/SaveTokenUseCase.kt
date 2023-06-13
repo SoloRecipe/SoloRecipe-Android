@@ -7,5 +7,5 @@ class SaveTokenUseCase @Inject constructor(
     private val repository: AuthRepository
 ) {
     suspend operator fun invoke(accessToken: String, refreshToken: String, accessTokenExp: String, refreshTokenExp: String) =
-        repository.saveToken(accessToken, refreshToken, accessTokenExp, refreshTokenExp)
+        kotlin.runCatching { repository.saveToken(accessToken, refreshToken, accessTokenExp, refreshTokenExp) }
 }
