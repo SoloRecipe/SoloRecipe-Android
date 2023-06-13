@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,6 +41,10 @@ fun SignInScreen(
     navigateToSignUp: () -> Unit,
     navigateToMain: () -> Unit
 ) {
+    LaunchedEffect(Unit) {
+        signInViewModel.isLogin()
+    }
+
     val uiState by signInViewModel.uiState.collectAsStateWithLifecycle()
 
     var id by remember { mutableStateOf("") }
