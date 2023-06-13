@@ -87,7 +87,7 @@ fun ProfileScreen(
     when (val state = tokenUiState) {
         UiState.Loading -> {}
         is UiState.Success -> {
-            profileViewModel.deleteUserInfo(state.data ?: "")
+            profileViewModel.deleteUserInfo("Bearer " + state.data)
         }
         UiState.Unauthorized -> {}
         UiState.NotFound -> {}
