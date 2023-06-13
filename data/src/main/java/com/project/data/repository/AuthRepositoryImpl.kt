@@ -9,6 +9,7 @@ import com.project.domain.model.auth.request.SignInRequestModel
 import com.project.domain.model.auth.request.SignUpRequestModel
 import com.project.domain.model.auth.response.SignInResponseModel
 import com.project.domain.repository.AuthRepository
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
@@ -21,6 +22,8 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun signUp(signUpRequestModel: SignUpRequestModel) =
         authDataSource.signUp(signUpRequestModel.asSignUpRequest())
 
+    override suspend fun isLogin() = localDataSource.getLoginStatus().first()
+
     override suspend fun saveToken(accessToken: String, refreshToken: String, accessTokenExp: String, refreshTokenExp: String) {
         localDataSource.saveToken(
             accessToken = accessToken,
@@ -29,5 +32,4 @@ class AuthRepositoryImpl @Inject constructor(
             refreshTokenExp = refreshTokenExp
         )
     }
-
 }
