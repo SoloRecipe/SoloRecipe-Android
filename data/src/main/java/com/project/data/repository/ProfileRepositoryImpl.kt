@@ -19,8 +19,8 @@ class ProfileRepositoryImpl @Inject constructor(
     override suspend fun renameUserName(profileRequestModel: ProfileRequestModel) =
         profileDataSource.renameUserName(profileRequestModel.asProfileRequest())
 
-    override suspend fun deleteUserInfo() =
-        profileDataSource.deleteUserInfo()
+    override suspend fun deleteUserInfo(header: String) =
+        profileDataSource.deleteUserInfo(header)
 
     override suspend fun modifyProfileImage(profileImageRequestModel: ProfileImageRequestModel) =
         profileDataSource.modifyProfileImage(profileImageRequestModel.asProfileImageRequest())

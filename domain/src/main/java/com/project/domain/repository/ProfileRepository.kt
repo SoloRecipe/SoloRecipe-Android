@@ -9,7 +9,7 @@ interface ProfileRepository {
 
     suspend fun renameUserName(profileRequestModel: ProfileRequestModel)
 
-    suspend fun deleteUserInfo()
+    suspend fun deleteUserInfo(header: String)
 
     suspend fun modifyProfileImage(profileImageRequestModel: ProfileImageRequestModel)
 }
