@@ -76,7 +76,7 @@ fun ModifyScreen(
                 }
                 Column(modifier = modifier.verticalScroll(rememberScrollState())) {
                     Spacer(modifier = modifier.height(16.dp))
-                    Thumbnail(imageUpload = modifyViewModel::imageUpload, image = state.data?.thumbnail)
+                    Thumbnail(imageUpload = modifyViewModel::imageUpload, image = state.data!!.thumbnail)
                     Spacer(modifier = modifier.height(9.dp))
                     ThumbnailTitle(title = title) { title = it }
                     Spacer(modifier = modifier.height(30.dp))
@@ -90,7 +90,7 @@ fun ModifyScreen(
                         repeat(idx) {
                             StepItem(
                                 imageUpload = modifyViewModel::imageUpload,
-                                image = state.data?.recipeProcess?.get(it)?.image,
+                                image = state.data?.recipeProcess?.get(it)?.image!!,
                                 text = state.data?.recipeProcess?.get(it)?.description
                             )
                         }
@@ -100,7 +100,8 @@ fun ModifyScreen(
                         name = "",
                         thumbnail = "",
                         recipeProcess = recipeProcess,
-                        onClick = { step++ }
+                        onClick = { step++ },
+                        addList = {}
                     )
                     Spacer(modifier = modifier.height(50.dp))
                     RecipeModifyButton {
