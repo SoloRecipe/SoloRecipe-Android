@@ -79,7 +79,16 @@ fun ProfileScreen(
         is UiState.Success -> {
             navigateToSignIn()
         }
+        UiState.Unauthorized -> {}
+        UiState.NotFound -> {}
+        else -> {}
+    }
 
+    when (val state = tokenUiState) {
+        UiState.Loading -> {}
+        is UiState.Success -> {
+            profileViewModel.deleteUserInfo(state.data ?: "")
+        }
         UiState.Unauthorized -> {}
         UiState.NotFound -> {}
         else -> {}
@@ -132,18 +141,9 @@ fun ProfileScreen(
                 )
                 Spacer(modifier = modifier.height(30.dp))
                 LogoutButton { profileViewModel.getRefreshToken() }
-
-                when (val state = tokenUiState) {
-                    is UiState.Success -> {
-                        profileViewModel.deleteUserInfo(state.data ?: "")
-                    }
-                    else -> {}
-                }
-
                 Spacer(modifier = modifier.weight(1f))
             }
         }
-
         UiState.Unauthorized -> {}
         else -> {}
     }
