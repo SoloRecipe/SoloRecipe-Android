@@ -1,5 +1,6 @@
 package com.project.presentation.viewmodel.auth
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.domain.model.auth.request.SignInRequestModel
@@ -29,8 +30,11 @@ class SignInViewModel @Inject constructor(
                         refreshToken = it.refreshToken,
                         accessTokenExp = it.accessExp,
                         refreshTokenExp = it.refreshExp
-                    )
-                    _uiState.value = UiState.Success()
+                    ).onSuccess {
+                        _uiState.value = UiState.Success()
+                    }.onFailure { e ->
+                        Log.d("saveToken", e.message.toString())
+                    }
                 }.onFailure {
                     it.exceptionHandling(
                         badRequestAction = { _uiState.value = UiState.BadRequest },
