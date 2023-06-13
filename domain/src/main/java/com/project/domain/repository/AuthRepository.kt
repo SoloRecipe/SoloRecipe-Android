@@ -9,6 +9,8 @@ interface AuthRepository {
 
     suspend fun signUp(signUpRequestModel: SignUpRequestModel)
 
+    suspend fun isLogin(): Boolean
+
     suspend fun saveToken(
         accessToken: String,
         refreshToken: String,

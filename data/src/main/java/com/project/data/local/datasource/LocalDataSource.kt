@@ -17,4 +17,6 @@ interface LocalDataSource {
     fun getAccessTokenExp(): Flow<String>
 
     fun getRefreshTokenExp(): Flow<String>
+
+    fun getLoginStatus(): Flow<Boolean>
 }

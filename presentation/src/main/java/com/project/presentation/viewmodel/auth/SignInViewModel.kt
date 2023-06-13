@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.domain.model.auth.request.SignInRequestModel
+import com.project.domain.usecase.auth.IsLoginUseCase
 import com.project.domain.usecase.auth.SaveTokenUseCase
 import com.project.domain.usecase.auth.SignInUseCase
 import com.project.presentation.viewmodel.util.UiState
@@ -17,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     private val signInUseCase: SignInUseCase,
-    private val saveTokenUseCase: SaveTokenUseCase
+    private val saveTokenUseCase: SaveTokenUseCase,
+    private val isLoginUseCase: IsLoginUseCase
 ) : ViewModel() {
     private val _uiState: MutableStateFlow<UiState<Nothing>> = MutableStateFlow(UiState.Loading)
     val uiState = _uiState.asStateFlow()
@@ -41,6 +43,12 @@ class SignInViewModel @Inject constructor(
                         notFoundAction = { _uiState.value = UiState.NotFound }
                     )
                 }
+        }
+    }
+
+    fun isLogin() {
+        viewModelScope.launch {
+            if (isLoginUseCase()) _uiState.value = UiState.Success()
         }
     }
 }
