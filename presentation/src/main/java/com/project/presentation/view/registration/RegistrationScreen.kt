@@ -187,6 +187,7 @@ fun Thumbnail(
         imageModel = { image.ifEmpty { registrationImageUri.value } },
         modifier = Modifier
             .fillMaxWidth()
+            .padding(horizontal = 26.dp)
             .height(250.dp)
             .clip(shape = RoundedCornerShape(8.dp))
             .clickable(
@@ -200,7 +201,6 @@ fun Thumbnail(
                 modifier = modifier
                     .fillMaxWidth()
                     .height(250.dp)
-                    .padding(horizontal = 26.dp)
                     .background(
                         color = SoloRecipeColor.Secondary10,
                         shape = RoundedCornerShape(8.dp)
