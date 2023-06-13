@@ -1,6 +1,7 @@
 package com.project.presentation.view.registration
 
 import android.net.Uri
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
@@ -57,11 +58,10 @@ import com.project.domain.model.recipe.request.RecipesRequestModel
 import com.project.presentation.viewmodel.registration.RegistrationViewModel
 import com.project.presentation.viewmodel.util.UiState
 import com.project.presentation.viewmodel.util.changeToPartList
-import com.project.presentation.viewmodel.util.getPathFromUri
+import com.project.presentation.viewmodel.util.getFileFromUri
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.glide.GlideImage
 import okhttp3.MultipartBody
-import java.io.File
 
 @Composable
 fun RegistrationScreen(
@@ -70,11 +70,13 @@ fun RegistrationScreen(
     navigateToMain: () -> Unit,
     navigateToPrevious: () -> Unit
 ) {
-    val recipeProcess: List<RecipeRequestModel> = listOf()
+    val recipeProcess: MutableList<RecipeRequestModel> = mutableListOf()
 
     val createUiState by registrationViewModel.createUiState.collectAsStateWithLifecycle()
+    val modifyUiState by registrationViewModel.modifyUiState.collectAsStateWithLifecycle()
+    val recipeImages = registrationViewModel.recipeImages
 
-    var step by remember { mutableStateOf(5) }
+    var step by remember { mutableStateOf(1) }
     var title by remember { mutableStateOf("") }
 
     when (createUiState) {
@@ -94,7 +96,15 @@ fun RegistrationScreen(
         SoloRecipeAppBar { navigateToPrevious() }
         Column(modifier = modifier.verticalScroll(rememberScrollState())) {
             Spacer(modifier = modifier.height(16.dp))
-            Thumbnail(imageUpload = registrationViewModel::imageUpload)
+            Thumbnail(
+                image = when (modifyUiState) {
+                    is UiState.Success -> {
+                        recipeImages[0]
+                    }
+                    else -> ""
+                },
+                imageUpload = { file -> registrationViewModel.imageUpload(file, 0) }
+            )
             Spacer(modifier = modifier.height(9.dp))
             ThumbnailTitle(title = title) { title = it }
             Spacer(modifier = modifier.height(30.dp))
@@ -104,8 +114,16 @@ fun RegistrationScreen(
                     .padding(horizontal = 26.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                repeat(step) {
-                    StepItem(imageUpload = registrationViewModel::imageUpload)
+                repeat(step - 1) {
+                    StepItem(
+                        image = when (modifyUiState) {
+                            is UiState.Success -> {
+                                recipeImages[it + 1]
+                            }
+                            else -> ""
+                        },
+                        imageUpload = { file -> registrationViewModel.imageUpload(file, it + 1) }
+                    )
                 }
             }
             Spacer(modifier = modifier.height(25.dp))
@@ -113,15 +131,25 @@ fun RegistrationScreen(
                 name = "",
                 thumbnail = "",
                 recipeProcess = recipeProcess,
-                onClick = { step++ }
+                onClick = { step++ },
+                addList = { recipeImages.add("") }
             )
             Spacer(modifier = modifier.height(50.dp))
             RecipeRegisterButton {
+                val temp = recipeImages.map {
+                    RecipeRequestModel(
+                        description = "",
+                        image = it
+                    )
+                }
+                recipeProcess.addAll(temp)
                 registrationViewModel.createRecipe(
                     RecipesRequestModel(
                         name = title,
-                        thumbnail = "",
-                        recipeProcess = recipeProcess
+                        thumbnail = recipeProcess.toList()[0].image,
+                        recipeProcess = recipeProcess.apply {
+                            removeFirst()
+                        }.toList()
                     )
                 )
             }
@@ -133,21 +161,23 @@ fun RegistrationScreen(
 @Composable
 fun Thumbnail(
     modifier: Modifier = Modifier,
-    imageUpload: (List<MultipartBody.Part>) -> Unit,
-    image: String? = null
+    image: String,
+    imageUpload: (List<MultipartBody.Part>) -> Unit
 ) {
     val context = LocalContext.current
     val registrationImageUri = remember { mutableStateOf(Uri.EMPTY) }
     val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
         registrationImageUri.value = it
-        val file = File(getPathFromUri(context, registrationImageUri.value))
-        val partList = changeToPartList(file)
-        imageUpload(partList)
+        val file = getFileFromUri(context, registrationImageUri.value)
+        file?.let {
+            val partList = changeToPartList(file)
+            imageUpload(partList)
+        }
     }
     var clicked by remember { mutableStateOf(false) }
 
     GlideImage(
-        imageModel = { image },
+        imageModel = { image.ifEmpty { registrationImageUri.value } },
         modifier = Modifier
             .fillMaxWidth()
             .height(250.dp)
@@ -191,9 +221,9 @@ fun Thumbnail(
 @Composable
 fun StepItem(
     modifier: Modifier = Modifier,
-    imageUpload: (List<MultipartBody.Part>) -> Unit,
-    image: String? = null,
-    text: String? = null
+    image: String,
+    text: String? = null,
+    imageUpload: (List<MultipartBody.Part>) -> Unit
 ) {
     var content by remember { mutableStateOf(text ?: "") }
     var clicked by remember { mutableStateOf(false) }
@@ -202,14 +232,16 @@ fun StepItem(
     val registrationImageUri = remember { mutableStateOf(Uri.EMPTY) }
     val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) {
         registrationImageUri.value = it
-        val file = File(getPathFromUri(context, registrationImageUri.value))
+        val file = getFileFromUri(context, registrationImageUri.value)
+        file?.let {
         val partList = changeToPartList(file)
-        imageUpload(partList)
+            imageUpload(partList)
+        }
     }
 
     Row(modifier = modifier.height(70.dp)) {
         GlideImage(
-            imageModel = { image },
+            imageModel = { image.ifEmpty { registrationImageUri.value } },
             modifier = Modifier
                 .width(80.dp)
                 .fillMaxHeight()
@@ -337,7 +369,8 @@ fun RecipeAddButton(
     name: String,
     thumbnail: String,
     recipeProcess: List<RecipeRequestModel>,
-    onClick: (RecipesRequestModel) -> Unit
+    onClick: (RecipesRequestModel) -> Unit,
+    addList: () -> Unit
 ) {
     OutlinedButton(
         modifier = modifier
@@ -347,6 +380,7 @@ fun RecipeAddButton(
         shape = RoundedCornerShape(8.dp),
         border = BorderStroke(1.dp, SoloRecipeColor.Primary10),
         onClick = {
+            addList()
             onClick(
                 RecipesRequestModel(
                     name = name,
