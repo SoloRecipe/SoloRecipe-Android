@@ -75,6 +75,7 @@ fun RegistrationScreen(
     val createUiState by registrationViewModel.createUiState.collectAsStateWithLifecycle()
     val modifyUiState by registrationViewModel.modifyUiState.collectAsStateWithLifecycle()
     val recipeImages = registrationViewModel.recipeImages
+    val recipeTexts = registrationViewModel.recipeTexts
 
     var step by remember { mutableStateOf(1) }
     var title by remember { mutableStateOf("") }
@@ -106,7 +107,10 @@ fun RegistrationScreen(
                 imageUpload = { file -> registrationViewModel.imageUpload(file, 0) }
             )
             Spacer(modifier = modifier.height(9.dp))
-            ThumbnailTitle(title = title) { title = it }
+            ThumbnailTitle(title = title) {
+                title = it
+                recipeTexts[0] = it
+            }
             Spacer(modifier = modifier.height(30.dp))
             Column(
                 modifier = modifier
@@ -122,7 +126,8 @@ fun RegistrationScreen(
                             }
                             else -> ""
                         },
-                        imageUpload = { file -> registrationViewModel.imageUpload(file, it + 1) }
+                        imageUpload = { file -> registrationViewModel.imageUpload(file, it + 1) },
+                        textUpload = { text -> recipeTexts[it + 1] = text }
                     )
                 }
             }
@@ -132,20 +137,23 @@ fun RegistrationScreen(
                 thumbnail = "",
                 recipeProcess = recipeProcess,
                 onClick = { step++ },
-                addList = { recipeImages.add("") }
+                addList = {
+                    recipeImages.add("")
+                    recipeTexts.add("")
+                }
             )
             Spacer(modifier = modifier.height(50.dp))
             RecipeRegisterButton {
-                val temp = recipeImages.map {
+                val temp = recipeImages.zip(recipeTexts).map { (image, text) ->
                     RecipeRequestModel(
-                        description = "",
-                        image = it
+                        image = image,
+                        description = text
                     )
                 }
                 recipeProcess.addAll(temp)
                 registrationViewModel.createRecipe(
                     RecipesRequestModel(
-                        name = title,
+                        name = recipeProcess.toList()[0].description,
                         thumbnail = recipeProcess.toList()[0].image,
                         recipeProcess = recipeProcess.apply {
                             removeFirst()
@@ -223,6 +231,7 @@ fun StepItem(
     modifier: Modifier = Modifier,
     image: String,
     text: String? = null,
+    textUpload: (String) -> Unit,
     imageUpload: (List<MultipartBody.Part>) -> Unit
 ) {
     var content by remember { mutableStateOf(text ?: "") }
@@ -296,7 +305,10 @@ fun StepItem(
                 value = content,
                 hint = "레시피를 입력해주세요",
                 textStyle = SoloRecipeTypography.body4,
-                onValueChanged = { content = it }
+                onValueChanged = {
+                    content = it
+                    textUpload(it)
+                }
             )
         }
     }
