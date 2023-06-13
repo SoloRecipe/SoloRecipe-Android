@@ -3,6 +3,7 @@ package com.project.data.local.datasource
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -21,6 +22,7 @@ class LocalDataSourceImpl @Inject constructor(
         private val REFRESH_TOKEN = stringPreferencesKey("refresh_token")
         private val ACCESS_TOKEN_EXP = stringPreferencesKey("access_token_exp")
         private val REFRESH_TOKEN_EXP = stringPreferencesKey("refresh_token_exp")
+        private val IS_LOGIN = booleanPreferencesKey("is_login")
     }
 
     override suspend fun saveToken(accessToken: String, refreshToken: String, accessTokenExp: String, refreshTokenExp: String) {
@@ -29,6 +31,9 @@ class LocalDataSourceImpl @Inject constructor(
             it[REFRESH_TOKEN] = refreshToken
             it[ACCESS_TOKEN_EXP] = accessTokenExp
             it[REFRESH_TOKEN_EXP] = refreshTokenExp
+        }
+        context.dataStore.edit {
+            it[IS_LOGIN] = true
         }
     }
 
@@ -39,4 +44,5 @@ class LocalDataSourceImpl @Inject constructor(
     override fun getAccessTokenExp(): Flow<String> = context.dataStore.data.map { it[ACCESS_TOKEN_EXP] ?: "" }
 
     override fun getRefreshTokenExp(): Flow<String> = context.dataStore.data.map { it[REFRESH_TOKEN_EXP] ?: "" }
+    override fun getLoginStatus(): Flow<Boolean> = context.dataStore.data.map { it[IS_LOGIN] ?: false }
 }
