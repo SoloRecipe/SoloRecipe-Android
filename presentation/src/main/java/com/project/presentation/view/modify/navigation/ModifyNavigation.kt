@@ -14,6 +14,7 @@ fun NavController.navigateToModify(index: Long) {
 }
 
 fun NavGraphBuilder.modifyScreen(
+    navigateToProfile: () -> Unit,
     navigateToPrevious: () -> Unit
 ) {
     composable(
@@ -22,6 +23,7 @@ fun NavGraphBuilder.modifyScreen(
     ) { backStackEntry ->
         ModifyScreen(
             index = backStackEntry.arguments?.getLong("index"),
+            navigateToProfile = navigateToProfile,
             navigateToPrevious = navigateToPrevious
         )
     }
