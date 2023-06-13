@@ -131,11 +131,11 @@ fun ProfileScreen(
                     thickness = 1.dp
                 )
                 Spacer(modifier = modifier.height(30.dp))
+                LogoutButton { profileViewModel.getRefreshToken() }
 
                 when (val state = tokenUiState) {
                     is UiState.Success -> {
-                        val header = state.data ?: ""
-                        LogoutButton(header = header) { profileViewModel.deleteUserInfo("Bearer " + it) }
+                        profileViewModel.deleteUserInfo(state.data ?: "")
                     }
                     else -> {}
                 }
@@ -280,8 +280,7 @@ fun LikedRecipeList(
 @Composable
 fun LogoutButton(
     modifier: Modifier = Modifier,
-    header: String,
-    logout: (String) -> Unit
+    getToken: () -> Unit
 ) {
     SoloRecipeButton(
         modifier = modifier
@@ -290,6 +289,6 @@ fun LogoutButton(
         text = "로그아웃",
         containerColor = SoloRecipeColor.Secondary30
     ) {
-        logout(header)
+        getToken()
     }
 }
