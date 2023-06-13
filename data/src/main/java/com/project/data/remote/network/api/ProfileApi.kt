@@ -6,6 +6,7 @@ import com.project.data.remote.model.response.ProfilesResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.PATCH
 
 interface ProfileApi {
@@ -18,7 +19,9 @@ interface ProfileApi {
     )
 
     @DELETE("user")
-    suspend fun deleteUserInfo()
+    suspend fun deleteUserInfo(
+        @Header("Authorization") header: String
+    )
 
     @PATCH("user/profile")
     suspend fun modifyProfileImage(
