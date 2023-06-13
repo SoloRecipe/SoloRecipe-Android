@@ -234,7 +234,7 @@ fun StepItem(
         registrationImageUri.value = it
         val file = getFileFromUri(context, registrationImageUri.value)
         file?.let {
-        val partList = changeToPartList(file)
+            val partList = changeToPartList(file)
             imageUpload(partList)
         }
     }
